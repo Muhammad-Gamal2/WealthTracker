@@ -1,8 +1,8 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screen_lock/flutter_screen_lock.dart';
-import 'package:signals_flutter/signals_flutter.dart';
 import 'package:wealth_tracker/features/auth/presentation/auth_signals.dart';
+import 'package:wealth_tracker/features/settings/presentation/settings_signals.dart';
 import 'package:wealth_tracker/routing/app_router.dart';
 
 class LockScreen extends StatefulWidget {
@@ -18,25 +18,25 @@ class _LockScreenState extends State<LockScreen> {
   @override
   void initState() {
     super.initState();
-    _tryBiometricIfAvailable();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _tryBiometricIfAvailable();
+    });
   }
+
+  bool get _biometricEnabled =>
+      !kIsWeb &&
+      biometricAvailableSignal.value &&
+      useBiometricSignal.value;
 
   Future<void> _tryBiometricIfAvailable() async {
-    if (!kIsWeb &&
-        biometricAvailableSignal.value &&
-        useBiometricFromSettings()) {
-      setState(() => _tryingBiometric = true);
-      final success = await unlockWithBiometric();
-      setState(() => _tryingBiometric = false);
-      if (success && mounted) {
-        Navigator.pushReplacementNamed(context, AppRouter.dashboard);
-      }
+    if (!_biometricEnabled) return;
+    setState(() => _tryingBiometric = true);
+    final success = await unlockWithBiometric();
+    if (!mounted) return;
+    setState(() => _tryingBiometric = false);
+    if (success) {
+      Navigator.pushReplacementNamed(context, AppRouter.dashboard);
     }
-  }
-
-  bool useBiometricFromSettings() {
-    // Read directly from signal set during init
-    return biometricAvailableSignal.value;
   }
 
   @override
@@ -44,17 +44,12 @@ class _LockScreenState extends State<LockScreen> {
     return Scaffold(
       body: _tryingBiometric
           ? const Center(child: CircularProgressIndicator())
-          : ScreenLock(
-              correctString: '', // We handle validation ourselves
-              onUnlockFailed: (context) {},
-              onVerify: (context, input) async {
-                final valid = await unlockWithPin(input);
-                if (valid && context.mounted) {
-                  Navigator.pushReplacementNamed(
-                      context, AppRouter.dashboard);
-                }
+          : ScreenLock.create(
+              onValidate: (input) => unlockWithPin(input),
+              onUnlocked: () {
+                Navigator.pushReplacementNamed(context, AppRouter.dashboard);
               },
-              footer: !kIsWeb && biometricAvailableSignal.value
+              footer: _biometricEnabled
                   ? TextButton.icon(
                       onPressed: () async {
                         final success = await unlockWithBiometric();
@@ -71,6 +66,7 @@ class _LockScreenState extends State<LockScreen> {
                 backgroundColor: Theme.of(context).colorScheme.surface,
               ),
               title: Column(
+                mainAxisSize: MainAxisSize.min,
                 children: [
                   Icon(
                     Icons.lock_outline,

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:wealth_tracker/core/widgets/app_shell.dart';
 import 'package:wealth_tracker/features/auth/presentation/lock_screen.dart';
-import 'package:wealth_tracker/features/dashboard/presentation/dashboard_screen.dart';
 import 'package:wealth_tracker/features/gold/presentation/gold_screen.dart';
 import 'package:wealth_tracker/features/liquidity/presentation/liquidity_screen.dart';
 import 'package:wealth_tracker/features/real_estate/presentation/real_estate_screen.dart';
@@ -20,7 +20,7 @@ class AppRouter {
 
   static Map<String, WidgetBuilder> get routes => {
         lock: (_) => const LockScreen(),
-        dashboard: (_) => const DashboardScreen(),
+        dashboard: (_) => const AppShell(),
         gold: (_) => const GoldScreen(),
         stocks: (_) => const StocksScreen(),
         liquidity: (_) => const LiquidityScreen(),

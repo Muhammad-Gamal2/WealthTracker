@@ -1,101 +1,164 @@
 import 'package:flutter/material.dart';
-import 'package:wealth_tracker/core/di/service_locator.dart';
-import 'package:wealth_tracker/core/services/price_update_service.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:wealth_tracker/core/theme/obsidian_theme.dart';
 import 'package:wealth_tracker/core/utils/currency_formatter.dart';
+import 'package:wealth_tracker/core/widgets/gain_badge.dart';
+import 'package:wealth_tracker/core/widgets/glass_card.dart';
 import 'package:wealth_tracker/features/stocks/domain/entities/stock_entity.dart';
 
 class StockItemTile extends StatelessWidget {
   final StockEntity item;
+  final double currentPrice;
+  final double totalEgp;
+  final double gainPercent;
   final VoidCallback onEdit;
   final VoidCallback onDelete;
 
   const StockItemTile({
     super.key,
     required this.item,
+    required this.currentPrice,
+    required this.totalEgp,
+    required this.gainPercent,
     required this.onEdit,
     required this.onDelete,
   });
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder(
-      future: sl<PriceUpdateService>()
-          .getLatestPrices(stockApiSymbols: [item.apiSymbol]),
-      builder: (context, snap) {
-        final prices = snap.data;
-        final currentPrice = prices?.stockPrices[item.apiSymbol] ?? 0;
-        final totalEgp = item.isEgx
-            ? item.quantity * currentPrice
-            : item.quantity * currentPrice * (prices?.usdToEgpRate ?? 1);
-        final totalUsd = (prices?.usdToEgpRate ?? 1) > 0
-            ? totalEgp / (prices?.usdToEgpRate ?? 1)
-            : 0.0;
+    final isEgx = item.isEgx;
+    final accentColor = isEgx ? ObsidianTheme.cyan : ObsidianTheme.green;
+    final accentBg = isEgx ? ObsidianTheme.cyanBg : ObsidianTheme.greenBg;
+    final currencyLabel = isEgx ? 'EGP' : 'USD';
 
-        final purchaseEgp = item.isEgx
-            ? item.quantity * item.purchasePrice
-            : item.quantity * item.purchasePrice * (prices?.usdToEgpRate ?? 1);
-        final gainEgp = totalEgp - purchaseEgp;
-        final gainPercent = purchaseEgp > 0 ? (gainEgp / purchaseEgp) * 100 : 0;
-        final isPositive = gainEgp >= 0;
-
-        return Card(
-          child: ListTile(
-            leading: CircleAvatar(
-              backgroundColor: item.isEgx
-                  ? Theme.of(context).colorScheme.secondaryContainer
-                  : Theme.of(context).colorScheme.tertiaryContainer,
+    return GlassCard(
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+        child: Row(
+          children: [
+            // Leading: circle with market label
+            Container(
+              width: 42,
+              height: 42,
+              decoration: BoxDecoration(
+                color: accentBg,
+                borderRadius: BorderRadius.circular(21),
+                border: Border.all(
+                  color: accentColor.withValues(alpha: 0.3),
+                  width: 1,
+                ),
+              ),
+              alignment: Alignment.center,
               child: Text(
                 item.market,
-                style: TextStyle(
+                style: GoogleFonts.dmSans(
                   fontSize: 10,
-                  fontWeight: FontWeight.bold,
-                  color: item.isEgx
-                      ? Theme.of(context).colorScheme.onSecondaryContainer
-                      : Theme.of(context).colorScheme.onTertiaryContainer,
+                  fontWeight: FontWeight.w800,
+                  color: accentColor,
                 ),
               ),
             ),
-            title: Row(
-              children: [
-                Text(item.symbol,
-                    style: const TextStyle(fontWeight: FontWeight.bold)),
-                if (item.name.isNotEmpty) ...[
-                  const SizedBox(width: 8),
-                  Flexible(
-                    child: Text(item.name,
-                        style: Theme.of(context).textTheme.bodySmall,
-                        overflow: TextOverflow.ellipsis),
+            const SizedBox(width: 12),
+            // Center: symbol, company name, shares info
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    children: [
+                      Text(
+                        item.symbol,
+                        style: GoogleFonts.dmSans(
+                          fontSize: 14,
+                          fontWeight: FontWeight.w700,
+                          color: ObsidianTheme.text1,
+                        ),
+                      ),
+                      if (item.name.isNotEmpty) ...[
+                        const SizedBox(width: 8),
+                        Flexible(
+                          child: Text(
+                            item.name,
+                            style: GoogleFonts.dmSans(
+                              fontSize: 11,
+                              color: ObsidianTheme.text3,
+                            ),
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                        ),
+                      ],
+                    ],
+                  ),
+                  const SizedBox(height: 3),
+                  Text(
+                    '${CurrencyFormatter.formatNumber(item.quantity)} shares \u00b7 $currencyLabel ${currentPrice.toStringAsFixed(2)}',
+                    style: GoogleFonts.dmSans(
+                      fontSize: 11,
+                      color: ObsidianTheme.text3,
+                    ),
                   ),
                 ],
+              ),
+            ),
+            // Trailing: total EGP + GainBadge + menu
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.end,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  CurrencyFormatter.formatEgp(totalEgp),
+                  style: GoogleFonts.dmMono(
+                    fontSize: 14,
+                    fontWeight: FontWeight.w700,
+                    color: ObsidianTheme.text1,
+                  ),
+                ),
+                const SizedBox(height: 4),
+                GainBadge(percent: gainPercent),
               ],
             ),
-            subtitle: Text(
-                '${CurrencyFormatter.formatNumber(item.quantity)} shares · '
-                'Current: ${item.isEgx ? CurrencyFormatter.formatEgp(currentPrice) : CurrencyFormatter.formatUsd(currentPrice)}'),
-            trailing: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.end,
-              children: [
-                Text(CurrencyFormatter.formatEgp(totalEgp),
-                    style: Theme.of(context)
-                        .textTheme
-                        .bodyMedium
-                        ?.copyWith(fontWeight: FontWeight.bold)),
-                Text(
-                  CurrencyFormatter.formatPercent(gainPercent.toDouble()),
-                  style: TextStyle(
-                    fontSize: 12,
-                    color: isPositive ? Colors.green : Colors.red,
-                    fontWeight: FontWeight.w500,
+            const SizedBox(width: 4),
+            PopupMenuButton<String>(
+              icon: const Icon(Icons.more_vert,
+                  color: ObsidianTheme.text3, size: 20),
+              color: ObsidianTheme.surface2,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(ObsidianTheme.radius),
+                side: const BorderSide(color: ObsidianTheme.border),
+              ),
+              itemBuilder: (_) => [
+                PopupMenuItem(
+                  value: 'edit',
+                  child: Text(
+                    'Edit',
+                    style: GoogleFonts.dmSans(
+                      fontSize: 14,
+                      color: ObsidianTheme.text1,
+                    ),
+                  ),
+                ),
+                PopupMenuItem(
+                  value: 'delete',
+                  child: Text(
+                    'Delete',
+                    style: GoogleFonts.dmSans(
+                      fontSize: 14,
+                      color: ObsidianTheme.lossRed,
+                    ),
                   ),
                 ),
               ],
+              onSelected: (v) {
+                if (v == 'edit') {
+                  onEdit();
+                } else {
+                  onDelete();
+                }
+              },
             ),
-            onTap: onEdit,
-            onLongPress: onDelete,
-          ),
-        );
-      },
+          ],
+        ),
+      ),
     );
   }
 }

@@ -1,5 +1,7 @@
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:wealth_tracker/core/theme/obsidian_theme.dart';
 import 'package:wealth_tracker/core/utils/currency_formatter.dart';
 import 'package:wealth_tracker/core/utils/date_formatter.dart';
 import 'package:wealth_tracker/features/dashboard/domain/entities/wealth_summary.dart';
@@ -12,12 +14,16 @@ class WealthLineChart extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (snapshots.length < 2) {
-      return const SizedBox(
+      return SizedBox(
         height: 160,
         child: Center(
           child: Text(
             'Chart will appear after 2+ days of data',
             textAlign: TextAlign.center,
+            style: GoogleFonts.dmSans(
+              fontSize: 14,
+              color: ObsidianTheme.text3,
+            ),
           ),
         ),
       );
@@ -30,6 +36,7 @@ class WealthLineChart extends StatelessWidget {
     final minY = spots.map((s) => s.y).reduce((a, b) => a < b ? a : b);
     final maxY = spots.map((s) => s.y).reduce((a, b) => a > b ? a : b);
     final padding = (maxY - minY) * 0.1;
+    final showDots = snapshots.length <= 30;
 
     return SizedBox(
       height: 180,
@@ -37,13 +44,22 @@ class WealthLineChart extends StatelessWidget {
         LineChartData(
           lineTouchData: LineTouchData(
             touchTooltipData: LineTouchTooltipData(
-              getTooltipItems: (spots) => spots.map((spot) {
+              tooltipRoundedRadius: 10,
+              tooltipPadding: const EdgeInsets.symmetric(
+                horizontal: 12,
+                vertical: 8,
+              ),
+              getTooltipColor: (_) => ObsidianTheme.surface2,
+              getTooltipItems: (touchedSpots) => touchedSpots.map((spot) {
                 final idx = spot.x.toInt();
                 final snap = snapshots[idx];
                 return LineTooltipItem(
                   '${snap.date}\n${CurrencyFormatter.formatEgp(snap.totalValueEgp)}',
-                  const TextStyle(
-                      color: Colors.white, fontWeight: FontWeight.bold),
+                  GoogleFonts.dmMono(
+                    fontSize: 12,
+                    fontWeight: FontWeight.w500,
+                    color: ObsidianTheme.text1,
+                  ),
                 );
               }).toList(),
             ),
@@ -53,7 +69,7 @@ class WealthLineChart extends StatelessWidget {
             drawVerticalLine: false,
             horizontalInterval: padding > 0 ? (maxY - minY) / 4 : null,
             getDrawingHorizontalLine: (value) => FlLine(
-              color: Colors.grey.withValues(alpha: 0.2),
+              color: const Color(0x0DFFFFFF), // rgba(255,255,255,0.05)
               strokeWidth: 1,
             ),
           ),
@@ -62,9 +78,16 @@ class WealthLineChart extends StatelessWidget {
               sideTitles: SideTitles(
                 showTitles: true,
                 reservedSize: 60,
-                getTitlesWidget: (value, meta) => Text(
-                  _shortAmount(value),
-                  style: const TextStyle(fontSize: 9),
+                getTitlesWidget: (value, meta) => Padding(
+                  padding: const EdgeInsets.only(right: 4),
+                  child: Text(
+                    _shortAmount(value),
+                    style: GoogleFonts.dmMono(
+                      fontSize: 9,
+                      fontWeight: FontWeight.w400,
+                      color: ObsidianTheme.text3,
+                    ),
+                  ),
                 ),
               ),
             ),
@@ -80,10 +103,17 @@ class WealthLineChart extends StatelessWidget {
                   if (idx < 0 || idx >= snapshots.length) {
                     return const SizedBox.shrink();
                   }
-                  return Text(
-                    DateFormatter.toShort(
-                        _parseDate(snapshots[idx].date)),
-                    style: const TextStyle(fontSize: 9),
+                  return Padding(
+                    padding: const EdgeInsets.only(top: 4),
+                    child: Text(
+                      DateFormatter.toShort(
+                          _parseDate(snapshots[idx].date)),
+                      style: GoogleFonts.dmMono(
+                        fontSize: 9,
+                        fontWeight: FontWeight.w400,
+                        color: ObsidianTheme.text3,
+                      ),
+                    ),
                   );
                 },
               ),
@@ -100,24 +130,38 @@ class WealthLineChart extends StatelessWidget {
             LineChartBarData(
               spots: spots,
               isCurved: true,
-              color: Theme.of(context).colorScheme.primary,
-              barWidth: 2.5,
+              color: ObsidianTheme.accent,
+              barWidth: 2.2,
               dotData: FlDotData(
-                show: snapshots.length <= 30,
-                getDotPainter: (spot, percent, bar, index) =>
-                    FlDotCirclePainter(
-                  radius: 3,
-                  color: Theme.of(context).colorScheme.primary,
-                  strokeWidth: 1,
-                  strokeColor: Colors.white,
-                ),
+                show: showDots,
+                getDotPainter: (spot, percent, bar, index) {
+                  final isLast = index == spots.length - 1;
+                  if (isLast) {
+                    return FlDotCirclePainter(
+                      radius: 4,
+                      color: ObsidianTheme.accent,
+                      strokeWidth: 2,
+                      strokeColor: ObsidianTheme.accent.withValues(alpha: 0.3),
+                    );
+                  }
+                  return FlDotCirclePainter(
+                    radius: 2.5,
+                    color: ObsidianTheme.accent,
+                    strokeWidth: 1,
+                    strokeColor: ObsidianTheme.surface,
+                  );
+                },
               ),
               belowBarData: BarAreaData(
                 show: true,
-                color: Theme.of(context)
-                    .colorScheme
-                    .primary
-                    .withValues(alpha: 0.1),
+                gradient: LinearGradient(
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                  colors: [
+                    ObsidianTheme.accent.withValues(alpha: 0.28),
+                    ObsidianTheme.accent.withValues(alpha: 0.01),
+                  ],
+                ),
               ),
             ),
           ],

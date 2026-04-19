@@ -1,4 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:wealth_tracker/core/di/service_locator.dart';
+import 'package:wealth_tracker/core/services/price_update_service.dart';
+import 'package:wealth_tracker/core/theme/obsidian_theme.dart';
+import 'package:wealth_tracker/core/utils/currency_formatter.dart';
 import 'package:wealth_tracker/features/gold/domain/entities/gold_entity.dart';
 import 'package:wealth_tracker/features/gold/presentation/gold_signals.dart';
 
@@ -15,6 +20,9 @@ class _AddGoldDialogState extends State<AddGoldDialog> {
   final _labelController = TextEditingController();
   final _gramsController = TextEditingController();
   int _karat = 21;
+  PriceSnapshot? _prices;
+
+  static const _karatOptions = [24, 22, 21, 18];
 
   @override
   void initState() {
@@ -24,74 +32,354 @@ class _AddGoldDialogState extends State<AddGoldDialog> {
       _gramsController.text = widget.existing!.weightGrams.toString();
       _karat = widget.existing!.karat;
     }
+    _labelController.addListener(_onFieldChanged);
+    _gramsController.addListener(_onFieldChanged);
+    _loadPrices();
+  }
+
+  Future<void> _loadPrices() async {
+    final p = await sl<PriceUpdateService>()
+        .getLatestPrices(stockApiSymbols: const []);
+    if (mounted) {
+      setState(() {
+        _prices = p;
+      });
+    }
+  }
+
+  void _onFieldChanged() {
+    setState(() {});
   }
 
   @override
   void dispose() {
+    _labelController.removeListener(_onFieldChanged);
+    _gramsController.removeListener(_onFieldChanged);
     _labelController.dispose();
     _gramsController.dispose();
     super.dispose();
   }
 
+  double? get _estimatedValue {
+    if (_prices == null) return null;
+    final grams = double.tryParse(_gramsController.text);
+    if (grams == null || grams <= 0) return null;
+    final label = _labelController.text.trim();
+    if (label.isEmpty) return null;
+    return grams * _prices!.priceForKarat(_karat);
+  }
+
   @override
   Widget build(BuildContext context) {
     final isEditing = widget.existing != null;
-    return AlertDialog(
-      title: Text(isEditing ? 'Edit Gold Item' : 'Add Gold'),
-      content: Form(
-        key: _formKey,
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            TextFormField(
-              controller: _labelController,
-              decoration: const InputDecoration(
-                labelText: 'Label',
-                hintText: 'e.g. Wedding Ring, Bullion',
-              ),
-              validator: (v) =>
-                  v == null || v.isEmpty ? 'Required' : null,
-            ),
-            const SizedBox(height: 12),
-            TextFormField(
-              controller: _gramsController,
-              decoration: const InputDecoration(
-                labelText: 'Weight (grams)',
-                suffixText: 'g',
-              ),
-              keyboardType:
-                  const TextInputType.numberWithOptions(decimal: true),
-              validator: (v) {
-                if (v == null || v.isEmpty) return 'Required';
-                if (double.tryParse(v) == null) return 'Invalid number';
-                if (double.parse(v) <= 0) return 'Must be > 0';
-                return null;
-              },
-            ),
-            const SizedBox(height: 12),
-            DropdownButtonFormField<int>(
-              value: _karat,
-              decoration: const InputDecoration(labelText: 'Karat'),
-              items: [24, 22, 21, 18]
-                  .map((k) => DropdownMenuItem(
-                        value: k,
-                        child: Text('${k}K'),
-                      ))
-                  .toList(),
-              onChanged: (v) => setState(() => _karat = v!),
-            ),
-          ],
+    final estimated = _estimatedValue;
+
+    return Container(
+      decoration: const BoxDecoration(
+        color: ObsidianTheme.surface2,
+        borderRadius: BorderRadius.vertical(top: Radius.circular(22)),
+        border: Border(
+          top: BorderSide(color: ObsidianTheme.gold, width: 2),
         ),
       ),
-      actions: [
-        TextButton(
-            onPressed: () => Navigator.pop(context),
-            child: const Text('Cancel')),
-        FilledButton(
-          onPressed: _submit,
-          child: Text(isEditing ? 'Save' : 'Add'),
+      child: SafeArea(
+        top: false,
+        child: Padding(
+          padding: EdgeInsets.only(
+            left: 20,
+            right: 20,
+            top: 12,
+            bottom: MediaQuery.of(context).viewInsets.bottom + 20,
+          ),
+          child: Form(
+            key: _formKey,
+            child: SingleChildScrollView(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  // Drag handle
+                  Center(
+                    child: Container(
+                      width: 36,
+                      height: 4,
+                      decoration: BoxDecoration(
+                        color: const Color(0x1FFFFFFF),
+                        borderRadius: BorderRadius.circular(2),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 16),
+                  // Title row
+                  Row(
+                    children: [
+                      Text(
+                        isEditing ? 'Edit Gold Item' : 'Add Gold',
+                        style: GoogleFonts.spaceGrotesk(
+                          fontSize: 18,
+                          fontWeight: FontWeight.w700,
+                          color: ObsidianTheme.text1,
+                        ),
+                      ),
+                      const Spacer(),
+                      GestureDetector(
+                        onTap: () => Navigator.pop(context),
+                        child: Container(
+                          width: 32,
+                          height: 32,
+                          decoration: BoxDecoration(
+                            color: const Color(0x0DFFFFFF),
+                            borderRadius: BorderRadius.circular(16),
+                          ),
+                          child: const Icon(Icons.close,
+                              size: 18, color: ObsidianTheme.text3),
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 20),
+                  // Label field
+                  _buildFieldLabel('LABEL'),
+                  const SizedBox(height: 6),
+                  TextFormField(
+                    controller: _labelController,
+                    style: GoogleFonts.dmMono(
+                        fontSize: 14, color: ObsidianTheme.text1),
+                    decoration:
+                        _inputDecoration(hintText: 'e.g. Wedding Ring, Bullion'),
+                    validator: (v) =>
+                        v == null || v.trim().isEmpty ? 'Required' : null,
+                  ),
+                  const SizedBox(height: 14),
+                  // Weight field
+                  _buildFieldLabel('WEIGHT (GRAMS)'),
+                  const SizedBox(height: 6),
+                  TextFormField(
+                    controller: _gramsController,
+                    style: GoogleFonts.dmMono(
+                        fontSize: 14, color: ObsidianTheme.text1),
+                    decoration:
+                        _inputDecoration(hintText: '0.00', suffixText: 'g'),
+                    keyboardType:
+                        const TextInputType.numberWithOptions(decimal: true),
+                    validator: (v) {
+                      if (v == null || v.isEmpty) return 'Required';
+                      if (double.tryParse(v) == null) return 'Invalid number';
+                      if (double.parse(v) <= 0) return 'Must be > 0';
+                      return null;
+                    },
+                  ),
+                  const SizedBox(height: 14),
+                  // Karat picker
+                  _buildFieldLabel('KARAT'),
+                  const SizedBox(height: 6),
+                  _buildKaratPicker(),
+                  const SizedBox(height: 14),
+                  // Live value preview
+                  if (estimated != null) ...[
+                    Container(
+                      padding: const EdgeInsets.all(14),
+                      decoration: BoxDecoration(
+                        color: ObsidianTheme.goldBg,
+                        borderRadius:
+                            BorderRadius.circular(ObsidianTheme.radius),
+                        border: Border.all(
+                          color: ObsidianTheme.gold.withValues(alpha: 0.18),
+                        ),
+                      ),
+                      child: Row(
+                        children: [
+                          Text(
+                            'Estimated Value',
+                            style: GoogleFonts.dmSans(
+                              fontSize: 12,
+                              fontWeight: FontWeight.w600,
+                              color: ObsidianTheme.gold,
+                            ),
+                          ),
+                          const Spacer(),
+                          Text(
+                            CurrencyFormatter.formatEgp(estimated),
+                            style: GoogleFonts.dmMono(
+                              fontSize: 14,
+                              fontWeight: FontWeight.w700,
+                              color: ObsidianTheme.gold,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    const SizedBox(height: 14),
+                  ],
+                  const SizedBox(height: 6),
+                  // Actions
+                  Row(
+                    children: [
+                      Expanded(
+                        flex: 1,
+                        child: SizedBox(
+                          height: 48,
+                          child: OutlinedButton(
+                            onPressed: () => Navigator.pop(context),
+                            style: OutlinedButton.styleFrom(
+                              backgroundColor: Colors.transparent,
+                              side:
+                                  const BorderSide(color: ObsidianTheme.border),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(
+                                    ObsidianTheme.radius),
+                              ),
+                            ),
+                            child: Text(
+                              'Cancel',
+                              style: GoogleFonts.dmSans(
+                                fontSize: 14,
+                                fontWeight: FontWeight.w600,
+                                color: ObsidianTheme.text2,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                      const SizedBox(width: 12),
+                      Expanded(
+                        flex: 2,
+                        child: SizedBox(
+                          height: 48,
+                          child: DecoratedBox(
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(
+                                  ObsidianTheme.radius),
+                              boxShadow: [
+                                BoxShadow(
+                                  color: ObsidianTheme.gold
+                                      .withValues(alpha: 0.35),
+                                  blurRadius: 16,
+                                  offset: const Offset(0, 4),
+                                ),
+                              ],
+                            ),
+                            child: FilledButton(
+                              onPressed: _submit,
+                              style: FilledButton.styleFrom(
+                                backgroundColor: ObsidianTheme.gold,
+                                foregroundColor: Colors.white,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(
+                                      ObsidianTheme.radius),
+                                ),
+                              ),
+                              child: Text(
+                                isEditing ? 'Save' : 'Add',
+                                style: GoogleFonts.dmSans(
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w700,
+                                  color: Colors.white,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+          ),
         ),
-      ],
+      ),
+    );
+  }
+
+  Widget _buildFieldLabel(String label) {
+    return Text(
+      label,
+      style: GoogleFonts.dmSans(
+        fontSize: 11,
+        fontWeight: FontWeight.w700,
+        color: ObsidianTheme.text3,
+        letterSpacing: 0.07 * 11,
+      ),
+    );
+  }
+
+  InputDecoration _inputDecoration({String? hintText, String? suffixText}) {
+    return InputDecoration(
+      hintText: hintText,
+      suffixText: suffixText,
+      hintStyle: GoogleFonts.dmMono(fontSize: 14, color: ObsidianTheme.text3),
+      suffixStyle: GoogleFonts.dmMono(fontSize: 14, color: ObsidianTheme.text3),
+      filled: true,
+      fillColor: const Color(0x0DFFFFFF),
+      contentPadding:
+          const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+      border: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(10),
+        borderSide: const BorderSide(color: ObsidianTheme.border),
+      ),
+      enabledBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(10),
+        borderSide: const BorderSide(color: ObsidianTheme.border),
+      ),
+      focusedBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(10),
+        borderSide: const BorderSide(color: ObsidianTheme.gold, width: 1.5),
+      ),
+      errorBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(10),
+        borderSide: const BorderSide(color: ObsidianTheme.lossRed),
+      ),
+      focusedErrorBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(10),
+        borderSide:
+            const BorderSide(color: ObsidianTheme.lossRed, width: 1.5),
+      ),
+    );
+  }
+
+  Widget _buildKaratPicker() {
+    return Row(
+      children: _karatOptions.map((k) {
+        final isSelected = _karat == k;
+        return Expanded(
+          child: Padding(
+            padding: EdgeInsets.only(
+              right: k != _karatOptions.last ? 8 : 0,
+            ),
+            child: GestureDetector(
+              onTap: () => setState(() {
+                _karat = k;
+              }),
+              child: AnimatedContainer(
+                duration: const Duration(milliseconds: 180),
+                height: 42,
+                alignment: Alignment.center,
+                decoration: BoxDecoration(
+                  color: isSelected
+                      ? ObsidianTheme.goldBg
+                      : const Color(0x0DFFFFFF),
+                  borderRadius: BorderRadius.circular(10),
+                  border: Border.all(
+                    color: isSelected
+                        ? ObsidianTheme.gold.withValues(alpha: 0.5)
+                        : ObsidianTheme.border,
+                  ),
+                ),
+                child: Text(
+                  '${k}K',
+                  style: GoogleFonts.dmSans(
+                    fontSize: 13,
+                    fontWeight: FontWeight.w700,
+                    color:
+                        isSelected ? ObsidianTheme.gold : ObsidianTheme.text3,
+                  ),
+                ),
+              ),
+            ),
+          ),
+        );
+      }).toList(),
     );
   }
 
@@ -112,4 +400,14 @@ class _AddGoldDialogState extends State<AddGoldDialog> {
     }
     Navigator.pop(context);
   }
+}
+
+/// Show the add/edit gold bottom sheet.
+void showAddGoldSheet(BuildContext context, {GoldEntity? existing}) {
+  showModalBottomSheet(
+    context: context,
+    isScrollControlled: true,
+    backgroundColor: Colors.transparent,
+    builder: (_) => AddGoldDialog(existing: existing),
+  );
 }

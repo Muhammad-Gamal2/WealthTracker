@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:signals_flutter/signals_flutter.dart';
 import 'package:wealth_tracker/core/di/service_locator.dart';
 import 'package:wealth_tracker/core/services/price_update_service.dart';
+import 'package:wealth_tracker/core/theme/obsidian_theme.dart';
 import 'package:wealth_tracker/core/utils/currency_formatter.dart';
+import 'package:wealth_tracker/core/widgets/glass_card.dart';
+import 'package:wealth_tracker/core/widgets/section_title.dart';
 import 'package:wealth_tracker/features/gold/domain/entities/gold_entity.dart';
 import 'package:wealth_tracker/features/gold/presentation/gold_signals.dart';
 import 'package:wealth_tracker/features/gold/presentation/widgets/add_gold_dialog.dart';
@@ -16,163 +20,342 @@ class GoldScreen extends StatefulWidget {
 }
 
 class _GoldScreenState extends State<GoldScreen> {
+  PriceSnapshot? _prices;
+
   @override
   void initState() {
     super.initState();
     loadGoldItems();
+    _loadPrices();
+  }
+
+  Future<void> _loadPrices() async {
+    final p = await sl<PriceUpdateService>()
+        .getLatestPrices(stockApiSymbols: const []);
+    if (mounted) {
+      setState(() => _prices = p);
+    }
+  }
+
+  Future<void> _refresh() async {
+    await loadGoldItems();
+    await _loadPrices();
+  }
+
+  double _itemValue(GoldEntity item) {
+    if (_prices == null) return 0;
+    return item.weightGrams * _prices!.priceForKarat(item.karat);
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Gold'),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.refresh),
-            tooltip: 'Refresh prices',
-            onPressed: loadGoldItems,
-          ),
-        ],
-      ),
-      body: Watch((context) {
-        if (goldLoadingSignal.value) {
-          return const Center(child: CircularProgressIndicator());
-        }
-        if (goldErrorSignal.value != null) {
-          return Center(child: Text('Error: ${goldErrorSignal.value}'));
-        }
-
-        final items = goldItemsSignal.value;
-        final prices = sl<PriceUpdateService>();
-
-        return Column(
-          children: [
-            _buildPriceHeader(context),
-            Expanded(
-              child: items.isEmpty
-                  ? const Center(
-                      child: Text('No gold items yet.\nTap + to add one.',
-                          textAlign: TextAlign.center),
-                    )
-                  : ListView.separated(
-                      padding: const EdgeInsets.all(12),
-                      itemCount: items.length,
-                      separatorBuilder: (_, __) => const SizedBox(height: 8),
-                      itemBuilder: (context, i) => GoldItemTile(
-                        item: items[i],
-                        onEdit: () => _showAddEditDialog(context, items[i]),
-                        onDelete: () => _confirmDelete(context, items[i]),
-                      ),
-                    ),
-            ),
-          ],
-        );
-      }),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () => _showAddEditDialog(context, null),
-        child: const Icon(Icons.add),
-      ),
-    );
-  }
-
-  Widget _buildPriceHeader(BuildContext context) {
-    // We show the cached gold prices from the price service
-    return FutureBuilder(
-      future: sl<PriceUpdateService>()
-          .getLatestPrices(stockApiSymbols: const []),
-      builder: (context, snap) {
-        if (!snap.hasData) return const SizedBox.shrink();
-        final p = snap.data!;
-        return Card(
-          margin: const EdgeInsets.all(12),
-          child: Padding(
-            padding: const EdgeInsets.all(12),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text('Current Gold Prices (EGP/gram)',
-                    style: Theme.of(context).textTheme.labelLarge),
-                const SizedBox(height: 8),
-                Wrap(
-                  spacing: 16,
-                  runSpacing: 4,
-                  children: [
-                    _karatChip('24K',
-                        CurrencyFormatter.formatEgp(p.goldPrice24k), context),
-                    _karatChip('22K',
-                        CurrencyFormatter.formatEgp(p.goldPrice22k), context),
-                    _karatChip('21K',
-                        CurrencyFormatter.formatEgp(p.goldPrice21k), context),
-                    _karatChip('18K',
-                        CurrencyFormatter.formatEgp(p.goldPrice18k), context),
-                  ],
-                ),
-                if (p.isStale)
-                  Padding(
-                    padding: const EdgeInsets.only(top: 6),
-                    child: Row(
-                      children: [
-                        Icon(Icons.warning_amber,
-                            size: 14,
-                            color: Theme.of(context).colorScheme.error),
-                        const SizedBox(width: 4),
-                        Text('Prices may be outdated',
-                            style: Theme.of(context)
-                                .textTheme
-                                .labelSmall
-                                ?.copyWith(
-                                  color: Theme.of(context).colorScheme.error,
-                                )),
-                      ],
-                    ),
-                  ),
-              ],
-            ),
-          ),
-        );
-      },
-    );
-  }
-
-  Widget _karatChip(String karat, String price, BuildContext context) {
     return Column(
       children: [
-        Text(karat,
-            style: Theme.of(context)
-                .textTheme
-                .labelSmall
-                ?.copyWith(fontWeight: FontWeight.bold)),
-        Text(price, style: Theme.of(context).textTheme.bodySmall),
+        // Sticky header bar
+        Container(
+          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
+          decoration: const BoxDecoration(
+            color: Color(0xB807090F),
+            border: Border(
+              bottom: BorderSide(color: ObsidianTheme.border),
+            ),
+          ),
+          child: Row(
+            children: [
+              Text(
+                'Gold',
+                style: GoogleFonts.spaceGrotesk(
+                  fontSize: 18,
+                  fontWeight: FontWeight.w700,
+                  color: ObsidianTheme.text1,
+                ),
+              ),
+              const Spacer(),
+              IconButton(
+                icon: const Icon(Icons.refresh, color: ObsidianTheme.text2, size: 22),
+                onPressed: _refresh,
+                tooltip: 'Refresh prices',
+              ),
+            ],
+          ),
+        ),
+        // Content
+        Expanded(
+          child: Watch((context) {
+            if (goldLoadingSignal.value) {
+              return const Center(
+                child: CircularProgressIndicator(color: ObsidianTheme.gold),
+              );
+            }
+            if (goldErrorSignal.value != null) {
+              return Center(
+                child: Text(
+                  'Error: ${goldErrorSignal.value}',
+                  style: GoogleFonts.dmSans(
+                    fontSize: 13,
+                    color: ObsidianTheme.lossRed,
+                  ),
+                ),
+              );
+            }
+
+            final items = goldItemsSignal.value;
+            final totalEgp = items.fold(0.0, (sum, i) => sum + _itemValue(i));
+
+            return LayoutBuilder(
+              builder: (context, constraints) {
+                final isDesktop = constraints.maxWidth > 1100;
+
+                Widget content = Stack(
+                  children: [
+                    CustomScrollView(
+                      slivers: [
+                        // Price header card
+                        SliverToBoxAdapter(
+                          child: Padding(
+                            padding: EdgeInsets.fromLTRB(
+                              isDesktop ? 24 : 16,
+                              16,
+                              isDesktop ? 24 : 16,
+                              8,
+                            ),
+                            child: _buildPriceHeader(),
+                          ),
+                        ),
+                        // Section title
+                        SliverToBoxAdapter(
+                          child: Padding(
+                            padding: const EdgeInsets.only(top: 8, bottom: 12),
+                            child: SectionTitle(
+                              title: 'Holdings',
+                              right: Text(
+                                CurrencyFormatter.formatEgp(totalEgp),
+                                style: GoogleFonts.dmMono(
+                                  fontSize: 13,
+                                  fontWeight: FontWeight.w700,
+                                  color: ObsidianTheme.gold,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                        // Items list or empty state
+                        if (items.isEmpty)
+                          SliverFillRemaining(
+                            hasScrollBody: false,
+                            child: Center(
+                              child: Text(
+                                'No gold items yet.\nTap + to add one.',
+                                textAlign: TextAlign.center,
+                                style: GoogleFonts.dmSans(
+                                  fontSize: 13,
+                                  color: ObsidianTheme.text3,
+                                ),
+                              ),
+                            ),
+                          )
+                        else
+                          SliverPadding(
+                            padding: EdgeInsets.fromLTRB(
+                              isDesktop ? 24 : 16,
+                              0,
+                              isDesktop ? 24 : 16,
+                              100,
+                            ),
+                            sliver: SliverList.separated(
+                              itemCount: items.length,
+                              separatorBuilder: (_, __) =>
+                                  const SizedBox(height: 8),
+                              itemBuilder: (context, i) => GoldItemTile(
+                                item: items[i],
+                                valueEgp: _itemValue(items[i]),
+                                onEdit: () =>
+                                    _showAddEditSheet(context, items[i]),
+                                onDelete: () =>
+                                    _confirmDelete(context, items[i]),
+                              ),
+                            ),
+                          ),
+                      ],
+                    ),
+                    // FAB
+                    Positioned(
+                      right: isDesktop ? 24 : 16,
+                      bottom: 24,
+                      child: Container(
+                        decoration: BoxDecoration(
+                          borderRadius:
+                              BorderRadius.circular(ObsidianTheme.radius),
+                          boxShadow: [
+                            BoxShadow(
+                              color: ObsidianTheme.accent.withValues(alpha: 0.4),
+                              blurRadius: 20,
+                              offset: const Offset(0, 4),
+                            ),
+                          ],
+                        ),
+                        child: FloatingActionButton(
+                          onPressed: () => _showAddEditSheet(context, null),
+                          backgroundColor: ObsidianTheme.accent,
+                          foregroundColor: ObsidianTheme.bg,
+                          elevation: 0,
+                          shape: RoundedRectangleBorder(
+                            borderRadius:
+                                BorderRadius.circular(ObsidianTheme.radius),
+                          ),
+                          child: const Icon(Icons.add),
+                        ),
+                      ),
+                    ),
+                  ],
+                );
+
+                if (isDesktop) {
+                  content = Center(
+                    child: ConstrainedBox(
+                      constraints: const BoxConstraints(maxWidth: 720),
+                      child: content,
+                    ),
+                  );
+                }
+
+                return content;
+              },
+            );
+          }),
+        ),
       ],
     );
   }
 
-  void _showAddEditDialog(BuildContext context, GoldEntity? existing) {
-    showDialog(
-      context: context,
-      builder: (_) => AddGoldDialog(existing: existing),
+  Widget _buildPriceHeader() {
+    if (_prices == null) {
+      return const SizedBox.shrink();
+    }
+    final p = _prices!;
+    return GlassCard(
+      accent: ObsidianTheme.gold,
+      padding: const EdgeInsets.all(16),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            'Current Gold Prices (EGP/gram)',
+            style: GoogleFonts.dmSans(
+              fontSize: 12,
+              fontWeight: FontWeight.w600,
+              color: ObsidianTheme.text2,
+            ),
+          ),
+          const SizedBox(height: 12),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              _karatChip('24K', p.goldPrice24k),
+              _karatChip('22K', p.goldPrice22k),
+              _karatChip('21K', p.goldPrice21k),
+              _karatChip('18K', p.goldPrice18k),
+            ],
+          ),
+          if (p.isStale) ...[
+            const SizedBox(height: 10),
+            Row(
+              children: [
+                const Icon(Icons.warning_amber,
+                    size: 14, color: ObsidianTheme.lossRed),
+                const SizedBox(width: 4),
+                Text(
+                  'Prices may be outdated',
+                  style: GoogleFonts.dmSans(
+                    fontSize: 11,
+                    color: ObsidianTheme.lossRed,
+                  ),
+                ),
+              ],
+            ),
+          ],
+        ],
+      ),
     );
+  }
+
+  Widget _karatChip(String karat, double price) {
+    return Column(
+      children: [
+        Text(
+          karat,
+          style: GoogleFonts.dmSans(
+            fontSize: 11,
+            fontWeight: FontWeight.w700,
+            color: ObsidianTheme.gold,
+          ),
+        ),
+        const SizedBox(height: 2),
+        Text(
+          CurrencyFormatter.formatEgp(price),
+          style: GoogleFonts.dmMono(
+            fontSize: 12,
+            fontWeight: FontWeight.w500,
+            color: ObsidianTheme.text1,
+          ),
+        ),
+      ],
+    );
+  }
+
+  void _showAddEditSheet(BuildContext context, GoldEntity? existing) {
+    showAddGoldSheet(context, existing: existing);
   }
 
   void _confirmDelete(BuildContext context, GoldEntity item) {
     showDialog(
       context: context,
       builder: (_) => AlertDialog(
-        title: const Text('Delete Gold Item'),
-        content: Text('Remove "${item.label}"?'),
+        backgroundColor: ObsidianTheme.surface2,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(ObsidianTheme.radius),
+          side: const BorderSide(color: ObsidianTheme.border),
+        ),
+        title: Text(
+          'Delete Gold Item',
+          style: GoogleFonts.spaceGrotesk(
+            fontSize: 18,
+            fontWeight: FontWeight.w700,
+            color: ObsidianTheme.text1,
+          ),
+        ),
+        content: Text(
+          'Remove "${item.label}"?',
+          style: GoogleFonts.dmSans(
+            fontSize: 14,
+            color: ObsidianTheme.text2,
+          ),
+        ),
         actions: [
           TextButton(
-              onPressed: () => Navigator.pop(context),
-              child: const Text('Cancel')),
+            onPressed: () => Navigator.pop(context),
+            child: Text(
+              'Cancel',
+              style: GoogleFonts.dmSans(
+                fontSize: 14,
+                fontWeight: FontWeight.w500,
+                color: ObsidianTheme.text2,
+              ),
+            ),
+          ),
           TextButton(
             onPressed: () {
               deleteGoldItem(item.id);
               Navigator.pop(context);
             },
-            child: Text('Delete',
-                style: TextStyle(
-                    color: Theme.of(context).colorScheme.error)),
+            child: Text(
+              'Delete',
+              style: GoogleFonts.dmSans(
+                fontSize: 14,
+                fontWeight: FontWeight.w600,
+                color: ObsidianTheme.lossRed,
+              ),
+            ),
           ),
         ],
       ),

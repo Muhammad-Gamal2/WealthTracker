@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:signals_flutter/signals_flutter.dart';
 import 'package:wealth_tracker/core/constants/app_constants.dart';
+import 'package:wealth_tracker/features/auth/presentation/auth_signals.dart';
 import 'package:wealth_tracker/features/settings/presentation/settings_signals.dart';
 import 'package:wealth_tracker/routing/app_router.dart';
 
@@ -25,7 +26,7 @@ class WealthTrackerApp extends StatelessWidget {
           useMaterial3: true,
           brightness: Brightness.dark,
         ),
-        initialRoute: AppRouter.lock,
+        initialRoute: hasPinSignal.value ? AppRouter.lock : AppRouter.dashboard,
         routes: AppRouter.routes,
       );
     });

@@ -119,8 +119,6 @@ class _StocksScreenState extends State<StocksScreen> {
             }
 
             final items = stockItemsSignal.value;
-            final totalEgp =
-                items.fold(0.0, (sum, i) => sum + _itemTotalEgp(i));
 
             return LayoutBuilder(
               builder: (context, constraints) {

@@ -45,7 +45,8 @@ class _LockScreenState extends State<LockScreen> {
       body: _tryingBiometric
           ? const Center(child: CircularProgressIndicator())
           : ScreenLock(
-              correctString: '',
+              correctString: '0000',
+              digits: 4,
               onValidate: (input) => unlockWithPin(input),
               onUnlocked: () {
                 Navigator.pushReplacementNamed(context, AppRouter.dashboard);

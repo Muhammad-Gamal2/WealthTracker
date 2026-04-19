@@ -24,9 +24,7 @@ class _LockScreenState extends State<LockScreen> {
   }
 
   bool get _biometricEnabled =>
-      !kIsWeb &&
-      biometricAvailableSignal.value &&
-      useBiometricSignal.value;
+      !kIsWeb && biometricAvailableSignal.value && useBiometricSignal.value;
 
   Future<void> _tryBiometricIfAvailable() async {
     if (!_biometricEnabled) return;
@@ -46,7 +44,6 @@ class _LockScreenState extends State<LockScreen> {
           ? const Center(child: CircularProgressIndicator())
           : ScreenLock(
               correctString: '0000',
-              digits: 4,
               onValidate: (input) => unlockWithPin(input),
               onUnlocked: () {
                 Navigator.pushReplacementNamed(context, AppRouter.dashboard);

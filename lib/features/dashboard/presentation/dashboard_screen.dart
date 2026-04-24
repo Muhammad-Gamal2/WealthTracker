@@ -8,10 +8,11 @@ import 'package:wealth_tracker/features/dashboard/presentation/widgets/category_
 import 'package:wealth_tracker/features/dashboard/presentation/widgets/total_wealth_header.dart';
 import 'package:wealth_tracker/features/dashboard/presentation/widgets/wealth_line_chart.dart';
 import 'package:wealth_tracker/features/dashboard/presentation/widgets/wealth_pie_chart.dart';
-import 'package:wealth_tracker/routing/app_router.dart';
 
 class DashboardScreen extends StatefulWidget {
-  const DashboardScreen({super.key});
+  final ValueChanged<int>? onNavigateToTab;
+
+  const DashboardScreen({super.key, this.onNavigateToTab});
 
   @override
   State<DashboardScreen> createState() => _DashboardScreenState();
@@ -304,14 +305,10 @@ class _DashboardScreenState extends State<DashboardScreen> {
   }
 
   void _navigateToCategory(BuildContext context, int index) {
-    final routes = [
-      AppRouter.gold,
-      AppRouter.stocks,
-      AppRouter.liquidity,
-      AppRouter.realEstate,
-    ];
-    if (index >= 0 && index < routes.length) {
-      Navigator.pushNamed(context, routes[index]);
+    // index 0=gold, 1=stocks, 2=liquidity, 3=realEstate
+    // tab indices: 1=gold, 2=stocks, 3=liquidity, 4=realEstate
+    if (widget.onNavigateToTab != null && index >= 0 && index < 4) {
+      widget.onNavigateToTab!(index + 1);
     }
   }
 }

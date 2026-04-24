@@ -30,7 +30,7 @@ class _AppShellState extends State<AppShell> {
   Widget _buildScreen(int index) {
     switch (index) {
       case 0:
-        return const DashboardScreen();
+        return DashboardScreen(onNavigateToTab: _onItemSelected);
       case 1:
         return const GoldScreen();
       case 2:
@@ -40,7 +40,7 @@ class _AppShellState extends State<AppShell> {
       case 4:
         return const RealEstateScreen();
       default:
-        return const DashboardScreen();
+        return DashboardScreen(onNavigateToTab: _onItemSelected);
     }
   }
 
@@ -67,9 +67,12 @@ class _AppShellState extends State<AppShell> {
 
   Widget _buildMobileLayout() {
     return Scaffold(
-      body: IndexedStack(
-        index: _currentIndex,
-        children: List.generate(5, _buildScreen),
+      body: SafeArea(
+        bottom: false,
+        child: IndexedStack(
+          index: _currentIndex,
+          children: List.generate(5, _buildScreen),
+        ),
       ),
       bottomNavigationBar: _MobileBottomNav(
         currentIndex: _currentIndex,
@@ -92,10 +95,13 @@ class _AppShellState extends State<AppShell> {
             items: _navItems,
           ),
           Expanded(
-            child: ClipRect(
-              child: IndexedStack(
-                index: _currentIndex,
-                children: List.generate(5, _buildScreen),
+            child: SafeArea(
+              left: false,
+              child: ClipRect(
+                child: IndexedStack(
+                  index: _currentIndex,
+                  children: List.generate(5, _buildScreen),
+                ),
               ),
             ),
           ),

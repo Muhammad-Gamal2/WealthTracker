@@ -1,6 +1,7 @@
 import 'package:signals_flutter/signals_flutter.dart';
 import 'package:uuid/uuid.dart';
 import 'package:wealth_tracker/core/di/service_locator.dart';
+import 'package:wealth_tracker/core/services/price_update_service.dart';
 import 'package:wealth_tracker/features/liquidity/domain/entities/liquidity_entity.dart';
 import 'package:wealth_tracker/features/liquidity/domain/liquidity_repository.dart';
 
@@ -9,6 +10,7 @@ final _uuid = const Uuid();
 final liquidityItemsSignal = signal<List<LiquidityEntity>>([]);
 final liquidityLoadingSignal = signal<bool>(false);
 final liquidityErrorSignal = signal<String?>(null);
+final liquidityPricesSignal = signal<PriceSnapshot?>(null);
 
 Future<void> loadLiquidityItems() async {
   liquidityLoadingSignal.value = true;
@@ -20,6 +22,16 @@ Future<void> loadLiquidityItems() async {
     liquidityErrorSignal.value = e.toString();
   } finally {
     liquidityLoadingSignal.value = false;
+  }
+}
+
+Future<void> loadLiquidityPrices() async {
+  try {
+    final p = await sl<PriceUpdateService>()
+        .getLatestPrices(stockApiSymbols: const []);
+    liquidityPricesSignal.value = p;
+  } catch (e) {
+    liquidityErrorSignal.value = 'Failed to load rates: $e';
   }
 }
 

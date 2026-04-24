@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:signals_flutter/signals_flutter.dart';
-import 'package:wealth_tracker/core/di/service_locator.dart';
 import 'package:wealth_tracker/core/services/price_update_service.dart';
 import 'package:wealth_tracker/core/theme/obsidian_theme.dart';
 import 'package:wealth_tracker/core/utils/currency_formatter.dart';
@@ -20,39 +19,28 @@ class LiquidityScreen extends StatefulWidget {
 }
 
 class _LiquidityScreenState extends State<LiquidityScreen> {
-  PriceSnapshot? _prices;
-
   @override
   void initState() {
     super.initState();
     loadLiquidityItems();
-    _loadPrices();
-  }
-
-  Future<void> _loadPrices() async {
-    final p = await sl<PriceUpdateService>()
-        .getLatestPrices(stockApiSymbols: const []);
-    if (mounted) {
-      setState(() => _prices = p);
-    }
+    loadLiquidityPrices();
   }
 
   Future<void> _refresh() async {
     await loadLiquidityItems();
-    await _loadPrices();
+    await loadLiquidityPrices();
   }
 
-  double get _usdToEgpRate => _prices?.usdToEgpRate ?? 1;
+  double _usdToEgpRate(PriceSnapshot? prices) => prices?.usdToEgpRate ?? 1;
 
-  double _itemEgpValue(LiquidityEntity item) {
-    return item.amountUsd * _usdToEgpRate;
+  double _itemEgpValue(LiquidityEntity item, PriceSnapshot? prices) {
+    return item.amountUsd * _usdToEgpRate(prices);
   }
 
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
-        // Sticky header bar
         Container(
           padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
           decoration: const BoxDecoration(
@@ -81,7 +69,6 @@ class _LiquidityScreenState extends State<LiquidityScreen> {
             ],
           ),
         ),
-        // Content
         Expanded(
           child: Watch((context) {
             if (liquidityLoadingSignal.value) {
@@ -102,9 +89,10 @@ class _LiquidityScreenState extends State<LiquidityScreen> {
             }
 
             final items = liquidityItemsSignal.value;
+            final prices = liquidityPricesSignal.value;
             final totalUsd =
                 items.fold(0.0, (sum, i) => sum + i.amountUsd);
-            final totalEgp = totalUsd * _usdToEgpRate;
+            final totalEgp = totalUsd * _usdToEgpRate(prices);
 
             return LayoutBuilder(
               builder: (context, constraints) {
@@ -114,7 +102,6 @@ class _LiquidityScreenState extends State<LiquidityScreen> {
                   children: [
                     CustomScrollView(
                       slivers: [
-                        // Exchange rate header card
                         SliverToBoxAdapter(
                           child: Padding(
                             padding: EdgeInsets.fromLTRB(
@@ -123,10 +110,9 @@ class _LiquidityScreenState extends State<LiquidityScreen> {
                               isDesktop ? 24 : 16,
                               8,
                             ),
-                            child: _buildRateHeader(totalUsd, totalEgp),
+                            child: _buildRateHeader(prices, totalUsd, totalEgp),
                           ),
                         ),
-                        // Section title
                         SliverToBoxAdapter(
                           child: Padding(
                             padding: const EdgeInsets.only(top: 8, bottom: 12),
@@ -143,7 +129,6 @@ class _LiquidityScreenState extends State<LiquidityScreen> {
                             ),
                           ),
                         ),
-                        // Items list or empty state
                         if (items.isEmpty)
                           SliverFillRemaining(
                             hasScrollBody: false,
@@ -172,7 +157,7 @@ class _LiquidityScreenState extends State<LiquidityScreen> {
                                   const SizedBox(height: 8),
                               itemBuilder: (context, i) => LiquidityItemTile(
                                 item: items[i],
-                                egpValue: _itemEgpValue(items[i]),
+                                egpValue: _itemEgpValue(items[i], prices),
                                 onEdit: () =>
                                     _showAddEditSheet(context, items[i]),
                                 onDelete: () =>
@@ -182,7 +167,6 @@ class _LiquidityScreenState extends State<LiquidityScreen> {
                           ),
                       ],
                     ),
-                    // FAB
                     Positioned(
                       right: isDesktop ? 24 : 16,
                       bottom: 24,
@@ -234,11 +218,11 @@ class _LiquidityScreenState extends State<LiquidityScreen> {
     );
   }
 
-  Widget _buildRateHeader(double totalUsd, double totalEgp) {
-    if (_prices == null) {
+  Widget _buildRateHeader(PriceSnapshot? prices, double totalUsd, double totalEgp) {
+    if (prices == null) {
       return const SizedBox.shrink();
     }
-    final p = _prices!;
+    final p = prices;
     return GlassCard(
       accent: ObsidianTheme.cyan,
       padding: const EdgeInsets.all(16),

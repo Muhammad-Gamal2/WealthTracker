@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:signals_flutter/signals_flutter.dart';
-import 'package:wealth_tracker/core/di/service_locator.dart';
 import 'package:wealth_tracker/core/services/price_update_service.dart';
 import 'package:wealth_tracker/core/theme/obsidian_theme.dart';
 import 'package:wealth_tracker/core/utils/currency_formatter.dart';
@@ -20,46 +19,34 @@ class StocksScreen extends StatefulWidget {
 }
 
 class _StocksScreenState extends State<StocksScreen> {
-  PriceSnapshot? _prices;
-
   @override
   void initState() {
     super.initState();
     loadStockItems();
-    _loadPrices();
-  }
-
-  Future<void> _loadPrices() async {
-    final items = stockItemsSignal.value;
-    final p = await sl<PriceUpdateService>().getLatestPrices(
-      stockApiSymbols: items.map((s) => s.apiSymbol).toList(),
-    );
-    if (mounted) {
-      setState(() => _prices = p);
-    }
+    loadStockPrices();
   }
 
   Future<void> _refresh() async {
     await loadStockItems();
-    await _loadPrices();
+    await loadStockPrices();
   }
 
-  double _itemTotalEgp(StockEntity item) {
-    if (_prices == null) return 0;
-    final price = _prices!.stockPrices[item.apiSymbol] ?? 0;
+  double _itemTotalEgp(StockEntity item, PriceSnapshot? prices) {
+    if (prices == null) return 0;
+    final price = prices.stockPrices[item.apiSymbol] ?? 0;
     return item.isEgx
         ? item.quantity * price
-        : item.quantity * price * _prices!.usdToEgpRate;
+        : item.quantity * price * prices.usdToEgpRate;
   }
 
-  double _itemCurrentPrice(StockEntity item) {
-    if (_prices == null) return 0;
-    return _prices!.stockPrices[item.apiSymbol] ?? 0;
+  double _itemCurrentPrice(StockEntity item, PriceSnapshot? prices) {
+    if (prices == null) return 0;
+    return prices.stockPrices[item.apiSymbol] ?? 0;
   }
 
-  double _itemGainPercent(StockEntity item) {
-    if (_prices == null) return 0;
-    final currentPrice = _prices!.stockPrices[item.apiSymbol] ?? 0;
+  double _itemGainPercent(StockEntity item, PriceSnapshot? prices) {
+    if (prices == null) return 0;
+    final currentPrice = prices.stockPrices[item.apiSymbol] ?? 0;
     if (item.purchasePrice <= 0) return 0;
     return ((currentPrice - item.purchasePrice) / item.purchasePrice) * 100;
   }
@@ -68,7 +55,6 @@ class _StocksScreenState extends State<StocksScreen> {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        // Sticky header bar
         Container(
           padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
           decoration: const BoxDecoration(
@@ -97,7 +83,6 @@ class _StocksScreenState extends State<StocksScreen> {
             ],
           ),
         ),
-        // Content
         Expanded(
           child: Watch((context) {
             if (stocksLoadingSignal.value) {
@@ -119,6 +104,7 @@ class _StocksScreenState extends State<StocksScreen> {
             }
 
             final items = stockItemsSignal.value;
+            final prices = stocksPricesSignal.value;
 
             return LayoutBuilder(
               builder: (context, constraints) {
@@ -128,7 +114,6 @@ class _StocksScreenState extends State<StocksScreen> {
                   children: [
                     CustomScrollView(
                       slivers: [
-                        // Exchange rate + portfolio header card
                         SliverToBoxAdapter(
                           child: Padding(
                             padding: EdgeInsets.fromLTRB(
@@ -137,10 +122,9 @@ class _StocksScreenState extends State<StocksScreen> {
                               isDesktop ? 24 : 16,
                               8,
                             ),
-                            child: _buildHeaderCard(items),
+                            child: _buildHeaderCard(items, prices),
                           ),
                         ),
-                        // Section title
                         SliverToBoxAdapter(
                           child: Padding(
                             padding:
@@ -158,7 +142,6 @@ class _StocksScreenState extends State<StocksScreen> {
                             ),
                           ),
                         ),
-                        // Items or empty state
                         if (items.isEmpty)
                           SliverFillRemaining(
                             hasScrollBody: false,
@@ -189,9 +172,9 @@ class _StocksScreenState extends State<StocksScreen> {
                                 final item = items[i];
                                 return StockItemTile(
                                   item: item,
-                                  currentPrice: _itemCurrentPrice(item),
-                                  totalEgp: _itemTotalEgp(item),
-                                  gainPercent: _itemGainPercent(item),
+                                  currentPrice: _itemCurrentPrice(item, prices),
+                                  totalEgp: _itemTotalEgp(item, prices),
+                                  gainPercent: _itemGainPercent(item, prices),
                                   onEdit: () =>
                                       _showAddEditSheet(context, item),
                                   onDelete: () =>
@@ -202,7 +185,6 @@ class _StocksScreenState extends State<StocksScreen> {
                           ),
                       ],
                     ),
-                    // FAB
                     Positioned(
                       right: isDesktop ? 24 : 16,
                       bottom: 24,
@@ -254,9 +236,9 @@ class _StocksScreenState extends State<StocksScreen> {
     );
   }
 
-  Widget _buildHeaderCard(List<StockEntity> items) {
-    final rate = _prices?.usdToEgpRate ?? 0;
-    final totalEgp = items.fold(0.0, (sum, i) => sum + _itemTotalEgp(i));
+  Widget _buildHeaderCard(List<StockEntity> items, PriceSnapshot? prices) {
+    final rate = prices?.usdToEgpRate ?? 0;
+    final totalEgp = items.fold(0.0, (sum, i) => sum + _itemTotalEgp(i, prices));
     final totalUsd = rate > 0 ? totalEgp / rate : 0.0;
 
     return GlassCard(
@@ -265,7 +247,6 @@ class _StocksScreenState extends State<StocksScreen> {
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // Exchange rate on left
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -302,7 +283,7 @@ class _StocksScreenState extends State<StocksScreen> {
                     ],
                   ),
                 ),
-                if (_prices?.isStale ?? false) ...[
+                if (prices?.isStale ?? false) ...[
                   const SizedBox(height: 8),
                   Row(
                     children: [
@@ -322,7 +303,6 @@ class _StocksScreenState extends State<StocksScreen> {
               ],
             ),
           ),
-          // Portfolio total on right
           Column(
             crossAxisAlignment: CrossAxisAlignment.end,
             children: [

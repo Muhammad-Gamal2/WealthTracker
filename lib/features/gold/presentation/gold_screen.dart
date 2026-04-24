@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:signals_flutter/signals_flutter.dart';
-import 'package:wealth_tracker/core/di/service_locator.dart';
 import 'package:wealth_tracker/core/services/price_update_service.dart';
 import 'package:wealth_tracker/core/theme/obsidian_theme.dart';
 import 'package:wealth_tracker/core/utils/currency_formatter.dart';
@@ -20,31 +19,21 @@ class GoldScreen extends StatefulWidget {
 }
 
 class _GoldScreenState extends State<GoldScreen> {
-  PriceSnapshot? _prices;
-
   @override
   void initState() {
     super.initState();
     loadGoldItems();
-    _loadPrices();
-  }
-
-  Future<void> _loadPrices() async {
-    final p = await sl<PriceUpdateService>()
-        .getLatestPrices(stockApiSymbols: const []);
-    if (mounted) {
-      setState(() => _prices = p);
-    }
+    loadGoldPrices();
   }
 
   Future<void> _refresh() async {
     await loadGoldItems();
-    await _loadPrices();
+    await loadGoldPrices();
   }
 
-  double _itemValue(GoldEntity item) {
-    if (_prices == null) return 0;
-    return item.weightGrams * _prices!.priceForKarat(item.karat);
+  double _itemValue(GoldEntity item, PriceSnapshot? prices) {
+    if (prices == null) return 0;
+    return item.weightGrams * prices.priceForKarat(item.karat);
   }
 
   @override
@@ -100,7 +89,8 @@ class _GoldScreenState extends State<GoldScreen> {
             }
 
             final items = goldItemsSignal.value;
-            final totalEgp = items.fold(0.0, (sum, i) => sum + _itemValue(i));
+            final prices = goldPricesSignal.value;
+            final totalEgp = items.fold(0.0, (sum, i) => sum + _itemValue(i, prices));
 
             return LayoutBuilder(
               builder: (context, constraints) {
@@ -119,7 +109,7 @@ class _GoldScreenState extends State<GoldScreen> {
                               isDesktop ? 24 : 16,
                               8,
                             ),
-                            child: _buildPriceHeader(),
+                            child: _buildPriceHeader(prices),
                           ),
                         ),
                         // Section title
@@ -168,7 +158,7 @@ class _GoldScreenState extends State<GoldScreen> {
                                   const SizedBox(height: 8),
                               itemBuilder: (context, i) => GoldItemTile(
                                 item: items[i],
-                                valueEgp: _itemValue(items[i]),
+                                valueEgp: _itemValue(items[i], prices),
                                 onEdit: () =>
                                     _showAddEditSheet(context, items[i]),
                                 onDelete: () =>
@@ -228,11 +218,11 @@ class _GoldScreenState extends State<GoldScreen> {
     );
   }
 
-  Widget _buildPriceHeader() {
-    if (_prices == null) {
+  Widget _buildPriceHeader(PriceSnapshot? prices) {
+    if (prices == null) {
       return const SizedBox.shrink();
     }
-    final p = _prices!;
+    final p = prices;
     return GlassCard(
       accent: ObsidianTheme.gold,
       padding: const EdgeInsets.all(16),

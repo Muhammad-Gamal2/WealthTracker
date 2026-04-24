@@ -21,6 +21,15 @@ class GoldItemTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final hasPurchasePrice = item.purchasePricePerGram > 0;
+    final purchaseCost = item.totalPurchaseCost;
+    final gainLoss = hasPurchasePrice && valueEgp > 0
+        ? valueEgp - purchaseCost
+        : null;
+    final gainPercent = hasPurchasePrice && purchaseCost > 0 && valueEgp > 0
+        ? ((valueEgp - purchaseCost) / purchaseCost) * 100
+        : null;
+
     return GlassCard(
       accent: ObsidianTheme.gold,
       child: Padding(
@@ -55,22 +64,50 @@ class GoldItemTile extends StatelessWidget {
                   ),
                   const SizedBox(height: 2),
                   Text(
-                    '${item.karat}K \u00b7 ${CurrencyFormatter.formatGrams(item.weightGrams)}',
+                    '${item.karat}K · ${CurrencyFormatter.formatGrams(item.weightGrams)}',
                     style: GoogleFonts.dmSans(
                       fontSize: 12,
                       color: ObsidianTheme.text3,
                     ),
                   ),
+                  if (hasPurchasePrice) ...[
+                    const SizedBox(height: 2),
+                    Text(
+                      'Cost: ${CurrencyFormatter.formatEgp(purchaseCost)}',
+                      style: GoogleFonts.dmSans(
+                        fontSize: 11,
+                        color: ObsidianTheme.text3,
+                      ),
+                    ),
+                  ],
                 ],
               ),
             ),
-            Text(
-              CurrencyFormatter.formatEgp(valueEgp),
-              style: GoogleFonts.dmMono(
-                fontSize: 14,
-                fontWeight: FontWeight.w700,
-                color: ObsidianTheme.text1,
-              ),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.end,
+              children: [
+                Text(
+                  CurrencyFormatter.formatEgp(valueEgp),
+                  style: GoogleFonts.dmMono(
+                    fontSize: 14,
+                    fontWeight: FontWeight.w700,
+                    color: ObsidianTheme.text1,
+                  ),
+                ),
+                if (gainPercent != null) ...[
+                  const SizedBox(height: 2),
+                  Text(
+                    CurrencyFormatter.formatPercent(gainPercent),
+                    style: GoogleFonts.dmMono(
+                      fontSize: 11,
+                      fontWeight: FontWeight.w600,
+                      color: gainLoss! >= 0
+                          ? ObsidianTheme.green
+                          : ObsidianTheme.lossRed,
+                    ),
+                  ),
+                ],
+              ],
             ),
             const SizedBox(width: 4),
             PopupMenuButton<String>(

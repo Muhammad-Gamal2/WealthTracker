@@ -15,6 +15,7 @@ class GoldItems extends Table {
   TextColumn get label => text().withDefault(const Constant(''))();
   RealColumn get weightGrams => real()();
   IntColumn get karat => integer().withDefault(const Constant(24))();
+  RealColumn get purchasePricePerGram => real().withDefault(const Constant(0))();
   DateTimeColumn get dateAdded => dateTime()();
 
   @override
@@ -119,7 +120,17 @@ class AppDatabase extends _$AppDatabase {
   AppDatabase.forTesting(super.e);
 
   @override
-  int get schemaVersion => 1;
+  int get schemaVersion => 2;
+
+  @override
+  MigrationStrategy get migration => MigrationStrategy(
+        onUpgrade: (migrator, from, to) async {
+          if (from < 2) {
+            await migrator.addColumn(
+                goldItems, goldItems.purchasePricePerGram);
+          }
+        },
+      );
 
   // ── Gold CRUD ──
 

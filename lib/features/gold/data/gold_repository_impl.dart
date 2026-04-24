@@ -24,6 +24,7 @@ class GoldRepositoryImpl implements GoldRepository {
           label: Value(entity.label),
           weightGrams: entity.weightGrams,
           karat: Value(entity.karat),
+          purchasePricePerGram: Value(entity.purchasePricePerGram),
           dateAdded: entity.dateAdded,
         ),
       );
@@ -35,6 +36,7 @@ class GoldRepositoryImpl implements GoldRepository {
           label: Value(entity.label),
           weightGrams: Value(entity.weightGrams),
           karat: Value(entity.karat),
+          purchasePricePerGram: Value(entity.purchasePricePerGram),
           dateAdded: Value(entity.dateAdded),
         ),
       );
@@ -47,6 +49,7 @@ class GoldRepositoryImpl implements GoldRepository {
         label: row.label,
         weightGrams: row.weightGrams,
         karat: row.karat,
+        purchasePricePerGram: row.purchasePricePerGram,
         dateAdded: row.dateAdded,
       );
 }

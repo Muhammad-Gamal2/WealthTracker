@@ -1,6 +1,7 @@
 import 'package:signals_flutter/signals_flutter.dart';
 import 'package:uuid/uuid.dart';
 import 'package:wealth_tracker/core/di/service_locator.dart';
+import 'package:wealth_tracker/core/services/price_update_service.dart';
 import 'package:wealth_tracker/features/stocks/domain/entities/stock_entity.dart';
 import 'package:wealth_tracker/features/stocks/domain/stock_repository.dart';
 
@@ -9,6 +10,7 @@ final _uuid = const Uuid();
 final stockItemsSignal = signal<List<StockEntity>>([]);
 final stocksLoadingSignal = signal<bool>(false);
 final stocksErrorSignal = signal<String?>(null);
+final stocksPricesSignal = signal<PriceSnapshot?>(null);
 
 Future<void> loadStockItems() async {
   stocksLoadingSignal.value = true;
@@ -20,6 +22,18 @@ Future<void> loadStockItems() async {
     stocksErrorSignal.value = e.toString();
   } finally {
     stocksLoadingSignal.value = false;
+  }
+}
+
+Future<void> loadStockPrices() async {
+  try {
+    final items = stockItemsSignal.value;
+    final p = await sl<PriceUpdateService>().getLatestPrices(
+      stockApiSymbols: items.map((s) => s.apiSymbol).toList(),
+    );
+    stocksPricesSignal.value = p;
+  } catch (e) {
+    stocksErrorSignal.value = 'Failed to load prices: $e';
   }
 }
 

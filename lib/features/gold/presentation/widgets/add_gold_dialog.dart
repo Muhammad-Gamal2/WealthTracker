@@ -19,6 +19,7 @@ class _AddGoldDialogState extends State<AddGoldDialog> {
   final _formKey = GlobalKey<FormState>();
   final _labelController = TextEditingController();
   final _gramsController = TextEditingController();
+  final _purchasePriceController = TextEditingController();
   int _karat = 21;
   PriceSnapshot? _prices;
 
@@ -31,9 +32,14 @@ class _AddGoldDialogState extends State<AddGoldDialog> {
       _labelController.text = widget.existing!.label;
       _gramsController.text = widget.existing!.weightGrams.toString();
       _karat = widget.existing!.karat;
+      if (widget.existing!.purchasePricePerGram > 0) {
+        _purchasePriceController.text =
+            widget.existing!.purchasePricePerGram.toString();
+      }
     }
     _labelController.addListener(_onFieldChanged);
     _gramsController.addListener(_onFieldChanged);
+    _purchasePriceController.addListener(_onFieldChanged);
     _loadPrices();
   }
 
@@ -55,8 +61,10 @@ class _AddGoldDialogState extends State<AddGoldDialog> {
   void dispose() {
     _labelController.removeListener(_onFieldChanged);
     _gramsController.removeListener(_onFieldChanged);
+    _purchasePriceController.removeListener(_onFieldChanged);
     _labelController.dispose();
     _gramsController.dispose();
+    _purchasePriceController.dispose();
     super.dispose();
   }
 
@@ -174,6 +182,27 @@ class _AddGoldDialogState extends State<AddGoldDialog> {
                   _buildFieldLabel('KARAT'),
                   const SizedBox(height: 6),
                   _buildKaratPicker(),
+                  const SizedBox(height: 14),
+                  // Purchase price field
+                  _buildFieldLabel('PURCHASE PRICE (EGP/GRAM)'),
+                  const SizedBox(height: 6),
+                  TextFormField(
+                    controller: _purchasePriceController,
+                    style: GoogleFonts.dmMono(
+                        fontSize: 14, color: ObsidianTheme.text1),
+                    decoration: _inputDecoration(
+                      hintText: '0.00 (optional)',
+                      suffixText: 'EGP/g',
+                    ),
+                    keyboardType:
+                        const TextInputType.numberWithOptions(decimal: true),
+                    validator: (v) {
+                      if (v == null || v.isEmpty) return null;
+                      if (double.tryParse(v) == null) return 'Invalid number';
+                      if (double.parse(v) < 0) return 'Must be >= 0';
+                      return null;
+                    },
+                  ),
                   const SizedBox(height: 14),
                   // Live value preview
                   if (estimated != null) ...[
@@ -385,17 +414,21 @@ class _AddGoldDialogState extends State<AddGoldDialog> {
 
   void _submit() {
     if (!_formKey.currentState!.validate()) return;
+    final purchasePrice =
+        double.tryParse(_purchasePriceController.text) ?? 0;
     if (widget.existing != null) {
       updateGoldItem(widget.existing!.copyWith(
         label: _labelController.text.trim(),
         weightGrams: double.parse(_gramsController.text),
         karat: _karat,
+        purchasePricePerGram: purchasePrice,
       ));
     } else {
       addGoldItem(
         label: _labelController.text.trim(),
         weightGrams: double.parse(_gramsController.text),
         karat: _karat,
+        purchasePricePerGram: purchasePrice,
       );
     }
     Navigator.pop(context);

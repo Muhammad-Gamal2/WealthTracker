@@ -38,23 +38,8 @@ class CategorySummaryCard extends StatelessWidget {
           decoration: BoxDecoration(
             color: ObsidianTheme.card,
             borderRadius: BorderRadius.circular(ObsidianTheme.radius),
-            border: Border(
-              top: BorderSide(
-                color: color.withValues(alpha: 0.33),
-                width: 1,
-              ),
-              left: BorderSide(
-                color: color.withValues(alpha: 0.20),
-                width: 1,
-              ),
-              right: BorderSide(
-                color: color.withValues(alpha: 0.20),
-                width: 1,
-              ),
-              bottom: BorderSide(
-                color: color.withValues(alpha: 0.20),
-                width: 1,
-              ),
+            border: Border.all(
+              color: color.withValues(alpha: 0.20),
             ),
           ),
           padding: const EdgeInsets.all(14),

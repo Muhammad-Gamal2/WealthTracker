@@ -4,7 +4,7 @@ class CurrencyFormatter {
   CurrencyFormatter._();
 
   static final _egpFormat = NumberFormat.currency(
-    locale: 'ar_EG',
+    locale: 'en_US',
     symbol: 'EGP ',
     decimalDigits: 2,
   );

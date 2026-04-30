@@ -111,6 +111,9 @@ class PriceUpdateService {
     final goldApiKey = await _settings.getGoldApiKey() ?? '';
     final twelveDataKey = await _settings.getTwelveDataApiKey() ?? '';
 
+    print('[PriceUpdate] goldApiKey=${goldApiKey.isEmpty ? "(empty)" : "${goldApiKey.substring(0, 8)}..."}');
+    print('[PriceUpdate] twelveDataKey=${twelveDataKey.isEmpty ? "(empty)" : "${twelveDataKey.substring(0, 8)}..."}');
+
     await Future.wait([
       // Gold
       _goldApi
@@ -120,21 +123,34 @@ class PriceUpdateService {
             goldPrice22k = d.price22k;
             goldPrice21k = d.price21k;
             goldPrice18k = d.price18k;
+            print('[PriceUpdate] Gold fetched: 24k=$goldPrice24k, 21k=$goldPrice21k');
           })
-          .catchError((_) {}), // use cached on failure
+          .catchError((e) {
+            print('[PriceUpdate] Gold API FAILED: $e');
+          }),
 
       // Exchange Rate
       _exchangeRateApi
           .fetchUsdToEgpRate()
-          .then((r) => usdToEgpRate = r)
-          .catchError((_) {}),
+          .then((r) {
+            usdToEgpRate = r;
+            print('[PriceUpdate] USD/EGP rate: $usdToEgpRate');
+          })
+          .catchError((e) {
+            print('[PriceUpdate] Exchange rate FAILED: $e');
+          }),
 
       // Stocks (only if we have symbols and a key)
       if (stockApiSymbols.isNotEmpty && twelveDataKey.isNotEmpty)
         _stockApi
             .fetchStockPrices(stockApiSymbols, twelveDataKey)
-            .then((p) => freshStockPrices = p)
-            .catchError((_) {}),
+            .then((p) {
+              freshStockPrices = p;
+              print('[PriceUpdate] Stocks fetched: ${p.length} prices');
+            })
+            .catchError((e) {
+              print('[PriceUpdate] Stock API FAILED: $e');
+            }),
     ]);
 
     final now = DateTime.now();
@@ -163,7 +179,9 @@ class PriceUpdateService {
 
     final updatedEntry = await _db.getLatestPriceCache();
     final updatedStocks = await _db.getAllStockPriceCache();
-    return _buildSnapshot(updatedEntry!, updatedStocks);
+    final snapshot = _buildSnapshot(updatedEntry!, updatedStocks);
+    print('[PriceUpdate] Final snapshot: gold24k=${snapshot.goldPrice24k}, gold21k=${snapshot.goldPrice21k}, usdEgp=${snapshot.usdToEgpRate}, stale=${snapshot.isStale}');
+    return snapshot;
   }
 
   PriceSnapshot _buildSnapshot(

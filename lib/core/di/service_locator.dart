@@ -33,6 +33,15 @@ Future<void> setupDependencies() async {
     connectTimeout: const Duration(seconds: 15),
     receiveTimeout: const Duration(seconds: 15),
   ));
+  dio.interceptors.add(LogInterceptor(
+    request: true,
+    requestHeader: true,
+    requestBody: false,
+    responseHeader: false,
+    responseBody: true,
+    error: true,
+    logPrint: (obj) => print('[DIO] $obj'),
+  ));
   sl.registerSingleton<Dio>(dio);
 
   // ── Local Auth ──

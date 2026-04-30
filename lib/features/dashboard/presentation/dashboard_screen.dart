@@ -8,6 +8,7 @@ import 'package:wealth_tracker/features/dashboard/presentation/widgets/category_
 import 'package:wealth_tracker/features/dashboard/presentation/widgets/total_wealth_header.dart';
 import 'package:wealth_tracker/features/dashboard/presentation/widgets/wealth_line_chart.dart';
 import 'package:wealth_tracker/features/dashboard/presentation/widgets/wealth_pie_chart.dart';
+import 'package:wealth_tracker/routing/app_router.dart';
 
 class DashboardScreen extends StatefulWidget {
   final ValueChanged<int>? onNavigateToTab;
@@ -141,6 +142,29 @@ class _DashboardScreenState extends State<DashboardScreen> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          Padding(
+            padding: const EdgeInsets.only(left: 16, right: 8, top: 8),
+            child: Row(
+              children: [
+                Text(
+                  'Dashboard',
+                  style: GoogleFonts.spaceGrotesk(
+                    fontSize: 18,
+                    fontWeight: FontWeight.w700,
+                    color: ObsidianTheme.text1,
+                  ),
+                ),
+                const Spacer(),
+                IconButton(
+                  icon: const Icon(Icons.settings_outlined,
+                      color: ObsidianTheme.text2, size: 22),
+                  onPressed: () =>
+                      Navigator.pushNamed(context, AppRouter.settings),
+                  tooltip: 'Settings',
+                ),
+              ],
+            ),
+          ),
           TotalWealthHeader(
             summary: summary,
             isLoading: isLoading,

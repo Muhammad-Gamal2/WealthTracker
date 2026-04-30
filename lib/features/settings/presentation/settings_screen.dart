@@ -38,11 +38,13 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
+    return Scaffold(
+      backgroundColor: ObsidianTheme.bg,
+      body: SafeArea(
+        child: Column(
       children: [
-        // Sticky header bar
         Container(
-          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
+          padding: const EdgeInsets.only(left: 4, right: 20, top: 8, bottom: 8),
           decoration: const BoxDecoration(
             color: Color(0xB807090F),
             border: Border(
@@ -51,6 +53,11 @@ class _SettingsScreenState extends State<SettingsScreen> {
           ),
           child: Row(
             children: [
+              IconButton(
+                icon: const Icon(Icons.arrow_back,
+                    color: ObsidianTheme.text1, size: 22),
+                onPressed: () => Navigator.pop(context),
+              ),
               Text(
                 'Settings',
                 style: GoogleFonts.spaceGrotesk(
@@ -119,7 +126,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
             );
           }),
         ),
-      ],
+          ],
+        ),
+      ),
     );
   }
 

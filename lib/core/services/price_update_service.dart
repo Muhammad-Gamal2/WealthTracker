@@ -1,3 +1,5 @@
+import 'dart:developer' as developer;
+
 import 'package:wealth_tracker/core/database/app_database.dart';
 import 'package:wealth_tracker/core/errors/app_exceptions.dart';
 import 'package:wealth_tracker/core/services/exchange_rate_service.dart';
@@ -111,8 +113,11 @@ class PriceUpdateService {
     final goldApiKey = await _settings.getGoldApiKey() ?? '';
     final twelveDataKey = await _settings.getTwelveDataApiKey() ?? '';
 
-    print('[PriceUpdate] goldApiKey=${goldApiKey.isEmpty ? "(empty)" : "${goldApiKey.substring(0, 8)}..."}');
-    print('[PriceUpdate] twelveDataKey=${twelveDataKey.isEmpty ? "(empty)" : "${twelveDataKey.substring(0, 8)}..."}');
+    developer.log(
+      'goldApiKey=${goldApiKey.isEmpty ? "(empty)" : "${goldApiKey.substring(0, 8)}..."}\n'
+      'twelveDataKey=${twelveDataKey.isEmpty ? "(empty)" : "${twelveDataKey.substring(0, 8)}..."}',
+      name: 'PriceUpdate',
+    );
 
     await Future.wait([
       // Gold
@@ -123,10 +128,10 @@ class PriceUpdateService {
             goldPrice22k = d.price22k;
             goldPrice21k = d.price21k;
             goldPrice18k = d.price18k;
-            print('[PriceUpdate] Gold fetched: 24k=$goldPrice24k, 21k=$goldPrice21k');
+            developer.log('Gold OK: 24k=$goldPrice24k, 22k=$goldPrice22k, 21k=$goldPrice21k, 18k=$goldPrice18k', name: 'PriceUpdate');
           })
           .catchError((e) {
-            print('[PriceUpdate] Gold API FAILED: $e');
+            developer.log('Gold FAILED: $e', name: 'PriceUpdate', level: 1000);
           }),
 
       // Exchange Rate
@@ -134,10 +139,10 @@ class PriceUpdateService {
           .fetchUsdToEgpRate()
           .then((r) {
             usdToEgpRate = r;
-            print('[PriceUpdate] USD/EGP rate: $usdToEgpRate');
+            developer.log('USD/EGP rate: $usdToEgpRate', name: 'PriceUpdate');
           })
           .catchError((e) {
-            print('[PriceUpdate] Exchange rate FAILED: $e');
+            developer.log('Exchange rate FAILED: $e', name: 'PriceUpdate', level: 1000);
           }),
 
       // Stocks (only if we have symbols and a key)
@@ -146,10 +151,10 @@ class PriceUpdateService {
             .fetchStockPrices(stockApiSymbols, twelveDataKey)
             .then((p) {
               freshStockPrices = p;
-              print('[PriceUpdate] Stocks fetched: ${p.length} prices');
+              developer.log('Stocks OK: ${p.length} prices - $p', name: 'PriceUpdate');
             })
             .catchError((e) {
-              print('[PriceUpdate] Stock API FAILED: $e');
+              developer.log('Stock API FAILED: $e', name: 'PriceUpdate', level: 1000);
             }),
     ]);
 
@@ -180,7 +185,11 @@ class PriceUpdateService {
     final updatedEntry = await _db.getLatestPriceCache();
     final updatedStocks = await _db.getAllStockPriceCache();
     final snapshot = _buildSnapshot(updatedEntry!, updatedStocks);
-    print('[PriceUpdate] Final snapshot: gold24k=${snapshot.goldPrice24k}, gold21k=${snapshot.goldPrice21k}, usdEgp=${snapshot.usdToEgpRate}, stale=${snapshot.isStale}');
+    developer.log(
+      'Final: gold24k=${snapshot.goldPrice24k}, gold21k=${snapshot.goldPrice21k}, '
+      'usdEgp=${snapshot.usdToEgpRate}, stale=${snapshot.isStale}',
+      name: 'PriceUpdate',
+    );
     return snapshot;
   }
 

@@ -1,4 +1,7 @@
+import 'dart:developer' as developer;
+
 import 'package:dio/dio.dart';
+import 'package:flutter/foundation.dart';
 import 'package:get_it/get_it.dart';
 import 'package:local_auth/local_auth.dart';
 import 'package:wealth_tracker/core/database/app_database.dart';
@@ -33,14 +36,34 @@ Future<void> setupDependencies() async {
     connectTimeout: const Duration(seconds: 15),
     receiveTimeout: const Duration(seconds: 15),
   ));
-  dio.interceptors.add(LogInterceptor(
-    request: true,
-    requestHeader: true,
-    requestBody: false,
-    responseHeader: false,
-    responseBody: true,
-    error: true,
-    logPrint: (obj) => print('[DIO] $obj'),
+  dio.interceptors.add(InterceptorsWrapper(
+    onRequest: (options, handler) {
+      developer.log(
+        '→ ${options.method} ${options.uri}\n'
+        '  Headers: ${options.headers}',
+        name: 'HTTP',
+      );
+      handler.next(options);
+    },
+    onResponse: (response, handler) {
+      developer.log(
+        '← ${response.statusCode} ${response.requestOptions.uri}\n'
+        '  Body: ${response.data}',
+        name: 'HTTP',
+      );
+      handler.next(response);
+    },
+    onError: (error, handler) {
+      developer.log(
+        '✖ ${error.requestOptions.method} ${error.requestOptions.uri}\n'
+        '  Status: ${error.response?.statusCode}\n'
+        '  Message: ${error.message}\n'
+        '  Response: ${error.response?.data}',
+        name: 'HTTP',
+        level: 1000,
+      );
+      handler.next(error);
+    },
   ));
   sl.registerSingleton<Dio>(dio);
 

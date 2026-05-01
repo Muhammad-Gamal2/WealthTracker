@@ -185,6 +185,7 @@ class _GoldScreenState extends State<GoldScreen> {
                           ],
                         ),
                         child: FloatingActionButton(
+                          heroTag: 'gold_fab',
                           onPressed: () => _showAddEditSheet(context, null),
                           backgroundColor: ObsidianTheme.accent,
                           foregroundColor: ObsidianTheme.bg,

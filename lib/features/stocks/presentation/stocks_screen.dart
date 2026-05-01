@@ -202,6 +202,7 @@ class _StocksScreenState extends State<StocksScreen> {
                           ],
                         ),
                         child: FloatingActionButton(
+                          heroTag: 'stocks_fab',
                           onPressed: () =>
                               _showAddEditSheet(context, null),
                           backgroundColor: ObsidianTheme.accent,

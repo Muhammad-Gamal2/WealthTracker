@@ -184,6 +184,7 @@ class _LiquidityScreenState extends State<LiquidityScreen> {
                           ],
                         ),
                         child: FloatingActionButton(
+                          heroTag: 'liquidity_fab',
                           onPressed: () =>
                               _showAddEditSheet(context, null),
                           backgroundColor: ObsidianTheme.accent,

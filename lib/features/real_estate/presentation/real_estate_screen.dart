@@ -166,6 +166,7 @@ class _RealEstateScreenState extends State<RealEstateScreen> {
                           ],
                         ),
                         child: FloatingActionButton(
+                          heroTag: 'real_estate_fab',
                           onPressed: () =>
                               _showAddEditSheet(context, null),
                           backgroundColor: ObsidianTheme.accent,

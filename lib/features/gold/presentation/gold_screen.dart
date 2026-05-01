@@ -28,7 +28,7 @@ class _GoldScreenState extends State<GoldScreen> {
 
   Future<void> _refresh() async {
     await loadGoldItems();
-    await loadGoldPrices();
+    await loadGoldPrices(forceRefresh: true);
   }
 
   double _itemValue(GoldEntity item, PriceSnapshot? prices) {

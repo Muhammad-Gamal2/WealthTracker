@@ -28,7 +28,7 @@ class _StocksScreenState extends State<StocksScreen> {
 
   Future<void> _refresh() async {
     await loadStockItems();
-    await loadStockPrices();
+    await loadStockPrices(forceRefresh: true);
   }
 
   double _itemTotalEgp(StockEntity item, PriceSnapshot? prices) {

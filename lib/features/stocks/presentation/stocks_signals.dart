@@ -25,11 +25,12 @@ Future<void> loadStockItems() async {
   }
 }
 
-Future<void> loadStockPrices() async {
+Future<void> loadStockPrices({bool forceRefresh = false}) async {
   try {
     final items = stockItemsSignal.value;
     final p = await sl<PriceUpdateService>().getLatestPrices(
       stockApiSymbols: items.map((s) => s.apiSymbol).toList(),
+      forceRefresh: forceRefresh,
     );
     stocksPricesSignal.value = p;
   } catch (e) {

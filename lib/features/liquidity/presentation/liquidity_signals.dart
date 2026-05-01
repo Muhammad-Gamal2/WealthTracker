@@ -25,10 +25,10 @@ Future<void> loadLiquidityItems() async {
   }
 }
 
-Future<void> loadLiquidityPrices() async {
+Future<void> loadLiquidityPrices({bool forceRefresh = false}) async {
   try {
     final p = await sl<PriceUpdateService>()
-        .getLatestPrices(stockApiSymbols: const []);
+        .getLatestPrices(stockApiSymbols: const [], forceRefresh: forceRefresh);
     liquidityPricesSignal.value = p;
   } catch (e) {
     liquidityErrorSignal.value = 'Failed to load rates: $e';

@@ -28,7 +28,7 @@ class _LiquidityScreenState extends State<LiquidityScreen> {
 
   Future<void> _refresh() async {
     await loadLiquidityItems();
-    await loadLiquidityPrices();
+    await loadLiquidityPrices(forceRefresh: true);
   }
 
   double _usdToEgpRate(PriceSnapshot? prices) => prices?.usdToEgpRate ?? 1;

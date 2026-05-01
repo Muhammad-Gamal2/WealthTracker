@@ -25,10 +25,10 @@ Future<void> loadGoldItems() async {
   }
 }
 
-Future<void> loadGoldPrices() async {
+Future<void> loadGoldPrices({bool forceRefresh = false}) async {
   try {
     final p = await sl<PriceUpdateService>()
-        .getLatestPrices(stockApiSymbols: const []);
+        .getLatestPrices(stockApiSymbols: const [], forceRefresh: forceRefresh);
     goldPricesSignal.value = p;
   } catch (e) {
     goldErrorSignal.value = 'Failed to load prices: $e';

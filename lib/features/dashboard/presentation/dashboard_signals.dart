@@ -41,6 +41,16 @@ Future<void> refreshDashboard({bool forceRefresh = false}) async {
   }
 }
 
+Future<void> refreshDashboardFromCache() async {
+  try {
+    final repo = sl<WealthRepository>();
+    final summary = await repo.getWealthSummaryFromCache();
+    wealthSummarySignal.value = summary;
+  } catch (e) {
+    dashboardErrorSignal.value = e.toString();
+  }
+}
+
 Future<void> loadSnapshots() async {
   final period = selectedPeriodSignal.value;
   final snapshots = await sl<WealthRepository>().getSnapshots(

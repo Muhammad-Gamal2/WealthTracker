@@ -250,6 +250,13 @@ class PriceUpdateService {
     return snapshot;
   }
 
+  Future<PriceSnapshot> getCachedPrices() async {
+    final cachedEntry = await _db.getLatestPriceCache();
+    if (cachedEntry == null) return PriceSnapshot.empty;
+    final cachedStocks = await _db.getAllStockPriceCache();
+    return _buildSnapshot(cachedEntry, cachedStocks);
+  }
+
   PriceSnapshot _buildSnapshot(
     PriceCacheEntry entry,
     List<StockPriceCacheEntry> stocks,

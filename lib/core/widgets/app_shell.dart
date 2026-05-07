@@ -50,7 +50,7 @@ class _AppShellState extends State<AppShell> {
       setState(() => _currentIndex = index);
     }
     if (index == 0) {
-      refreshDashboard();
+      refreshDashboardFromCache();
     }
   }
 

@@ -22,8 +22,8 @@ class StockEntity {
   bool get isEgx => market == 'EGX';
   bool get isUs => market == 'US';
 
-  /// The symbol used for API calls (EGX stocks need :XCAI suffix)
-  String get apiSymbol => isEgx ? '$symbol:XCAI' : symbol;
+  /// The symbol used for EODHD API calls (e.g. AMOC.EGX, AAPL.US)
+  String get apiSymbol => isEgx ? '$symbol.EGX' : '$symbol.US';
 
   StockEntity copyWith({
     String? id,

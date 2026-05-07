@@ -23,7 +23,7 @@ class WealthRepositoryImpl implements WealthRepository {
 
     // Get stock api symbols to make sure they are in price cache
     final stockApiSymbols = stocks.map((s) {
-      return s.market == 'EGX' ? '${s.symbol}:XCAI' : s.symbol;
+      return s.market == 'EGX' ? '${s.symbol}.EGX' : '${s.symbol}.US';
     }).toList();
 
     final prices = await _priceService.getLatestPrices(
@@ -40,7 +40,7 @@ class WealthRepositoryImpl implements WealthRepository {
     double stocksEgp = 0;
     for (final item in stocks) {
       final apiSymbol =
-          item.market == 'EGX' ? '${item.symbol}:XCAI' : item.symbol;
+          item.market == 'EGX' ? '${item.symbol}.EGX' : '${item.symbol}.US';
       final price = prices.stockPrices[apiSymbol] ?? 0;
       if (item.market == 'EGX') {
         stocksEgp += item.quantity * price;

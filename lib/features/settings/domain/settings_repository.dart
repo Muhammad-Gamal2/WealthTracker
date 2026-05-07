@@ -4,8 +4,8 @@ abstract class SettingsRepository {
   Future<void> remove(String key);
   Future<String?> getGoldApiKey();
   Future<void> setGoldApiKey(String key);
-  Future<String?> getTwelveDataApiKey();
-  Future<void> setTwelveDataApiKey(String key);
+  Future<String?> getEodhdApiKey();
+  Future<void> setEodhdApiKey(String key);
   Future<String?> getPinHash();
   Future<void> setPinHash(String hash);
   Future<void> clearPin();

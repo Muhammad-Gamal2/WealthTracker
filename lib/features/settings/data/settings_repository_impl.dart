@@ -23,11 +23,11 @@ class SettingsRepositoryImpl implements SettingsRepository {
       set(AppConstants.goldApiKeyKey, key);
 
   @override
-  Future<String?> getTwelveDataApiKey() => get(AppConstants.twelveDataApiKeyKey);
+  Future<String?> getEodhdApiKey() => get(AppConstants.eodhdApiKeyKey);
 
   @override
-  Future<void> setTwelveDataApiKey(String key) =>
-      set(AppConstants.twelveDataApiKeyKey, key);
+  Future<void> setEodhdApiKey(String key) =>
+      set(AppConstants.eodhdApiKeyKey, key);
 
   @override
   Future<String?> getPinHash() => get(AppConstants.pinHashKey);

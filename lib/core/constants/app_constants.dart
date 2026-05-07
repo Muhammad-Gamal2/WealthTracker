@@ -11,7 +11,7 @@ class AppConstants {
 
   // Settings keys
   static const String goldApiKeyKey = 'gold_api_key';
-  static const String twelveDataApiKeyKey = 'twelve_data_api_key';
+  static const String eodhdApiKeyKey = 'eodhd_api_key';
   static const String pinHashKey = 'pin_hash';
   static const String useBiometricKey = 'use_biometric';
   static const String isDarkModeKey = 'is_dark_mode';

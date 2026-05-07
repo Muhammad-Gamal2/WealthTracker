@@ -18,21 +18,21 @@ class SettingsScreen extends StatefulWidget {
 
 class _SettingsScreenState extends State<SettingsScreen> {
   final _goldKeyController = TextEditingController();
-  final _twelveKeyController = TextEditingController();
+  final _eodhdKeyController = TextEditingController();
   bool _showGoldKey = false;
-  bool _showTwelveKey = false;
+  bool _showEodhdKey = false;
 
   @override
   void initState() {
     super.initState();
     _goldKeyController.text = goldApiKeySignal.value;
-    _twelveKeyController.text = twelveDataApiKeySignal.value;
+    _eodhdKeyController.text = eodhdApiKeySignal.value;
   }
 
   @override
   void dispose() {
     _goldKeyController.dispose();
-    _twelveKeyController.dispose();
+    _eodhdKeyController.dispose();
     super.dispose();
   }
 
@@ -181,16 +181,16 @@ class _SettingsScreenState extends State<SettingsScreen> {
             child: Container(height: 1, color: ObsidianTheme.border),
           ),
           _buildApiKeyRow(
-            label: 'Twelve Data API Key',
-            controller: _twelveKeyController,
-            showKey: _showTwelveKey,
+            label: 'EODHD API Key',
+            controller: _eodhdKeyController,
+            showKey: _showEodhdKey,
             onToggleShow: () =>
-                setState(() => _showTwelveKey = !_showTwelveKey),
+                setState(() => _showEodhdKey = !_showEodhdKey),
             onSave: () {
-              saveTwelveDataApiKey(_twelveKeyController.text.trim());
+              saveEodhdApiKey(_eodhdKeyController.text.trim());
               ScaffoldMessenger.of(context).showSnackBar(
                 const SnackBar(
-                    content: Text('Twelve Data API Key saved'),
+                    content: Text('EODHD API Key saved'),
                     duration: Duration(seconds: 2)),
               );
             },

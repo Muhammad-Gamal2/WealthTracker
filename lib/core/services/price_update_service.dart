@@ -201,10 +201,10 @@ class PriceUpdateService {
     }
 
     if (fetchStocks) {
-      final twelveDataKey = await _settings.getTwelveDataApiKey() ?? '';
-      if (twelveDataKey.isNotEmpty) {
+      final eodhdKey = await _settings.getEodhdApiKey() ?? '';
+      if (eodhdKey.isNotEmpty) {
         futures.add(
-          _stockApi.fetchStockPrices(stockApiSymbols, twelveDataKey).then((p) {
+          _stockApi.fetchStockPrices(stockApiSymbols, eodhdKey).then((p) {
             freshStockPrices = p;
             developer.log('Stocks OK: ${p.length} prices - $p', name: 'PriceUpdate');
           }).catchError((e) {
@@ -230,7 +230,7 @@ class PriceUpdateService {
     }
 
     for (final entry in freshStockPrices.entries) {
-      final currency = entry.key.contains(':XCAI') ? 'EGP' : 'USD';
+      final currency = entry.key.endsWith('.EGX') ? 'EGP' : 'USD';
       await _db.upsertStockPrice(StockPriceCacheEntriesCompanion.insert(
         symbol: entry.key,
         price: entry.value,

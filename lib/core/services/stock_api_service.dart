@@ -7,41 +7,43 @@ class StockApiService {
 
   StockApiService(this._dio);
 
-  /// Fetches latest closing prices for a list of API symbols.
-  /// EGX symbols should already include the :XCAI suffix.
+  /// Fetches latest closing prices for a list of API symbols via EODHD.
+  /// Symbols use the format SYMBOL.EXCHANGE (e.g. AMOC.EGX, AAPL.US).
   /// Returns a map of apiSymbol -> price.
   Future<Map<String, double>> fetchStockPrices(
     List<String> apiSymbols,
     String apiKey,
   ) async {
     if (apiKey.isEmpty) {
-      throw const ApiKeyMissingException('Twelve Data');
+      throw const ApiKeyMissingException('EODHD');
     }
     if (apiSymbols.isEmpty) return {};
 
     final results = <String, double>{};
+    final futures = <Future<void>>[];
 
-    // Twelve Data free tier allows up to 8 symbols per request
-    const batchSize = 8;
-    for (var i = 0; i < apiSymbols.length; i += batchSize) {
-      final batch =
-          apiSymbols.skip(i).take(batchSize).toList();
-      final batchResults = await _fetchBatch(batch, apiKey);
-      results.addAll(batchResults);
+    for (final symbol in apiSymbols) {
+      futures.add(
+        _fetchSingle(symbol, apiKey).then((price) {
+          if (price != null) {
+            results[symbol] = price;
+          }
+        }),
+      );
     }
+
+    await Future.wait(futures);
     return results;
   }
 
-  Future<Map<String, double>> _fetchBatch(
-    List<String> apiSymbols,
-    String apiKey,
-  ) async {
+  Future<double?> _fetchSingle(String apiSymbol, String apiKey) async {
     try {
       final response = await _dio.get(
-        '${ApiConstants.twelveDataBaseUrl}${ApiConstants.stockQuoteEndpoint}',
+        '${ApiConstants.eodhdBaseUrl}${ApiConstants.eodhdEodEndpoint}/$apiSymbol',
         queryParameters: {
-          'symbol': apiSymbols.join(','),
-          'apikey': apiKey,
+          'api_token': apiKey,
+          'fmt': 'json',
+          'order': 'd',
         },
         options: Options(
           sendTimeout: const Duration(seconds: 15),
@@ -50,50 +52,22 @@ class StockApiService {
       );
 
       final data = response.data;
-      final results = <String, double>{};
-
-      if (data is! Map<String, dynamic>) return results;
-
-      // Single symbol: response is a flat object with a 'symbol' key
-      // Multiple symbols: response is keyed by symbol
-      if (data.containsKey('symbol') && data.containsKey('close')) {
-        final symbol = data['symbol'] as String?;
-        final close = double.tryParse(data['close']?.toString() ?? '');
-        if (symbol != null && close != null) {
-          // match back to the apiSymbol form (may include :XCAI)
-          final matched = apiSymbols.firstWhere(
-            (s) => s.toUpperCase().startsWith(symbol.toUpperCase()),
-            orElse: () => symbol,
-          );
-          results[matched] = close;
-        }
-      } else {
-        for (final entry in data.entries) {
-          final symbolData = entry.value;
-          if (symbolData is Map<String, dynamic>) {
-            // Check for error
-            if (symbolData['status'] == 'error' ||
-                symbolData['code'] != null) {
-              continue; // skip invalid symbols silently
-            }
-            final close =
-                double.tryParse(symbolData['close']?.toString() ?? '');
-            if (close != null) {
-              results[entry.key] = close;
-            }
-          }
+      if (data is List && data.isNotEmpty) {
+        final latest = data.first;
+        if (latest is Map<String, dynamic>) {
+          final close = (latest['close'] as num?)?.toDouble();
+          return close;
         }
       }
-      return results;
+      return null;
     } on DioException catch (e) {
       if (e.response?.statusCode == 401) {
-        throw const ApiException('Invalid Twelve Data API key.',
-            statusCode: 401);
+        throw const ApiException('Invalid EODHD API key.', statusCode: 401);
       }
       if (e.response?.statusCode == 429) {
-        throw const RateLimitException('Twelve Data');
+        throw const RateLimitException('EODHD');
       }
-      throw NetworkException(e.message ?? 'Failed to fetch stock prices.');
+      throw NetworkException(e.message ?? 'Failed to fetch stock price for $apiSymbol.');
     }
   }
 }

@@ -5,10 +5,9 @@ class ApiConstants {
   static const String goldApiBaseUrl = 'https://www.goldapi.io/api';
   static const String goldPriceEndpoint = '/XAU/EGP';
 
-  // Twelve Data
-  static const String twelveDataBaseUrl = 'https://api.twelvedata.com';
-  static const String stockQuoteEndpoint = '/quote';
-  static const String egxSuffix = ':XCAI';
+  // EODHD
+  static const String eodhdBaseUrl = 'https://eodhd.com/api';
+  static const String eodhdEodEndpoint = '/eod'; // /eod/{SYMBOL}.{EXCHANGE}
 
   // Exchange Rate API (free, no key required)
   static const String exchangeRateBaseUrl = 'https://open.er-api.com/v6';

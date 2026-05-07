@@ -44,8 +44,7 @@ class _AddGoldDialogState extends State<AddGoldDialog> {
   }
 
   Future<void> _loadPrices() async {
-    final p = await sl<PriceUpdateService>()
-        .getLatestPrices(stockApiSymbols: const []);
+    final p = await sl<PriceUpdateService>().getGoldPrices();
     if (mounted) {
       setState(() {
         _prices = p;

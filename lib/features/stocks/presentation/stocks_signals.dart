@@ -28,7 +28,7 @@ Future<void> loadStockItems() async {
 Future<void> loadStockPrices({bool forceRefresh = false}) async {
   try {
     final items = stockItemsSignal.value;
-    final p = await sl<PriceUpdateService>().getLatestPrices(
+    final p = await sl<PriceUpdateService>().getStockPrices(
       stockApiSymbols: items.map((s) => s.apiSymbol).toList(),
       forceRefresh: forceRefresh,
     );

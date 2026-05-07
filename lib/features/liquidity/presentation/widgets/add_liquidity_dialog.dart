@@ -34,8 +34,7 @@ class _AddLiquidityDialogState extends State<AddLiquidityDialog> {
   }
 
   Future<void> _loadPrices() async {
-    final p = await sl<PriceUpdateService>()
-        .getLatestPrices(stockApiSymbols: const []);
+    final p = await sl<PriceUpdateService>().getExchangeRate();
     if (mounted) {
       setState(() => _prices = p);
     }

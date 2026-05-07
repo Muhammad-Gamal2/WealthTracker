@@ -7,6 +7,7 @@ import 'package:wealth_tracker/features/gold/presentation/gold_screen.dart';
 import 'package:wealth_tracker/features/stocks/presentation/stocks_screen.dart';
 import 'package:wealth_tracker/features/liquidity/presentation/liquidity_screen.dart';
 import 'package:wealth_tracker/features/real_estate/presentation/real_estate_screen.dart';
+import 'package:wealth_tracker/features/dashboard/presentation/dashboard_signals.dart';
 import 'package:wealth_tracker/routing/app_router.dart';
 
 class AppShell extends StatefulWidget {
@@ -47,6 +48,9 @@ class _AppShellState extends State<AppShell> {
   void _onItemSelected(int index) {
     if (index != _currentIndex) {
       setState(() => _currentIndex = index);
+    }
+    if (index == 0) {
+      refreshDashboard();
     }
   }
 

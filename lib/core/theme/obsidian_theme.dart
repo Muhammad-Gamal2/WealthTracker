@@ -91,7 +91,7 @@ class ObsidianTheme {
       border: Border(
         top: BorderSide(
           color: accent != null
-              ? accent.withValues(alpha: 0.33)
+              ? accent.withValues(alpha: 0.20)
               : border,
           width: 1,
         ),

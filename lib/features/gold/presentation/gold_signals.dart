@@ -5,7 +5,7 @@ import 'package:wealth_tracker/core/services/price_update_service.dart';
 import 'package:wealth_tracker/features/gold/domain/entities/gold_entity.dart';
 import 'package:wealth_tracker/features/gold/domain/gold_repository.dart';
 
-final _uuid = const Uuid();
+const _uuid = Uuid();
 
 final goldItemsSignal = signal<List<GoldEntity>>([]);
 final goldLoadingSignal = signal<bool>(false);

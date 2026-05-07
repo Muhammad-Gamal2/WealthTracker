@@ -82,7 +82,7 @@ class _WealthPieChartState extends State<WealthPieChart> {
                     },
                   ),
                   sections: _buildSections(values, summary.totalEgp),
-                  centerSpaceRadius: 56,
+                  centerSpaceRadius: 60,
                   sectionsSpace: 2,
                 ),
               ),
@@ -123,14 +123,14 @@ class _WealthPieChartState extends State<WealthPieChart> {
         PieChartSectionData(
           value: value,
           color: _colors[i],
-          radius: isTouched ? 48 : 40,
+          radius: isTouched ? 54 : 48,
           title: pct < 5 ? '' : '${pct.toStringAsFixed(1)}%',
           titleStyle: GoogleFonts.dmMono(
-            fontSize: 11,
+            fontSize: 12,
             fontWeight: FontWeight.w700,
             color: ObsidianTheme.text1,
           ),
-          titlePositionPercentageOffset: 0.6,
+          titlePositionPercentageOffset: 0.5,
         ),
       );
     }

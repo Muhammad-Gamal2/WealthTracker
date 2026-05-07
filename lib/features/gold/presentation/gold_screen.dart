@@ -243,7 +243,6 @@ class _GoldScreenState extends State<GoldScreen> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               _karatChip('24K', p.goldPrice24k),
-              _karatChip('22K', p.goldPrice22k),
               _karatChip('21K', p.goldPrice21k),
               _karatChip('18K', p.goldPrice18k),
             ],

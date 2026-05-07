@@ -88,7 +88,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          _SectionTitle(title: 'CATEGORIES'),
+                          const _SectionTitle(title: 'CATEGORIES'),
                           const SizedBox(height: 12),
                           _buildCategoryGrid(context, summary),
                           const SizedBox(height: 24),
@@ -103,7 +103,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          _SectionTitle(title: 'BREAKDOWN'),
+                          const _SectionTitle(title: 'BREAKDOWN'),
                           const SizedBox(height: 12),
                           GlassCard(
                             padding: const EdgeInsets.symmetric(
@@ -172,8 +172,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
           ),
           if (error != null) _buildErrorCard(context, error),
           const SizedBox(height: 22),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16),
+          const Padding(
+            padding: EdgeInsets.symmetric(horizontal: 16),
             child: _SectionTitle(title: 'BREAKDOWN'),
           ),
           const SizedBox(height: 12),
@@ -192,8 +192,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
             ),
           ),
           const SizedBox(height: 18),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16),
+          const Padding(
+            padding: EdgeInsets.symmetric(horizontal: 16),
             child: _SectionTitle(title: 'CATEGORIES'),
           ),
           const SizedBox(height: 12),
@@ -274,7 +274,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            _SectionTitle(title: 'HISTORY'),
+            const _SectionTitle(title: 'HISTORY'),
             _PeriodSelector(),
           ],
         ),
@@ -362,10 +362,10 @@ class _PeriodSelector extends StatelessWidget {
     return Watch((context) {
       final period = selectedPeriodSignal.value;
       final periods = [
-        _PeriodOption(30, '30D'),
-        _PeriodOption(90, '90D'),
-        _PeriodOption(365, '1Y'),
-        _PeriodOption(0, 'All'),
+        const _PeriodOption(30, '30D'),
+        const _PeriodOption(90, '90D'),
+        const _PeriodOption(365, '1Y'),
+        const _PeriodOption(0, 'All'),
       ];
 
       return Row(

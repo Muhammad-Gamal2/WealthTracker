@@ -45,8 +45,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
       children: [
         Container(
           padding: const EdgeInsets.only(left: 4, right: 20, top: 8, bottom: 8),
-          decoration: const BoxDecoration(
-            color: Color(0xB807090F),
+          decoration: BoxDecoration(
+            color: ObsidianTheme.headerBg,
             border: Border(
               bottom: BorderSide(color: ObsidianTheme.border),
             ),
@@ -54,7 +54,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
           child: Row(
             children: [
               IconButton(
-                icon: const Icon(Icons.arrow_back,
+                icon: Icon(Icons.arrow_back,
                     color: ObsidianTheme.text1, size: 22),
                 onPressed: () => Navigator.pop(context),
               ),
@@ -232,18 +232,18 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   hintStyle: GoogleFonts.dmMono(
                       fontSize: 13, color: ObsidianTheme.text3),
                   filled: true,
-                  fillColor: const Color(0x0DFFFFFF),
+                  fillColor: ObsidianTheme.inputFill,
                   contentPadding: const EdgeInsets.symmetric(
                       horizontal: 14, vertical: 12),
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(10),
                     borderSide:
-                        const BorderSide(color: ObsidianTheme.border),
+                        BorderSide(color: ObsidianTheme.border),
                   ),
                   enabledBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(10),
                     borderSide:
-                        const BorderSide(color: ObsidianTheme.border),
+                        BorderSide(color: ObsidianTheme.border),
                   ),
                   focusedBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(10),
@@ -280,7 +280,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
         width: 38,
         height: 38,
         decoration: BoxDecoration(
-          color: const Color(0x0DFFFFFF),
+          color: ObsidianTheme.inputFill,
           borderRadius: BorderRadius.circular(10),
           border: Border.all(color: ObsidianTheme.border),
         ),
@@ -299,11 +299,11 @@ class _SettingsScreenState extends State<SettingsScreen> {
           // Set / Change PIN
           _buildSettingsRow(
             icon: Icons.pin_rounded,
-            iconBgColor: const Color(0x0DFFFFFF),
+            iconBgColor: ObsidianTheme.inputFill,
             iconColor: ObsidianTheme.text2,
             title: hasPinConfiguredSignal.value ? 'Change PIN' : 'Set PIN',
             subtitle: 'Lock the app with a PIN code',
-            trailing: const Icon(Icons.chevron_right,
+            trailing: Icon(Icons.chevron_right,
                 color: ObsidianTheme.text3, size: 22),
             onTap: () => _showSetPinFlow(context),
           ),
@@ -315,7 +315,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
             ),
             _buildSettingsRow(
               icon: Icons.fingerprint,
-              iconBgColor: const Color(0x0DFFFFFF),
+              iconBgColor: ObsidianTheme.inputFill,
               iconColor: ObsidianTheme.text2,
               title: 'Biometric Unlock',
               subtitle: 'Use fingerprint or Face ID',
@@ -414,7 +414,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
       padding: const EdgeInsets.symmetric(vertical: 6),
       child: _buildSettingsRow(
         icon: Icons.dark_mode_rounded,
-        iconBgColor: const Color(0x0DFFFFFF),
+        iconBgColor: ObsidianTheme.inputFill,
         iconColor: ObsidianTheme.text2,
         title: 'Dark Mode',
         subtitle: 'Toggle dark theme',
@@ -487,7 +487,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
         backgroundColor: ObsidianTheme.surface2,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(ObsidianTheme.radius),
-          side: const BorderSide(color: ObsidianTheme.border),
+          side: BorderSide(color: ObsidianTheme.border),
         ),
         title: Text(
           'Remove PIN',

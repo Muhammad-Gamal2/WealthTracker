@@ -200,7 +200,7 @@ class _CategoryChip extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
       decoration: BoxDecoration(
-        color: const Color(0x0DFFFFFF),
+        color: ObsidianTheme.inputFill,
         borderRadius: BorderRadius.circular(8),
         border: Border.all(
           color: const Color(0x12FFFFFF),

@@ -69,7 +69,7 @@ class WealthLineChart extends StatelessWidget {
             drawVerticalLine: false,
             horizontalInterval: padding > 0 ? (maxY - minY) / 4 : null,
             getDrawingHorizontalLine: (value) => FlLine(
-              color: const Color(0x0DFFFFFF), // rgba(255,255,255,0.05)
+              color: ObsidianTheme.inputFill, // rgba(255,255,255,0.05)
               strokeWidth: 1,
             ),
           ),

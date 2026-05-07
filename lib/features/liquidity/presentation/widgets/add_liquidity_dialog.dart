@@ -68,10 +68,10 @@ class _AddLiquidityDialogState extends State<AddLiquidityDialog> {
     final egpPreview = _egpEquivalent;
 
     return Container(
-      decoration: const BoxDecoration(
+      decoration: BoxDecoration(
         color: ObsidianTheme.surface2,
-        borderRadius: BorderRadius.vertical(top: Radius.circular(22)),
-        border: Border(
+        borderRadius: const BorderRadius.vertical(top: Radius.circular(22)),
+        border: const Border(
           top: BorderSide(color: ObsidianTheme.cyan, width: 2),
         ),
       ),
@@ -121,10 +121,10 @@ class _AddLiquidityDialogState extends State<AddLiquidityDialog> {
                           width: 32,
                           height: 32,
                           decoration: BoxDecoration(
-                            color: const Color(0x0DFFFFFF),
+                            color: ObsidianTheme.inputFill,
                             borderRadius: BorderRadius.circular(16),
                           ),
-                          child: const Icon(Icons.close,
+                          child: Icon(Icons.close,
                               size: 18, color: ObsidianTheme.text3),
                         ),
                       ),
@@ -211,7 +211,7 @@ class _AddLiquidityDialogState extends State<AddLiquidityDialog> {
                             onPressed: () => Navigator.pop(context),
                             style: OutlinedButton.styleFrom(
                               backgroundColor: Colors.transparent,
-                              side: const BorderSide(
+                              side: BorderSide(
                                   color: ObsidianTheme.border),
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(
@@ -300,16 +300,16 @@ class _AddLiquidityDialogState extends State<AddLiquidityDialog> {
       suffixStyle:
           GoogleFonts.dmMono(fontSize: 14, color: ObsidianTheme.text3),
       filled: true,
-      fillColor: const Color(0x0DFFFFFF),
+      fillColor: ObsidianTheme.inputFill,
       contentPadding:
           const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
       border: OutlineInputBorder(
         borderRadius: BorderRadius.circular(10),
-        borderSide: const BorderSide(color: ObsidianTheme.border),
+        borderSide: BorderSide(color: ObsidianTheme.border),
       ),
       enabledBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(10),
-        borderSide: const BorderSide(color: ObsidianTheme.border),
+        borderSide: BorderSide(color: ObsidianTheme.border),
       ),
       focusedBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(10),

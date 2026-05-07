@@ -156,7 +156,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                 ),
                 const Spacer(),
                 IconButton(
-                  icon: const Icon(Icons.settings_outlined,
+                  icon: Icon(Icons.settings_outlined,
                       color: ObsidianTheme.text2, size: 22),
                   onPressed: () =>
                       Navigator.pushNamed(context, AppRouter.settings),

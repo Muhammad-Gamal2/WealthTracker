@@ -43,8 +43,8 @@ class _LiquidityScreenState extends State<LiquidityScreen> {
       children: [
         Container(
           padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
-          decoration: const BoxDecoration(
-            color: Color(0xB807090F),
+          decoration: BoxDecoration(
+            color: ObsidianTheme.headerBg,
             border: Border(
               bottom: BorderSide(color: ObsidianTheme.border),
             ),
@@ -61,7 +61,7 @@ class _LiquidityScreenState extends State<LiquidityScreen> {
               ),
               const Spacer(),
               IconButton(
-                icon: const Icon(Icons.refresh,
+                icon: Icon(Icons.refresh,
                     color: ObsidianTheme.text2, size: 22),
                 onPressed: _refresh,
                 tooltip: 'Refresh rates',
@@ -331,7 +331,7 @@ class _LiquidityScreenState extends State<LiquidityScreen> {
         backgroundColor: ObsidianTheme.surface2,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(ObsidianTheme.radius),
-          side: const BorderSide(color: ObsidianTheme.border),
+          side: BorderSide(color: ObsidianTheme.border),
         ),
         title: Text(
           'Delete Item',

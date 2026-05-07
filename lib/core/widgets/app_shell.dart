@@ -148,7 +148,7 @@ class _Sidebar extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       width: collapsed ? 68 : 220,
-      decoration: const BoxDecoration(
+      decoration: BoxDecoration(
         color: ObsidianTheme.surface,
         border: Border(
           right: BorderSide(
@@ -324,8 +324,8 @@ class _MobileBottomNav extends StatelessWidget {
       child: BackdropFilter(
         filter: ImageFilter.blur(sigmaX: 24, sigmaY: 24),
         child: Container(
-          decoration: const BoxDecoration(
-            color: Color(0xF007090F), // rgba(7,9,15,0.94)
+          decoration: BoxDecoration(
+            color: ObsidianTheme.navBg, // rgba(7,9,15,0.94)
             border: Border(
               top: BorderSide(
                 color: ObsidianTheme.border,

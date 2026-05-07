@@ -119,12 +119,12 @@ class StockItemTile extends StatelessWidget {
             ),
             const SizedBox(width: 4),
             PopupMenuButton<String>(
-              icon: const Icon(Icons.more_vert,
+              icon: Icon(Icons.more_vert,
                   color: ObsidianTheme.text3, size: 20),
               color: ObsidianTheme.surface2,
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(ObsidianTheme.radius),
-                side: const BorderSide(color: ObsidianTheme.border),
+                side: BorderSide(color: ObsidianTheme.border),
               ),
               itemBuilder: (_) => [
                 PopupMenuItem(

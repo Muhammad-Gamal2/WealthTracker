@@ -75,6 +75,54 @@ class WealthRepositoryImpl implements WealthRepository {
   }
 
   @override
+  Future<WealthSummary> getWealthSummaryFromCache() async {
+    final gold = await _db.getAllGoldItems();
+    final stocks = await _db.getAllStockItems();
+    final liquidity = await _db.getAllLiquidityItems();
+    final realEstate = await _db.getAllRealEstateItems();
+
+    final prices = await _priceService.getCachedPrices();
+
+    double goldEgp = 0;
+    for (final item in gold) {
+      goldEgp += item.weightGrams * prices.priceForKarat(item.karat);
+    }
+
+    double stocksEgp = 0;
+    for (final item in stocks) {
+      final apiSymbol =
+          item.market == 'EGX' ? '${item.symbol}.EGX' : '${item.symbol}.US';
+      final price = prices.stockPrices[apiSymbol] ?? 0;
+      if (item.market == 'EGX') {
+        stocksEgp += item.quantity * price;
+      } else {
+        stocksEgp += item.quantity * price * prices.usdToEgpRate;
+      }
+    }
+
+    double liquidityEgp = 0;
+    for (final item in liquidity) {
+      liquidityEgp += item.amountUsd * prices.usdToEgpRate;
+    }
+
+    double realEstateEgp = 0;
+    for (final item in realEstate) {
+      final yearsElapsed =
+          DateTime.now().difference(item.purchaseDate).inDays / 365.25;
+      realEstateEgp += item.purchaseAmountEgp *
+          pow(1 + item.annualAppreciationPercent / 100, yearsElapsed);
+    }
+
+    return WealthSummary(
+      goldValueEgp: goldEgp,
+      stocksValueEgp: stocksEgp,
+      liquidityValueEgp: liquidityEgp,
+      realEstateValueEgp: realEstateEgp,
+      usdToEgpRate: prices.usdToEgpRate,
+    );
+  }
+
+  @override
   Future<List<SnapshotEntity>> getSnapshots({int? lastNDays}) async {
     final rows = lastNDays != null
         ? await _db.getRecentSnapshots(lastNDays)

@@ -4,11 +4,13 @@ import 'package:wealth_tracker/core/theme/obsidian_theme.dart';
 
 class SectionTitle extends StatelessWidget {
   final String title;
+  final String? titleEn;
   final Widget? right;
 
   const SectionTitle({
     super.key,
     required this.title,
+    this.titleEn,
     this.right,
   });
 
@@ -16,22 +18,35 @@ class SectionTitle extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20),
-      child: Row(
-        children: [
-          Text(
-            title.toUpperCase(),
-            style: GoogleFonts.dmSans(
-              fontSize: 11,
-              fontWeight: FontWeight.w700,
-              color: ObsidianTheme.text3,
-              letterSpacing: 0.07 * 11, // 0.07em
+      child: Directionality(
+        textDirection: TextDirection.rtl,
+        child: Row(
+          children: [
+            Text(
+              title,
+              style: GoogleFonts.reemKufi(
+                fontSize: 16,
+                fontWeight: FontWeight.w600,
+                color: ObsidianTheme.text1,
+              ),
             ),
-          ),
-          if (right != null) ...[
-            const Spacer(),
-            right!,
+            if (titleEn != null) ...[
+              const SizedBox(width: 8),
+              Text(
+                titleEn!.toUpperCase(),
+                style: GoogleFonts.jetBrainsMono(
+                  fontSize: 9,
+                  color: ObsidianTheme.text3,
+                  letterSpacing: 0.18 * 9, // 0.18em
+                ),
+              ),
+            ],
+            if (right != null) ...[
+              const Spacer(),
+              right!,
+            ],
           ],
-        ],
+        ),
       ),
     );
   }

@@ -47,7 +47,7 @@ class LiquidityItemTile extends StatelessWidget {
                 children: [
                   Text(
                     item.label.isEmpty ? 'Cash' : item.label,
-                    style: GoogleFonts.dmSans(
+                    style: GoogleFonts.reemKufi(
                       fontSize: 14,
                       fontWeight: FontWeight.w600,
                       color: ObsidianTheme.text1,
@@ -56,7 +56,7 @@ class LiquidityItemTile extends StatelessWidget {
                   const SizedBox(height: 2),
                   Text(
                     CurrencyFormatter.formatUsd(item.amountUsd),
-                    style: GoogleFonts.dmMono(
+                    style: GoogleFonts.jetBrainsMono(
                       fontSize: 12,
                       color: ObsidianTheme.text3,
                     ),
@@ -66,7 +66,7 @@ class LiquidityItemTile extends StatelessWidget {
             ),
             Text(
               CurrencyFormatter.formatEgp(egpValue),
-              style: GoogleFonts.dmMono(
+              style: GoogleFonts.jetBrainsMono(
                 fontSize: 14,
                 fontWeight: FontWeight.w700,
                 color: ObsidianTheme.text1,
@@ -86,7 +86,7 @@ class LiquidityItemTile extends StatelessWidget {
                   value: 'edit',
                   child: Text(
                     'Edit',
-                    style: GoogleFonts.dmSans(
+                    style: GoogleFonts.reemKufi(
                       fontSize: 14,
                       color: ObsidianTheme.text1,
                     ),
@@ -96,7 +96,7 @@ class LiquidityItemTile extends StatelessWidget {
                   value: 'delete',
                   child: Text(
                     'Delete',
-                    style: GoogleFonts.dmSans(
+                    style: GoogleFonts.reemKufi(
                       fontSize: 14,
                       color: ObsidianTheme.lossRed,
                     ),

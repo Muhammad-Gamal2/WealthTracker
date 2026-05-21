@@ -119,8 +119,8 @@ class _AddRealEstateDialogState extends State<AddRealEstateDialog> {
                   Row(
                     children: [
                       Text(
-                        isEditing ? 'Edit Property' : 'Add Real Estate',
-                        style: GoogleFonts.spaceGrotesk(
+                        isEditing ? 'تعديل العقار' : 'إضافة عقار',
+                        style: GoogleFonts.reemKufi(
                           fontSize: 18,
                           fontWeight: FontWeight.w700,
                           color: ObsidianTheme.text1,
@@ -144,11 +144,11 @@ class _AddRealEstateDialogState extends State<AddRealEstateDialog> {
                   ),
                   const SizedBox(height: 20),
                   // Project Name
-                  _buildFieldLabel('PROJECT NAME'),
+                  _buildFieldLabel('PROJECT NAME · اسم المشروع'),
                   const SizedBox(height: 6),
                   TextFormField(
                     controller: _nameController,
-                    style: GoogleFonts.dmMono(
+                    style: GoogleFonts.jetBrainsMono(
                         fontSize: 14, color: ObsidianTheme.text1),
                     decoration: _inputDecoration(
                       hintText: 'e.g. Cairo Heights Apt 3B',
@@ -158,11 +158,11 @@ class _AddRealEstateDialogState extends State<AddRealEstateDialog> {
                   ),
                   const SizedBox(height: 14),
                   // Purchase Price
-                  _buildFieldLabel('PURCHASE PRICE'),
+                  _buildFieldLabel('PURCHASE PRICE · سعر الشراء'),
                   const SizedBox(height: 6),
                   TextFormField(
                     controller: _amountController,
-                    style: GoogleFonts.dmMono(
+                    style: GoogleFonts.jetBrainsMono(
                         fontSize: 14, color: ObsidianTheme.text1),
                     decoration: _inputDecoration(
                       hintText: '0',
@@ -186,7 +186,7 @@ class _AddRealEstateDialogState extends State<AddRealEstateDialog> {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            _buildFieldLabel('PURCHASE DATE'),
+                            _buildFieldLabel('PURCHASE DATE · التاريخ'),
                             const SizedBox(height: 6),
                             GestureDetector(
                               onTap: () => _pickDate(context),
@@ -209,7 +209,7 @@ class _AddRealEstateDialogState extends State<AddRealEstateDialog> {
                                             ? DateFormat('yyyy-MM-dd')
                                                 .format(_purchaseDate!)
                                             : 'Select',
-                                        style: GoogleFonts.dmMono(
+                                        style: GoogleFonts.jetBrainsMono(
                                           fontSize: 14,
                                           color: _purchaseDate != null
                                               ? ObsidianTheme.text1
@@ -232,11 +232,11 @@ class _AddRealEstateDialogState extends State<AddRealEstateDialog> {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            _buildFieldLabel('ANNUAL GROWTH'),
+                            _buildFieldLabel('ANNUAL GROWTH · النمو'),
                             const SizedBox(height: 6),
                             TextFormField(
                               controller: _rateController,
-                              style: GoogleFonts.dmMono(
+                              style: GoogleFonts.jetBrainsMono(
                                   fontSize: 14, color: ObsidianTheme.text1),
                               decoration: _inputDecoration(
                                 hintText: 'e.g. 10',
@@ -278,7 +278,7 @@ class _AddRealEstateDialogState extends State<AddRealEstateDialog> {
                             children: [
                               Text(
                                 'Current Value',
-                                style: GoogleFonts.dmSans(
+                                style: GoogleFonts.reemKufi(
                                   fontSize: 12,
                                   fontWeight: FontWeight.w600,
                                   color: _accentColor,
@@ -287,7 +287,7 @@ class _AddRealEstateDialogState extends State<AddRealEstateDialog> {
                               const SizedBox(height: 2),
                               Text(
                                 CurrencyFormatter.formatEgp(previewValue),
-                                style: GoogleFonts.dmMono(
+                                style: GoogleFonts.jetBrainsMono(
                                   fontSize: 14,
                                   fontWeight: FontWeight.w700,
                                   color: _accentColor,
@@ -324,7 +324,7 @@ class _AddRealEstateDialogState extends State<AddRealEstateDialog> {
                             ),
                             child: Text(
                               'Cancel',
-                              style: GoogleFonts.dmSans(
+                              style: GoogleFonts.reemKufi(
                                 fontSize: 14,
                                 fontWeight: FontWeight.w600,
                                 color: ObsidianTheme.text2,
@@ -372,8 +372,8 @@ class _AddRealEstateDialogState extends State<AddRealEstateDialog> {
                                 ),
                               ),
                               child: Text(
-                                isEditing ? 'Save' : 'Add',
-                                style: GoogleFonts.dmSans(
+                                isEditing ? 'حفظ' : 'إضافة عقار',
+                                style: GoogleFonts.reemKufi(
                                   fontSize: 14,
                                   fontWeight: FontWeight.w700,
                                   color: Colors.white,
@@ -397,11 +397,11 @@ class _AddRealEstateDialogState extends State<AddRealEstateDialog> {
   Widget _buildFieldLabel(String label) {
     return Text(
       label,
-      style: GoogleFonts.dmSans(
-        fontSize: 11,
+      style: GoogleFonts.jetBrainsMono(
+        fontSize: 9,
         fontWeight: FontWeight.w700,
         color: ObsidianTheme.text3,
-        letterSpacing: 0.07 * 11,
+        letterSpacing: 0.18 * 9,
       ),
     );
   }
@@ -410,9 +410,9 @@ class _AddRealEstateDialogState extends State<AddRealEstateDialog> {
     return InputDecoration(
       hintText: hintText,
       suffixText: suffixText,
-      hintStyle: GoogleFonts.dmMono(fontSize: 14, color: ObsidianTheme.text3),
+      hintStyle: GoogleFonts.jetBrainsMono(fontSize: 14, color: ObsidianTheme.text3),
       suffixStyle:
-          GoogleFonts.dmMono(fontSize: 14, color: ObsidianTheme.text3),
+          GoogleFonts.jetBrainsMono(fontSize: 14, color: ObsidianTheme.text3),
       filled: true,
       fillColor: ObsidianTheme.inputFill,
       contentPadding:

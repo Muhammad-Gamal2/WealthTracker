@@ -123,8 +123,8 @@ class _AddStockDialogState extends State<AddStockDialog> {
                   Row(
                     children: [
                       Text(
-                        isEditing ? 'Edit Stock' : 'Add Stock',
-                        style: GoogleFonts.spaceGrotesk(
+                        isEditing ? 'تعديل السهم' : 'إضافة سهم',
+                        style: GoogleFonts.reemKufi(
                           fontSize: 18,
                           fontWeight: FontWeight.w700,
                           color: ObsidianTheme.text1,
@@ -148,16 +148,16 @@ class _AddStockDialogState extends State<AddStockDialog> {
                   ),
                   const SizedBox(height: 20),
                   // Market segmented control
-                  _buildFieldLabel('MARKET'),
+                  _buildFieldLabel('MARKET · السوق'),
                   const SizedBox(height: 6),
                   _buildMarketPicker(),
                   const SizedBox(height: 14),
                   // Symbol field
-                  _buildFieldLabel('SYMBOL'),
+                  _buildFieldLabel('SYMBOL · الرمز'),
                   const SizedBox(height: 6),
                   TextFormField(
                     controller: _symbolController,
-                    style: GoogleFonts.dmMono(
+                    style: GoogleFonts.jetBrainsMono(
                         fontSize: 14, color: ObsidianTheme.text1),
                     decoration: _inputDecoration(
                       hintText: _market == 'EGX' ? 'e.g. COMI' : 'e.g. AAPL',
@@ -168,11 +168,11 @@ class _AddStockDialogState extends State<AddStockDialog> {
                   ),
                   const SizedBox(height: 14),
                   // Company name (optional)
-                  _buildFieldLabel('COMPANY NAME (OPTIONAL)'),
+                  _buildFieldLabel('COMPANY · الشركة'),
                   const SizedBox(height: 6),
                   TextFormField(
                     controller: _nameController,
-                    style: GoogleFonts.dmMono(
+                    style: GoogleFonts.jetBrainsMono(
                         fontSize: 14, color: ObsidianTheme.text1),
                     decoration: _inputDecoration(
                       hintText: 'e.g. Apple Inc.',
@@ -187,11 +187,11 @@ class _AddStockDialogState extends State<AddStockDialog> {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            _buildFieldLabel('QUANTITY'),
+                            _buildFieldLabel('QUANTITY · الكمية'),
                             const SizedBox(height: 6),
                             TextFormField(
                               controller: _quantityController,
-                              style: GoogleFonts.dmMono(
+                              style: GoogleFonts.jetBrainsMono(
                                   fontSize: 14, color: ObsidianTheme.text1),
                               decoration: _inputDecoration(hintText: '0'),
                               keyboardType:
@@ -213,11 +213,11 @@ class _AddStockDialogState extends State<AddStockDialog> {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            _buildFieldLabel('BUY PRICE'),
+                            _buildFieldLabel('BUY PRICE · سعر الشراء'),
                             const SizedBox(height: 6),
                             TextFormField(
                               controller: _buyPriceController,
-                              style: GoogleFonts.dmMono(
+                              style: GoogleFonts.jetBrainsMono(
                                   fontSize: 14, color: ObsidianTheme.text1),
                               decoration: _inputDecoration(
                                 hintText: '0.00',
@@ -241,11 +241,11 @@ class _AddStockDialogState extends State<AddStockDialog> {
                   ),
                   const SizedBox(height: 14),
                   // Current Price
-                  _buildFieldLabel('CURRENT PRICE'),
+                  _buildFieldLabel('CURRENT PRICE · السعر الحالي'),
                   const SizedBox(height: 6),
                   TextFormField(
                     controller: _currentPriceController,
-                    style: GoogleFonts.dmMono(
+                    style: GoogleFonts.jetBrainsMono(
                         fontSize: 14, color: ObsidianTheme.text1),
                     decoration: _inputDecoration(
                       hintText: '0.00',
@@ -274,7 +274,7 @@ class _AddStockDialogState extends State<AddStockDialog> {
                             children: [
                               Text(
                                 'Total Value',
-                                style: GoogleFonts.dmSans(
+                                style: GoogleFonts.reemKufi(
                                   fontSize: 12,
                                   fontWeight: FontWeight.w600,
                                   color: _accentColor,
@@ -283,7 +283,7 @@ class _AddStockDialogState extends State<AddStockDialog> {
                               const SizedBox(height: 2),
                               Text(
                                 '$currencyLabel ${CurrencyFormatter.formatNumber(previewTotal)}',
-                                style: GoogleFonts.dmMono(
+                                style: GoogleFonts.jetBrainsMono(
                                   fontSize: 14,
                                   fontWeight: FontWeight.w700,
                                   color: _accentColor,
@@ -319,7 +319,7 @@ class _AddStockDialogState extends State<AddStockDialog> {
                             ),
                             child: Text(
                               'Cancel',
-                              style: GoogleFonts.dmSans(
+                              style: GoogleFonts.reemKufi(
                                 fontSize: 14,
                                 fontWeight: FontWeight.w600,
                                 color: ObsidianTheme.text2,
@@ -357,8 +357,8 @@ class _AddStockDialogState extends State<AddStockDialog> {
                                 ),
                               ),
                               child: Text(
-                                isEditing ? 'Save' : 'Add',
-                                style: GoogleFonts.dmSans(
+                                isEditing ? 'حفظ' : 'إضافة سهم',
+                                style: GoogleFonts.reemKufi(
                                   fontSize: 14,
                                   fontWeight: FontWeight.w700,
                                   color: Colors.white,
@@ -382,11 +382,11 @@ class _AddStockDialogState extends State<AddStockDialog> {
   Widget _buildFieldLabel(String label) {
     return Text(
       label,
-      style: GoogleFonts.dmSans(
-        fontSize: 11,
+      style: GoogleFonts.jetBrainsMono(
+        fontSize: 9,
         fontWeight: FontWeight.w700,
         color: ObsidianTheme.text3,
-        letterSpacing: 0.07 * 11,
+        letterSpacing: 0.18 * 9,
       ),
     );
   }
@@ -395,9 +395,9 @@ class _AddStockDialogState extends State<AddStockDialog> {
     return InputDecoration(
       hintText: hintText,
       suffixText: suffixText,
-      hintStyle: GoogleFonts.dmMono(fontSize: 14, color: ObsidianTheme.text3),
+      hintStyle: GoogleFonts.jetBrainsMono(fontSize: 14, color: ObsidianTheme.text3),
       suffixStyle:
-          GoogleFonts.dmMono(fontSize: 14, color: ObsidianTheme.text3),
+          GoogleFonts.jetBrainsMono(fontSize: 14, color: ObsidianTheme.text3),
       filled: true,
       fillColor: ObsidianTheme.inputFill,
       contentPadding:
@@ -454,7 +454,7 @@ class _AddStockDialogState extends State<AddStockDialog> {
                 ),
                 child: Text(
                   label,
-                  style: GoogleFonts.dmSans(
+                  style: GoogleFonts.reemKufi(
                     fontSize: 13,
                     fontWeight: FontWeight.w700,
                     color: isSelected ? _accentColor : ObsidianTheme.text3,

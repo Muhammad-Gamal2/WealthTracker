@@ -88,7 +88,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          const _SectionTitle(title: 'CATEGORIES'),
+                          const _SectionTitle(titleAr: 'الفئات', titleEn: 'Categories'),
                           const SizedBox(height: 12),
                           _buildCategoryGrid(context, summary),
                           const SizedBox(height: 24),
@@ -103,7 +103,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          const _SectionTitle(title: 'BREAKDOWN'),
+                          const _SectionTitle(titleAr: 'التوزيع', titleEn: 'Breakdown'),
                           const SizedBox(height: 12),
                           GlassCard(
                             padding: const EdgeInsets.symmetric(
@@ -147,8 +147,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
             child: Row(
               children: [
                 Text(
-                  'Dashboard',
-                  style: GoogleFonts.spaceGrotesk(
+                  'الرئيسية',
+                  style: GoogleFonts.reemKufi(
                     fontSize: 18,
                     fontWeight: FontWeight.w700,
                     color: ObsidianTheme.text1,
@@ -174,7 +174,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
           const SizedBox(height: 22),
           const Padding(
             padding: EdgeInsets.symmetric(horizontal: 16),
-            child: _SectionTitle(title: 'BREAKDOWN'),
+            child: _SectionTitle(titleAr: 'التوزيع', titleEn: 'Breakdown'),
           ),
           const SizedBox(height: 12),
           Padding(
@@ -194,7 +194,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
           const SizedBox(height: 18),
           const Padding(
             padding: EdgeInsets.symmetric(horizontal: 16),
-            child: _SectionTitle(title: 'CATEGORIES'),
+            child: _SectionTitle(titleAr: 'الفئات', titleEn: 'Categories'),
           ),
           const SizedBox(height: 12),
           Padding(
@@ -228,7 +228,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                 children: [
                   Text(
                     'Update error',
-                    style: GoogleFonts.dmSans(
+                    style: GoogleFonts.reemKufi(
                       fontSize: 13,
                       fontWeight: FontWeight.w600,
                       color: ObsidianTheme.lossRed,
@@ -237,7 +237,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                   const SizedBox(height: 2),
                   Text(
                     error,
-                    style: GoogleFonts.dmSans(
+                    style: GoogleFonts.reemKufi(
                       fontSize: 11,
                       fontWeight: FontWeight.w400,
                       color: ObsidianTheme.text3,
@@ -274,7 +274,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            const _SectionTitle(title: 'HISTORY'),
+            const _SectionTitle(titleAr: 'السجل', titleEn: 'History'),
             _PeriodSelector(),
           ],
         ),
@@ -291,6 +291,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
     return [
       CategorySummaryCard(
         title: 'Gold',
+        titleAr: 'ذهب',
         valueEgp: summary.goldValueEgp,
         valueUsd: summary.goldValueUsd,
         percent: summary.goldPercent,
@@ -300,6 +301,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
       ),
       CategorySummaryCard(
         title: 'Stocks',
+        titleAr: 'أسهم',
         valueEgp: summary.stocksValueEgp,
         valueUsd: summary.stocksValueUsd,
         percent: summary.stocksPercent,
@@ -309,6 +311,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
       ),
       CategorySummaryCard(
         title: 'Liquidity',
+        titleAr: 'سيولة',
         valueEgp: summary.liquidityValueEgp,
         valueUsd: summary.liquidityValueUsd,
         percent: summary.liquidityPercent,
@@ -318,6 +321,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
       ),
       CategorySummaryCard(
         title: 'Real Estate',
+        titleAr: 'عقارات',
         valueEgp: summary.realEstateValueEgp,
         valueUsd: summary.realEstateValueUsd,
         percent: summary.realEstatePercent,
@@ -338,20 +342,35 @@ class _DashboardScreenState extends State<DashboardScreen> {
 }
 
 class _SectionTitle extends StatelessWidget {
-  final String title;
+  final String titleAr;
+  final String titleEn;
 
-  const _SectionTitle({required this.title});
+  const _SectionTitle({required this.titleAr, required this.titleEn});
 
   @override
   Widget build(BuildContext context) {
-    return Text(
-      title,
-      style: GoogleFonts.dmSans(
-        fontSize: 11,
-        fontWeight: FontWeight.w600,
-        letterSpacing: 0.08 * 11,
-        color: ObsidianTheme.text3,
-      ),
+    return Row(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Text(
+          titleAr,
+          style: GoogleFonts.reemKufi(
+            fontSize: 12,
+            fontWeight: FontWeight.w600,
+            color: ObsidianTheme.text2,
+          ),
+        ),
+        const SizedBox(width: 6),
+        Text(
+          titleEn.toUpperCase(),
+          style: GoogleFonts.jetBrainsMono(
+            fontSize: 10,
+            fontWeight: FontWeight.w500,
+            letterSpacing: 0.08 * 10,
+            color: ObsidianTheme.text3,
+          ),
+        ),
+      ],
     );
   }
 }
@@ -387,7 +406,7 @@ class _PeriodSelector extends StatelessWidget {
                 ),
                 decoration: BoxDecoration(
                   color: isSelected
-                      ? ObsidianTheme.accentBg
+                      ? ObsidianTheme.accent
                       : Colors.transparent,
                   borderRadius: BorderRadius.circular(8),
                   border: Border.all(
@@ -399,11 +418,11 @@ class _PeriodSelector extends StatelessWidget {
                 ),
                 child: Text(
                   p.label,
-                  style: GoogleFonts.dmMono(
+                  style: GoogleFonts.jetBrainsMono(
                     fontSize: 11,
                     fontWeight: FontWeight.w600,
                     color: isSelected
-                        ? ObsidianTheme.accent
+                        ? ObsidianTheme.bg
                         : ObsidianTheme.text3,
                   ),
                 ),

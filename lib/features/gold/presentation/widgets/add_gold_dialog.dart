@@ -121,8 +121,8 @@ class _AddGoldDialogState extends State<AddGoldDialog> {
                   Row(
                     children: [
                       Text(
-                        isEditing ? 'Edit Gold Item' : 'Add Gold',
-                        style: GoogleFonts.spaceGrotesk(
+                        isEditing ? 'تعديل الذهب' : 'إضافة ذهب',
+                        style: GoogleFonts.reemKufi(
                           fontSize: 18,
                           fontWeight: FontWeight.w700,
                           color: ObsidianTheme.text1,
@@ -146,11 +146,11 @@ class _AddGoldDialogState extends State<AddGoldDialog> {
                   ),
                   const SizedBox(height: 20),
                   // Label field
-                  _buildFieldLabel('LABEL'),
+                  _buildFieldLabel('LABEL · الوصف'),
                   const SizedBox(height: 6),
                   TextFormField(
                     controller: _labelController,
-                    style: GoogleFonts.dmMono(
+                    style: GoogleFonts.jetBrainsMono(
                         fontSize: 14, color: ObsidianTheme.text1),
                     decoration:
                         _inputDecoration(hintText: 'e.g. Wedding Ring, Bullion'),
@@ -159,11 +159,11 @@ class _AddGoldDialogState extends State<AddGoldDialog> {
                   ),
                   const SizedBox(height: 14),
                   // Weight field
-                  _buildFieldLabel('WEIGHT (GRAMS)'),
+                  _buildFieldLabel('WEIGHT · الوزن'),
                   const SizedBox(height: 6),
                   TextFormField(
                     controller: _gramsController,
-                    style: GoogleFonts.dmMono(
+                    style: GoogleFonts.jetBrainsMono(
                         fontSize: 14, color: ObsidianTheme.text1),
                     decoration:
                         _inputDecoration(hintText: '0.00', suffixText: 'g'),
@@ -178,16 +178,16 @@ class _AddGoldDialogState extends State<AddGoldDialog> {
                   ),
                   const SizedBox(height: 14),
                   // Karat picker
-                  _buildFieldLabel('KARAT'),
+                  _buildFieldLabel('KARAT · العيار'),
                   const SizedBox(height: 6),
                   _buildKaratPicker(),
                   const SizedBox(height: 14),
                   // Purchase price field
-                  _buildFieldLabel('PURCHASE PRICE (EGP/GRAM)'),
+                  _buildFieldLabel('PURCHASE PRICE · سعر الشراء'),
                   const SizedBox(height: 6),
                   TextFormField(
                     controller: _purchasePriceController,
-                    style: GoogleFonts.dmMono(
+                    style: GoogleFonts.jetBrainsMono(
                         fontSize: 14, color: ObsidianTheme.text1),
                     decoration: _inputDecoration(
                       hintText: '0.00 (optional)',
@@ -219,7 +219,7 @@ class _AddGoldDialogState extends State<AddGoldDialog> {
                         children: [
                           Text(
                             'Estimated Value',
-                            style: GoogleFonts.dmSans(
+                            style: GoogleFonts.reemKufi(
                               fontSize: 12,
                               fontWeight: FontWeight.w600,
                               color: ObsidianTheme.gold,
@@ -228,7 +228,7 @@ class _AddGoldDialogState extends State<AddGoldDialog> {
                           const Spacer(),
                           Text(
                             CurrencyFormatter.formatEgp(estimated),
-                            style: GoogleFonts.dmMono(
+                            style: GoogleFonts.jetBrainsMono(
                               fontSize: 14,
                               fontWeight: FontWeight.w700,
                               color: ObsidianTheme.gold,
@@ -260,7 +260,7 @@ class _AddGoldDialogState extends State<AddGoldDialog> {
                             ),
                             child: Text(
                               'Cancel',
-                              style: GoogleFonts.dmSans(
+                              style: GoogleFonts.reemKufi(
                                 fontSize: 14,
                                 fontWeight: FontWeight.w600,
                                 color: ObsidianTheme.text2,
@@ -298,8 +298,8 @@ class _AddGoldDialogState extends State<AddGoldDialog> {
                                 ),
                               ),
                               child: Text(
-                                isEditing ? 'Save' : 'Add',
-                                style: GoogleFonts.dmSans(
+                                isEditing ? 'حفظ' : 'إضافة ذهب',
+                                style: GoogleFonts.reemKufi(
                                   fontSize: 14,
                                   fontWeight: FontWeight.w700,
                                   color: Colors.white,
@@ -323,11 +323,11 @@ class _AddGoldDialogState extends State<AddGoldDialog> {
   Widget _buildFieldLabel(String label) {
     return Text(
       label,
-      style: GoogleFonts.dmSans(
-        fontSize: 11,
+      style: GoogleFonts.jetBrainsMono(
+        fontSize: 9,
         fontWeight: FontWeight.w700,
         color: ObsidianTheme.text3,
-        letterSpacing: 0.07 * 11,
+        letterSpacing: 0.18 * 9,
       ),
     );
   }
@@ -336,8 +336,8 @@ class _AddGoldDialogState extends State<AddGoldDialog> {
     return InputDecoration(
       hintText: hintText,
       suffixText: suffixText,
-      hintStyle: GoogleFonts.dmMono(fontSize: 14, color: ObsidianTheme.text3),
-      suffixStyle: GoogleFonts.dmMono(fontSize: 14, color: ObsidianTheme.text3),
+      hintStyle: GoogleFonts.jetBrainsMono(fontSize: 14, color: ObsidianTheme.text3),
+      suffixStyle: GoogleFonts.jetBrainsMono(fontSize: 14, color: ObsidianTheme.text3),
       filled: true,
       fillColor: ObsidianTheme.inputFill,
       contentPadding:
@@ -396,7 +396,7 @@ class _AddGoldDialogState extends State<AddGoldDialog> {
                 ),
                 child: Text(
                   '${k}K',
-                  style: GoogleFonts.dmSans(
+                  style: GoogleFonts.reemKufi(
                     fontSize: 13,
                     fontWeight: FontWeight.w700,
                     color:

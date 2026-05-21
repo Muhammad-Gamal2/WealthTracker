@@ -6,6 +6,7 @@ import 'package:signals_flutter/signals_flutter.dart';
 import 'package:wealth_tracker/core/di/service_locator.dart';
 import 'package:wealth_tracker/core/theme/obsidian_theme.dart';
 import 'package:wealth_tracker/core/widgets/glass_card.dart';
+import 'package:wealth_tracker/core/widgets/trefoil_divider.dart';
 import 'package:wealth_tracker/features/auth/domain/auth_repository.dart';
 import 'package:wealth_tracker/features/settings/presentation/settings_signals.dart';
 
@@ -59,10 +60,10 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 onPressed: () => Navigator.pop(context),
               ),
               Text(
-                'Settings',
-                style: GoogleFonts.spaceGrotesk(
-                  fontSize: 18,
-                  fontWeight: FontWeight.w700,
+                'الإعدادات',
+                style: GoogleFonts.reemKufi(
+                  fontSize: 22,
+                  fontWeight: FontWeight.w600,
                   color: ObsidianTheme.text1,
                 ),
               ),
@@ -86,7 +87,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
                     // ── API KEYS ──
                     _buildSectionHeader(
                       icon: Icons.key_rounded,
-                      label: 'API KEYS',
+                      arabicLabel: 'مفاتيح الخدمات',
+                      englishLabel: 'API KEYS',
                     ),
                     const SizedBox(height: 10),
                     _buildApiKeysCard(),
@@ -95,7 +97,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
                     // ── SECURITY ──
                     _buildSectionHeader(
                       icon: Icons.shield_rounded,
-                      label: 'SECURITY',
+                      arabicLabel: 'الأمان',
+                      englishLabel: 'SECURITY',
                     ),
                     const SizedBox(height: 10),
                     _buildSecurityCard(context),
@@ -104,11 +107,27 @@ class _SettingsScreenState extends State<SettingsScreen> {
                     // ── APPEARANCE ──
                     _buildSectionHeader(
                       icon: Icons.palette_rounded,
-                      label: 'APPEARANCE',
+                      arabicLabel: 'المظهر',
+                      englishLabel: 'APPEARANCE',
                     ),
                     const SizedBox(height: 10),
                     _buildAppearanceCard(),
                     const SizedBox(height: 40),
+
+                    // ── Bottom branding ──
+                    Center(child: TrefoilDivider(width: 120)),
+                    const SizedBox(height: 14),
+                    Center(
+                      child: Text(
+                        'THARY · v1.0.0',
+                        style: GoogleFonts.jetBrainsMono(
+                          fontSize: 9,
+                          color: ObsidianTheme.text3,
+                          letterSpacing: 0.2 * 9,
+                        ),
+                      ),
+                    ),
+                    const SizedBox(height: 24),
                   ],
                 );
 
@@ -136,19 +155,34 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
   Widget _buildSectionHeader({
     required IconData icon,
-    required String label,
+    required String arabicLabel,
+    required String englishLabel,
   }) {
     return Row(
       children: [
         Icon(icon, size: 16, color: ObsidianTheme.accent),
         const SizedBox(width: 8),
         Text(
-          label,
-          style: GoogleFonts.dmSans(
+          arabicLabel,
+          style: GoogleFonts.reemKufi(
             fontSize: 12,
-            fontWeight: FontWeight.w700,
+            fontWeight: FontWeight.w600,
             color: ObsidianTheme.accent,
-            letterSpacing: 0.06 * 12,
+          ),
+        ),
+        Text(
+          ' · ',
+          style: GoogleFonts.reemKufi(
+            fontSize: 12,
+            color: ObsidianTheme.text3,
+          ),
+        ),
+        Text(
+          englishLabel,
+          style: GoogleFonts.jetBrainsMono(
+            fontSize: 9,
+            color: ObsidianTheme.text3,
+            letterSpacing: 0.14 * 9,
           ),
         ),
       ],
@@ -211,11 +245,11 @@ class _SettingsScreenState extends State<SettingsScreen> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          label,
-          style: GoogleFonts.dmSans(
-            fontSize: 12,
-            fontWeight: FontWeight.w600,
+          label.toUpperCase(),
+          style: GoogleFonts.jetBrainsMono(
+            fontSize: 10,
             color: ObsidianTheme.text3,
+            letterSpacing: 0.18 * 10,
           ),
         ),
         const SizedBox(height: 8),
@@ -225,11 +259,11 @@ class _SettingsScreenState extends State<SettingsScreen> {
               child: TextField(
                 controller: controller,
                 obscureText: !showKey,
-                style: GoogleFonts.dmMono(
+                style: GoogleFonts.jetBrainsMono(
                     fontSize: 13, color: ObsidianTheme.text1),
                 decoration: InputDecoration(
                   hintText: 'Paste your API key',
-                  hintStyle: GoogleFonts.dmMono(
+                  hintStyle: GoogleFonts.jetBrainsMono(
                       fontSize: 13, color: ObsidianTheme.text3),
                   filled: true,
                   fillColor: ObsidianTheme.inputFill,
@@ -263,6 +297,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
             _buildIconBtn(
               icon: Icons.save_rounded,
               onTap: onSave,
+              iconColor: ObsidianTheme.accent,
             ),
           ],
         ),
@@ -273,6 +308,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
   Widget _buildIconBtn({
     required IconData icon,
     required VoidCallback onTap,
+    Color? iconColor,
   }) {
     return GestureDetector(
       onTap: onTap,
@@ -284,7 +320,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
           borderRadius: BorderRadius.circular(10),
           border: Border.all(color: ObsidianTheme.border),
         ),
-        child: Icon(icon, size: 18, color: ObsidianTheme.text2),
+        child: Icon(icon, size: 18, color: iconColor ?? ObsidianTheme.text2),
       ),
     );
   }
@@ -301,7 +337,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
             icon: Icons.pin_rounded,
             iconBgColor: ObsidianTheme.inputFill,
             iconColor: ObsidianTheme.text2,
-            title: hasPinConfiguredSignal.value ? 'Change PIN' : 'Set PIN',
+            arabicTitle: 'تغيير الرمز',
+            englishTitle: 'Change PIN',
             subtitle: 'Lock the app with a PIN code',
             trailing: Icon(Icons.chevron_right,
                 color: ObsidianTheme.text3, size: 22),
@@ -317,11 +354,11 @@ class _SettingsScreenState extends State<SettingsScreen> {
               icon: Icons.fingerprint,
               iconBgColor: ObsidianTheme.inputFill,
               iconColor: ObsidianTheme.text2,
-              title: 'Biometric Unlock',
+              arabicTitle: 'فتح بالبصمة',
+              englishTitle: 'Biometric unlock',
               subtitle: 'Use fingerprint or Face ID',
               trailing: _buildToggle(
                 value: useBiometricSignal.value,
-                accent: ObsidianTheme.accent,
                 onChange: (v) => toggleBiometric(v),
               ),
             ),
@@ -336,7 +373,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
               icon: Icons.lock_open_rounded,
               iconBgColor: const Color(0x1AF87171),
               iconColor: ObsidianTheme.lossRed,
-              title: 'Remove PIN',
+              arabicTitle: 'إزالة الرمز',
+              englishTitle: 'Remove PIN',
               subtitle: 'App will no longer be locked',
               titleColor: ObsidianTheme.lossRed,
               onTap: () => _confirmRemovePin(context),
@@ -351,7 +389,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
     required IconData icon,
     required Color iconBgColor,
     required Color iconColor,
-    required String title,
+    required String arabicTitle,
+    required String englishTitle,
     String? subtitle,
     Color? titleColor,
     Widget? trailing,
@@ -365,8 +404,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
         child: Row(
           children: [
             Container(
-              width: 34,
-              height: 34,
+              width: 36,
+              height: 36,
               decoration: BoxDecoration(
                 color: iconBgColor,
                 borderRadius: BorderRadius.circular(9),
@@ -379,19 +418,37 @@ class _SettingsScreenState extends State<SettingsScreen> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
-                    title,
-                    style: GoogleFonts.dmSans(
-                      fontSize: 14,
-                      fontWeight: FontWeight.w600,
-                      color: titleColor ?? ObsidianTheme.text1,
-                    ),
+                  Row(
+                    children: [
+                      Text(
+                        arabicTitle,
+                        style: GoogleFonts.reemKufi(
+                          fontSize: 14,
+                          fontWeight: FontWeight.w600,
+                          color: titleColor ?? ObsidianTheme.text1,
+                        ),
+                      ),
+                      Text(
+                        ' · ',
+                        style: GoogleFonts.reemKufi(
+                          fontSize: 14,
+                          color: ObsidianTheme.text3,
+                        ),
+                      ),
+                      Text(
+                        englishTitle,
+                        style: GoogleFonts.reemKufi(
+                          fontSize: 13,
+                          color: titleColor ?? ObsidianTheme.text2,
+                        ),
+                      ),
+                    ],
                   ),
                   if (subtitle != null) ...[
                     const SizedBox(height: 2),
                     Text(
                       subtitle,
-                      style: GoogleFonts.dmSans(
+                      style: GoogleFonts.reemKufi(
                         fontSize: 12,
                         color: ObsidianTheme.text3,
                       ),
@@ -416,11 +473,11 @@ class _SettingsScreenState extends State<SettingsScreen> {
         icon: Icons.dark_mode_rounded,
         iconBgColor: ObsidianTheme.inputFill,
         iconColor: ObsidianTheme.text2,
-        title: 'Dark Mode',
+        arabicTitle: 'الوضع الداكن',
+        englishTitle: 'Dark mode',
         subtitle: 'Toggle dark theme',
         trailing: _buildToggle(
           value: isDarkModeSignal.value,
-          accent: ObsidianTheme.accent,
           onChange: (v) => toggleDarkMode(v),
         ),
       ),
@@ -431,30 +488,32 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
   Widget _buildToggle({
     required bool value,
-    required Color accent,
     required ValueChanged<bool> onChange,
   }) {
     return GestureDetector(
       onTap: () => onChange(!value),
       child: AnimatedContainer(
         duration: const Duration(milliseconds: 200),
-        width: 44,
-        height: 26,
+        width: 36,
+        height: 22,
         decoration: BoxDecoration(
-          color: value ? accent : const Color(0x1FFFFFFF),
-          borderRadius: BorderRadius.circular(13),
+          color: value ? ObsidianTheme.accent : ObsidianTheme.inputFill,
+          borderRadius: BorderRadius.circular(11),
+          border: value
+              ? null
+              : Border.all(color: ObsidianTheme.strokeStrong),
         ),
         child: AnimatedAlign(
           alignment:
               value ? Alignment.centerRight : Alignment.centerLeft,
           duration: const Duration(milliseconds: 200),
           child: Container(
-            width: 20,
-            height: 20,
+            width: 16,
+            height: 16,
             margin: const EdgeInsets.all(3),
             decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(10),
+              color: value ? ObsidianTheme.bg : ObsidianTheme.text2,
+              borderRadius: BorderRadius.circular(8),
             ),
           ),
         ),
@@ -490,26 +549,40 @@ class _SettingsScreenState extends State<SettingsScreen> {
           side: BorderSide(color: ObsidianTheme.border),
         ),
         title: Text(
-          'Remove PIN',
-          style: GoogleFonts.spaceGrotesk(
-            fontSize: 18,
+          'إزالة الرمز',
+          style: GoogleFonts.amiri(
+            fontSize: 22,
             fontWeight: FontWeight.w700,
             color: ObsidianTheme.text1,
           ),
         ),
-        content: Text(
-          'Are you sure you want to remove your PIN? The app will no longer be locked.',
-          style: GoogleFonts.dmSans(
-            fontSize: 14,
-            color: ObsidianTheme.text2,
-          ),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              'هل تريد إزالة الرمز السري؟ لن يتم قفل التطبيق بعد الآن.',
+              style: GoogleFonts.reemKufi(
+                fontSize: 14,
+                color: ObsidianTheme.text2,
+              ),
+            ),
+            const SizedBox(height: 6),
+            Text(
+              'Are you sure you want to remove your PIN? The app will no longer be locked.',
+              style: GoogleFonts.reemKufi(
+                fontSize: 12,
+                color: ObsidianTheme.text3,
+              ),
+            ),
+          ],
         ),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
             child: Text(
               'Cancel',
-              style: GoogleFonts.dmSans(
+              style: GoogleFonts.reemKufi(
                 fontSize: 14,
                 fontWeight: FontWeight.w500,
                 color: ObsidianTheme.text2,
@@ -523,8 +596,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
               if (context.mounted) Navigator.pop(context);
             },
             child: Text(
-              'Remove',
-              style: GoogleFonts.dmSans(
+              'إزالة',
+              style: GoogleFonts.reemKufi(
                 fontSize: 14,
                 fontWeight: FontWeight.w600,
                 color: ObsidianTheme.lossRed,

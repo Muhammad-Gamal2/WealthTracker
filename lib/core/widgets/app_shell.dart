@@ -1,6 +1,5 @@
-import 'dart:ui';
-
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:wealth_tracker/core/theme/obsidian_theme.dart';
 import 'package:wealth_tracker/features/dashboard/presentation/dashboard_screen.dart';
 import 'package:wealth_tracker/features/gold/presentation/gold_screen.dart';
@@ -21,11 +20,11 @@ class _AppShellState extends State<AppShell> {
   int _currentIndex = 0;
 
   static const List<_NavItem> _navItems = [
-    _NavItem(icon: Icons.dashboard_outlined, activeIcon: Icons.dashboard, label: 'Dashboard'),
-    _NavItem(icon: Icons.savings_outlined, activeIcon: Icons.savings, label: 'Gold'),
-    _NavItem(icon: Icons.trending_up_outlined, activeIcon: Icons.trending_up, label: 'Stocks'),
-    _NavItem(icon: Icons.water_drop_outlined, activeIcon: Icons.water_drop, label: 'Liquidity'),
-    _NavItem(icon: Icons.home_work_outlined, activeIcon: Icons.home_work, label: 'Real Estate'),
+    _NavItem(icon: Icons.home_outlined, activeIcon: Icons.home_rounded, label: 'Dashboard', labelAr: 'الرئيسية'),
+    _NavItem(icon: Icons.savings_outlined, activeIcon: Icons.savings, label: 'Gold', labelAr: 'الذهب'),
+    _NavItem(icon: Icons.trending_up_outlined, activeIcon: Icons.trending_up, label: 'Stocks', labelAr: 'الأسهم'),
+    _NavItem(icon: Icons.water_drop_outlined, activeIcon: Icons.water_drop, label: 'Liquidity', labelAr: 'السيولة'),
+    _NavItem(icon: Icons.home_work_outlined, activeIcon: Icons.home_work, label: 'Real Estate', labelAr: 'العقارات'),
   ];
 
   Widget _buildScreen(int index) {
@@ -121,11 +120,13 @@ class _NavItem {
   final IconData icon;
   final IconData activeIcon;
   final String label;
+  final String labelAr;
 
   const _NavItem({
     required this.icon,
     required this.activeIcon,
     required this.label,
+    required this.labelAr,
   });
 }
 
@@ -195,22 +196,17 @@ class _Sidebar extends StatelessWidget {
             width: 36,
             height: 36,
             decoration: BoxDecoration(
-              color: ObsidianTheme.accentBg,
-              borderRadius: BorderRadius.circular(10),
-            ),
-            child: const Icon(
-              Icons.shield_outlined,
               color: ObsidianTheme.accent,
-              size: 20,
+              borderRadius: BorderRadius.circular(10),
             ),
           ),
           if (!collapsed) ...[
             const SizedBox(width: 10),
             Text(
-              'WealthTracker',
-              style: ObsidianTheme.displayStyle(
-                fontSize: 16,
-                fontWeight: FontWeight.w600,
+              'ثَرِيّ',
+              style: GoogleFonts.amiri(
+                fontSize: 22,
+                fontWeight: FontWeight.w700,
                 color: ObsidianTheme.text1,
               ),
             ),
@@ -228,6 +224,7 @@ class _Sidebar extends StatelessWidget {
           icon: Icons.settings_outlined,
           activeIcon: Icons.settings,
           label: 'Settings',
+          labelAr: 'الإعدادات',
         ),
         isActive: false,
         collapsed: collapsed,
@@ -287,7 +284,7 @@ class _SidebarItem extends StatelessWidget {
                       const SizedBox(width: 12),
                       Expanded(
                         child: Text(
-                          item.label,
+                          item.labelAr,
                           style: ObsidianTheme.bodyStyle(
                             fontSize: 14,
                             fontWeight: isActive ? FontWeight.w600 : FontWeight.w500,
@@ -320,35 +317,68 @@ class _MobileBottomNav extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ClipRect(
-      child: BackdropFilter(
-        filter: ImageFilter.blur(sigmaX: 24, sigmaY: 24),
-        child: Container(
-          decoration: BoxDecoration(
-            color: ObsidianTheme.navBg, // rgba(7,9,15,0.94)
-            border: Border(
-              top: BorderSide(
-                color: ObsidianTheme.border,
-                width: 1,
-              ),
-            ),
+    return Container(
+      decoration: BoxDecoration(
+        color: ObsidianTheme.bg,
+        border: Border(
+          top: BorderSide(
+            color: ObsidianTheme.border,
+            width: 1,
           ),
-          child: SafeArea(
-            top: false,
-            child: NavigationBar(
-              backgroundColor: Colors.transparent,
-              elevation: 0,
-              height: 68,
-              selectedIndex: currentIndex,
-              onDestinationSelected: onItemSelected,
-              destinations: items.map((item) {
-                return NavigationDestination(
-                  icon: Icon(item.icon),
-                  selectedIcon: Icon(item.activeIcon),
-                  label: item.label == 'Real Estate' ? 'Estate' : item.label,
-                );
-              }).toList(),
-            ),
+        ),
+      ),
+      child: Directionality(
+        textDirection: TextDirection.rtl,
+        child: Padding(
+          padding: const EdgeInsets.only(
+            top: 10,
+            bottom: 28,
+            left: 12,
+            right: 12,
+          ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: List.generate(items.length, (i) {
+              final isActive = i == currentIndex;
+              final item = items[i];
+              final color = isActive ? ObsidianTheme.accent : ObsidianTheme.text3;
+              final icon = isActive ? item.activeIcon : item.icon;
+
+              return Expanded(
+                child: GestureDetector(
+                  onTap: () => onItemSelected(i),
+                  behavior: HitTestBehavior.opaque,
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Icon(icon, color: color, size: 24),
+                      const SizedBox(height: 4),
+                      Text(
+                        item.labelAr,
+                        style: GoogleFonts.reemKufi(
+                          fontSize: 10,
+                          color: color,
+                        ),
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                      const SizedBox(height: 4),
+                      if (isActive)
+                        Container(
+                          width: 4,
+                          height: 4,
+                          decoration: BoxDecoration(
+                            color: ObsidianTheme.accent,
+                            shape: BoxShape.circle,
+                          ),
+                        )
+                      else
+                        const SizedBox(width: 4, height: 4),
+                    ],
+                  ),
+                ),
+              );
+            }),
           ),
         ),
       ),

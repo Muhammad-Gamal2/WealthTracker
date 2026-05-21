@@ -39,10 +39,10 @@ class _RealEstateScreenState extends State<RealEstateScreen> {
           child: Row(
             children: [
               Text(
-                'Real Estate',
-                style: GoogleFonts.spaceGrotesk(
-                  fontSize: 18,
-                  fontWeight: FontWeight.w700,
+                'العقارات',
+                style: GoogleFonts.reemKufi(
+                  fontSize: 22,
+                  fontWeight: FontWeight.w600,
                   color: ObsidianTheme.text1,
                 ),
               ),
@@ -69,7 +69,7 @@ class _RealEstateScreenState extends State<RealEstateScreen> {
               return Center(
                 child: Text(
                   'Error: ${realEstateErrorSignal.value}',
-                  style: GoogleFonts.dmSans(
+                  style: GoogleFonts.reemKufi(
                     fontSize: 13,
                     color: ObsidianTheme.lossRed,
                   ),
@@ -95,10 +95,10 @@ class _RealEstateScreenState extends State<RealEstateScreen> {
                             padding:
                                 const EdgeInsets.only(top: 20, bottom: 12),
                             child: SectionTitle(
-                              title: 'Properties',
+                              title: 'الممتلكات · Properties',
                               right: Text(
                                 CurrencyFormatter.formatEgp(totalCurrent),
-                                style: GoogleFonts.dmMono(
+                                style: GoogleFonts.jetBrainsMono(
                                   fontSize: 13,
                                   fontWeight: FontWeight.w700,
                                   color: ObsidianTheme.text2,
@@ -113,9 +113,9 @@ class _RealEstateScreenState extends State<RealEstateScreen> {
                             hasScrollBody: false,
                             child: Center(
                               child: Text(
-                                'No properties yet.\nTap + to add one.',
+                                'لا توجد عقارات بعد.\nاضغط + لإضافة واحد.',
                                 textAlign: TextAlign.center,
-                                style: GoogleFonts.dmSans(
+                                style: GoogleFonts.reemKufi(
                                   fontSize: 13,
                                   color: ObsidianTheme.text3,
                                 ),
@@ -216,8 +216,8 @@ class _RealEstateScreenState extends State<RealEstateScreen> {
           side: BorderSide(color: ObsidianTheme.border),
         ),
         title: Text(
-          'Delete Property',
-          style: GoogleFonts.spaceGrotesk(
+          'إزالة العقار',
+          style: GoogleFonts.amiri(
             fontSize: 18,
             fontWeight: FontWeight.w700,
             color: ObsidianTheme.text1,
@@ -225,7 +225,7 @@ class _RealEstateScreenState extends State<RealEstateScreen> {
         ),
         content: Text(
           'Remove "${item.projectName}"?',
-          style: GoogleFonts.dmSans(
+          style: GoogleFonts.reemKufi(
             fontSize: 14,
             color: ObsidianTheme.text2,
           ),
@@ -235,7 +235,7 @@ class _RealEstateScreenState extends State<RealEstateScreen> {
             onPressed: () => Navigator.pop(context),
             child: Text(
               'Cancel',
-              style: GoogleFonts.dmSans(
+              style: GoogleFonts.reemKufi(
                 fontSize: 14,
                 fontWeight: FontWeight.w500,
                 color: ObsidianTheme.text2,
@@ -249,7 +249,7 @@ class _RealEstateScreenState extends State<RealEstateScreen> {
             },
             child: Text(
               'Delete',
-              style: GoogleFonts.dmSans(
+              style: GoogleFonts.reemKufi(
                 fontSize: 14,
                 fontWeight: FontWeight.w600,
                 color: ObsidianTheme.lossRed,

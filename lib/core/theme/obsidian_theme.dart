@@ -5,37 +5,37 @@ import 'package:wealth_tracker/features/settings/presentation/settings_signals.d
 class ObsidianTheme {
   ObsidianTheme._();
 
-  // ─── Dark palette ──────────────────────────────────────────────
-  static const Color _darkBg = Color(0xFF07090F);
-  static const Color _darkSurface = Color(0xFF0D1119);
-  static const Color _darkSurface2 = Color(0xFF141B28);
-  static const Color _darkCard = Color(0x09FFFFFF);
-  static const Color _darkCardHover = Color(0x10FFFFFF);
-  static const Color _darkBorder = Color(0x13FFFFFF);
-  static const Color _darkText1 = Color(0xFFEEF2FF);
-  static const Color _darkText2 = Color(0x9EEEF2FF);
-  static const Color _darkText3 = Color(0x57EEF2FF);
-  static const Color _darkAccentBg = Color(0x215B9BFF);
-  static const Color _darkAccentGlow = Color(0x615B9BFF);
-  static const Color _darkHeaderBg = Color(0xB807090F);
-  static const Color _darkNavBg = Color(0xF007090F);
-  static const Color _darkInputFill = Color(0x0DFFFFFF);
+  // ─── Thary / Manuscript Identity — Dark palette ────────────────
+  static const Color _darkBg = Color(0xFF14182A);           // midnight
+  static const Color _darkSurface = Color(0xFF0E1224);      // midnightDeep
+  static const Color _darkSurface2 = Color(0xFF1B2038);     // midnightRaised
+  static const Color _darkCard = Color(0xFF1B2038);         // midnightRaised
+  static const Color _darkCardHover = Color(0xFF232846);    // slightly lighter raised
+  static const Color _darkBorder = Color(0x1FF2EAD8);       // stroke: rgba(242,234,216,0.12)
+  static const Color _darkText1 = Color(0xFFF2EAD8);       // cream
+  static const Color _darkText2 = Color(0x9EF2EAD8);       // textMute: rgba(242,234,216,0.62)
+  static const Color _darkText3 = Color(0x6BF2EAD8);       // textDim: rgba(242,234,216,0.42)
+  static const Color _darkAccentBg = Color(0x2ED4A24A);     // saffron at ~18%
+  static const Color _darkAccentGlow = Color(0x61D4A24A);   // saffron glow
+  static const Color _darkHeaderBg = Color(0xFF14182A);     // midnight (no opacity tricks)
+  static const Color _darkNavBg = Color(0xFF14182A);        // midnight
+  static const Color _darkInputFill = Color(0xFF0E1224);    // midnightDeep
 
-  // ─── Light palette ─────────────────────────────────────────────
-  static const Color _lightBg = Color(0xFFF5F6FA);
-  static const Color _lightSurface = Color(0xFFFFFFFF);
-  static const Color _lightSurface2 = Color(0xFFF0F1F5);
-  static const Color _lightCard = Color(0x08000000);
-  static const Color _lightCardHover = Color(0x0F000000);
-  static const Color _lightBorder = Color(0x1F000000);
-  static const Color _lightText1 = Color(0xFF1A1D26);
-  static const Color _lightText2 = Color(0x991A1D26);
-  static const Color _lightText3 = Color(0x571A1D26);
-  static const Color _lightAccentBg = Color(0x1A5B9BFF);
-  static const Color _lightAccentGlow = Color(0x335B9BFF);
-  static const Color _lightHeaderBg = Color(0xDDF5F6FA);
-  static const Color _lightNavBg = Color(0xF0F5F6FA);
-  static const Color _lightInputFill = Color(0x0A000000);
+  // ─── Light palette (dark-first design — same as dark) ──────────
+  static const Color _lightBg = Color(0xFF14182A);
+  static const Color _lightSurface = Color(0xFF0E1224);
+  static const Color _lightSurface2 = Color(0xFF1B2038);
+  static const Color _lightCard = Color(0xFF1B2038);
+  static const Color _lightCardHover = Color(0xFF232846);
+  static const Color _lightBorder = Color(0x1FF2EAD8);
+  static const Color _lightText1 = Color(0xFFF2EAD8);
+  static const Color _lightText2 = Color(0x9EF2EAD8);
+  static const Color _lightText3 = Color(0x6BF2EAD8);
+  static const Color _lightAccentBg = Color(0x2ED4A24A);
+  static const Color _lightAccentGlow = Color(0x61D4A24A);
+  static const Color _lightHeaderBg = Color(0xFF14182A);
+  static const Color _lightNavBg = Color(0xFF14182A);
+  static const Color _lightInputFill = Color(0xFF0E1224);
 
   // ─── Reactive getters ──────────────────────────────────────────
   static bool get _isDark => isDarkModeSignal.value;
@@ -57,29 +57,72 @@ class ObsidianTheme {
   static Color get navBg => _isDark ? _darkNavBg : _lightNavBg;
   static Color get inputFill => _isDark ? _darkInputFill : _lightInputFill;
 
-  // ─── Accent (same in both themes) ──────────────────────────────
-  static const Color accent = Color(0xFF5B9BFF);
+  // ─── Stroke variants ──────────────────────────────────────────
+  static const Color strokeStrong = Color(0x38F2EAD8); // rgba(242,234,216,0.22)
 
-  // ─── Category colors (same in both themes) ────────────────────
-  static const Color gold = Color(0xFFFFCA28);
-  static const Color goldBg = Color(0x1FFFCA28);
-  static const Color green = Color(0xFF34D399);
-  static const Color greenBg = Color(0x1F34D399);
-  static const Color cyan = Color(0xFF38BDF8);
-  static const Color cyanBg = Color(0x1F38BDF8);
-  static const Color orange = Color(0xFFFB923C);
-  static const Color orangeBg = Color(0x1FFB923C);
+  // ─── Extended palette tokens ──────────────────────────────────
+  static const Color midnight = Color(0xFF14182A);
+  static const Color midnightDeep = Color(0xFF0E1224);
+  static const Color midnightRaised = Color(0xFF1B2038);
+  static const Color plum = Color(0xFF3D1A33);
+  static const Color mist = Color(0xFF7D7691);
+  static const Color cream = Color(0xFFF2EAD8);
+  static const Color creamSoft = Color(0xFFE8E0CC);
+  static const Color saffronDeep = Color(0xFFB0833A);
 
-  // ─── Status colors (same in both themes) ──────────────────────
-  static const Color gainGreen = Color(0xFF34D399);
-  static const Color gainGreenBg = Color(0x1F34D399);
-  static const Color lossRed = Color(0xFFF87171);
-  static const Color lossRedBg = Color(0x1FF87171);
+  // ─── Accent (saffron — brand accent) ──────────────────────────
+  static const Color accent = Color(0xFFD4A24A);  // saffron
+  static const Color saffron = Color(0xFFD4A24A);
+
+  // ─── Category colors ──────────────────────────────────────────
+  static const Color gold = Color(0xFFD4A24A);          // saffron
+  static const Color goldBg = Color(0x2ED4A24A);        // rgba(212,162,74,0.18)
+  static const Color green = Color(0xFF8AA688);          // sage
+  static const Color greenBg = Color(0x2E8AA688);       // rgba(138,166,136,0.18)
+  static const Color cyan = Color(0xFF79A3B3);           // teal
+  static const Color cyanBg = Color(0x2E79A3B3);        // rgba(121,163,179,0.18)
+  static const Color orange = Color(0xFFB97D5A);         // terracotta
+  static const Color orangeBg = Color(0x2EB97D5A);      // rgba(185,125,90,0.18)
+
+  // ─── Status colors (gain/loss) ────────────────────────────────
+  static const Color gainGreen = Color(0xFFD4A24A);     // saffron (gains)
+  static const Color gainGreenBg = Color(0x2ED4A24A);
+  static const Color lossRed = Color(0xFFA04848);       // clay (losses)
+  static const Color lossRedBg = Color(0x2EA04848);
+  static const Color clay = Color(0xFFA04848);
 
   // ─── Shape ─────────────────────────────────────────────────────
-  static const double radius = 14.0;
+  static const double radius = 6.0;
+  static const double bottomSheetRadius = 20.0;
+  static const double inputRadius = 4.0;
 
   // ─── Text style helpers ────────────────────────────────────────
+
+  /// Arabic display style — Amiri serif for titles and wordmark
+  static TextStyle arDisplayStyle({
+    double fontSize = 24,
+    FontWeight fontWeight = FontWeight.w700,
+    Color? color,
+  }) {
+    return GoogleFonts.amiri(
+      fontSize: fontSize,
+      fontWeight: fontWeight,
+      color: color ?? text1,
+    );
+  }
+
+  /// Arabic UI style — Reem Kufi for UI labels, buttons, nav
+  static TextStyle arUIStyle({
+    double fontSize = 14,
+    FontWeight fontWeight = FontWeight.w400,
+    Color? color,
+  }) {
+    return GoogleFonts.reemKufi(
+      fontSize: fontSize,
+      fontWeight: fontWeight,
+      color: color ?? text1,
+    );
+  }
 
   static TextStyle displayStyle({
     double fontSize = 24,
@@ -98,7 +141,7 @@ class ObsidianTheme {
     FontWeight fontWeight = FontWeight.w400,
     Color? color,
   }) {
-    return GoogleFonts.dmSans(
+    return GoogleFonts.reemKufi(
       fontSize: fontSize,
       fontWeight: fontWeight,
       color: color ?? text1,
@@ -110,7 +153,7 @@ class ObsidianTheme {
     FontWeight fontWeight = FontWeight.w400,
     Color? color,
   }) {
-    return GoogleFonts.dmMono(
+    return GoogleFonts.jetBrainsMono(
       fontSize: fontSize,
       fontWeight: fontWeight,
       color: color ?? text1,
@@ -210,9 +253,9 @@ class ObsidianTheme {
         ? ThemeData.dark()
         : ThemeData.light();
 
-    final dmSansBase = GoogleFonts.dmSansTextTheme(base.textTheme);
+    final reemKufiBase = GoogleFonts.reemKufiTextTheme(base.textTheme);
 
-    final textTheme = dmSansBase.copyWith(
+    final textTheme = reemKufiBase.copyWith(
       displayLarge: GoogleFonts.spaceGrotesk(
         fontSize: 57, fontWeight: FontWeight.w700, color: text1,
       ),
@@ -234,28 +277,28 @@ class ObsidianTheme {
       titleLarge: GoogleFonts.spaceGrotesk(
         fontSize: 22, fontWeight: FontWeight.w600, color: text1,
       ),
-      titleMedium: GoogleFonts.dmSans(
+      titleMedium: GoogleFonts.reemKufi(
         fontSize: 16, fontWeight: FontWeight.w600, color: text1,
       ),
-      titleSmall: GoogleFonts.dmSans(
+      titleSmall: GoogleFonts.reemKufi(
         fontSize: 14, fontWeight: FontWeight.w600, color: text1,
       ),
-      bodyLarge: GoogleFonts.dmSans(
+      bodyLarge: GoogleFonts.reemKufi(
         fontSize: 16, fontWeight: FontWeight.w400, color: text1,
       ),
-      bodyMedium: GoogleFonts.dmSans(
+      bodyMedium: GoogleFonts.reemKufi(
         fontSize: 14, fontWeight: FontWeight.w400, color: text1,
       ),
-      bodySmall: GoogleFonts.dmSans(
+      bodySmall: GoogleFonts.reemKufi(
         fontSize: 12, fontWeight: FontWeight.w400, color: text2,
       ),
-      labelLarge: GoogleFonts.dmSans(
+      labelLarge: GoogleFonts.reemKufi(
         fontSize: 14, fontWeight: FontWeight.w600, color: text1,
       ),
-      labelMedium: GoogleFonts.dmSans(
+      labelMedium: GoogleFonts.reemKufi(
         fontSize: 12, fontWeight: FontWeight.w500, color: text2,
       ),
-      labelSmall: GoogleFonts.dmSans(
+      labelSmall: GoogleFonts.reemKufi(
         fontSize: 11, fontWeight: FontWeight.w500, color: text3,
       ),
     );
@@ -287,7 +330,7 @@ class ObsidianTheme {
       scrim: Colors.black,
       inverseSurface: text1,
       onInverseSurface: bg,
-      inversePrimary: const Color(0xFF1A3A6E),
+      inversePrimary: saffronDeep,
       surfaceContainerHighest: surface2,
       surfaceContainerHigh: surface2,
       surfaceContainer: surface,
@@ -304,7 +347,7 @@ class ObsidianTheme {
       colorScheme: colorScheme,
       scaffoldBackgroundColor: bg,
       textTheme: textTheme,
-      fontFamily: GoogleFonts.dmSans().fontFamily,
+      fontFamily: GoogleFonts.reemKufi().fontFamily,
 
       appBarTheme: AppBarTheme(
         backgroundColor: Colors.transparent,
@@ -341,11 +384,11 @@ class ObsidianTheme {
         }),
         labelTextStyle: WidgetStateProperty.resolveWith((states) {
           if (states.contains(WidgetState.selected)) {
-            return GoogleFonts.dmSans(
+            return GoogleFonts.reemKufi(
               fontSize: 11, fontWeight: FontWeight.w600, color: accent,
             );
           }
-          return GoogleFonts.dmSans(
+          return GoogleFonts.reemKufi(
             fontSize: 11, fontWeight: FontWeight.w500, color: text3,
           );
         }),
@@ -369,29 +412,29 @@ class ObsidianTheme {
         fillColor: inputFill,
         contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
         border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(radius),
+          borderRadius: BorderRadius.circular(inputRadius),
           borderSide: BorderSide(color: border, width: 1),
         ),
         enabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(radius),
+          borderRadius: BorderRadius.circular(inputRadius),
           borderSide: BorderSide(color: border, width: 1),
         ),
         focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(radius),
+          borderRadius: BorderRadius.circular(inputRadius),
           borderSide: const BorderSide(color: accent, width: 1.5),
         ),
         errorBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(radius),
+          borderRadius: BorderRadius.circular(inputRadius),
           borderSide: const BorderSide(color: lossRed, width: 1),
         ),
         focusedErrorBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(radius),
+          borderRadius: BorderRadius.circular(inputRadius),
           borderSide: const BorderSide(color: lossRed, width: 1.5),
         ),
-        labelStyle: GoogleFonts.dmSans(
+        labelStyle: GoogleFonts.reemKufi(
           fontSize: 14, fontWeight: FontWeight.w400, color: text2,
         ),
-        hintStyle: GoogleFonts.dmSans(
+        hintStyle: GoogleFonts.reemKufi(
           fontSize: 14, fontWeight: FontWeight.w400, color: text3,
         ),
       ),
@@ -406,7 +449,7 @@ class ObsidianTheme {
         titleTextStyle: GoogleFonts.spaceGrotesk(
           fontSize: 20, fontWeight: FontWeight.w600, color: text1,
         ),
-        contentTextStyle: GoogleFonts.dmSans(
+        contentTextStyle: GoogleFonts.reemKufi(
           fontSize: 14, fontWeight: FontWeight.w400, color: text2,
         ),
       ),
@@ -416,7 +459,7 @@ class ObsidianTheme {
           backgroundColor: const WidgetStatePropertyAll(accent),
           foregroundColor: WidgetStatePropertyAll(bg),
           textStyle: WidgetStatePropertyAll(
-            GoogleFonts.dmSans(fontSize: 14, fontWeight: FontWeight.w600),
+            GoogleFonts.reemKufi(fontSize: 14, fontWeight: FontWeight.w600),
           ),
           shape: WidgetStatePropertyAll(
             RoundedRectangleBorder(
@@ -433,7 +476,7 @@ class ObsidianTheme {
         style: ButtonStyle(
           foregroundColor: WidgetStatePropertyAll(text2),
           textStyle: WidgetStatePropertyAll(
-            GoogleFonts.dmSans(fontSize: 14, fontWeight: FontWeight.w500),
+            GoogleFonts.reemKufi(fontSize: 14, fontWeight: FontWeight.w500),
           ),
           shape: WidgetStatePropertyAll(
             RoundedRectangleBorder(
@@ -456,7 +499,7 @@ class ObsidianTheme {
           borderRadius: BorderRadius.circular(radius),
           side: BorderSide(color: border, width: 1),
         ),
-        textStyle: GoogleFonts.dmSans(
+        textStyle: GoogleFonts.reemKufi(
           fontSize: 14, fontWeight: FontWeight.w400, color: text1,
         ),
       ),
@@ -484,7 +527,7 @@ class ObsidianTheme {
 
       snackBarTheme: SnackBarThemeData(
         backgroundColor: surface2,
-        contentTextStyle: GoogleFonts.dmSans(
+        contentTextStyle: GoogleFonts.reemKufi(
           fontSize: 14, fontWeight: FontWeight.w400, color: text1,
         ),
         shape: RoundedRectangleBorder(
@@ -508,11 +551,20 @@ class ObsidianTheme {
       listTileTheme: ListTileThemeData(
         iconColor: text2,
         textColor: text1,
-        subtitleTextStyle: GoogleFonts.dmSans(
+        subtitleTextStyle: GoogleFonts.reemKufi(
           fontSize: 12, fontWeight: FontWeight.w400, color: text2,
         ),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(radius),
+        ),
+      ),
+
+      bottomSheetTheme: BottomSheetThemeData(
+        backgroundColor: surface2,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.vertical(
+            top: Radius.circular(bottomSheetRadius),
+          ),
         ),
       ),
     );

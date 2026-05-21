@@ -78,7 +78,7 @@ class RealEstateItemTile extends StatelessWidget {
                   padding: const EdgeInsets.only(top: 10),
                   child: Text(
                     item.projectName,
-                    style: GoogleFonts.dmSans(
+                    style: GoogleFonts.reemKufi(
                       fontSize: 15,
                       fontWeight: FontWeight.w600,
                       color: ObsidianTheme.text1,
@@ -102,7 +102,7 @@ class RealEstateItemTile extends StatelessWidget {
                     value: 'edit',
                     child: Text(
                       'Edit',
-                      style: GoogleFonts.dmSans(
+                      style: GoogleFonts.reemKufi(
                         fontSize: 14,
                         color: ObsidianTheme.text1,
                       ),
@@ -112,7 +112,7 @@ class RealEstateItemTile extends StatelessWidget {
                     value: 'delete',
                     child: Text(
                       'Delete',
-                      style: GoogleFonts.dmSans(
+                      style: GoogleFonts.reemKufi(
                         fontSize: 14,
                         color: ObsidianTheme.lossRed,
                       ),
@@ -156,7 +156,7 @@ class RealEstateItemTile extends StatelessWidget {
                 children: [
                   Text(
                     'Current Value',
-                    style: GoogleFonts.dmSans(
+                    style: GoogleFonts.reemKufi(
                       fontSize: 11,
                       fontWeight: FontWeight.w600,
                       color: ObsidianTheme.text3,
@@ -165,7 +165,7 @@ class RealEstateItemTile extends StatelessWidget {
                   const SizedBox(height: 4),
                   Text(
                     CurrencyFormatter.formatEgp(currentValue),
-                    style: GoogleFonts.dmMono(
+                    style: GoogleFonts.jetBrainsMono(
                       fontSize: 20,
                       fontWeight: FontWeight.w700,
                       color: ObsidianTheme.text1,
@@ -184,7 +184,7 @@ class RealEstateItemTile extends StatelessWidget {
                 ),
                 child: Text(
                   '${gainPercent >= 0 ? '+' : ''}${gainPercent.toStringAsFixed(1)}%',
-                  style: GoogleFonts.dmMono(
+                  style: GoogleFonts.jetBrainsMono(
                     fontSize: 13,
                     fontWeight: FontWeight.w700,
                     color: gainPercent >= 0
@@ -206,7 +206,7 @@ class RealEstateItemTile extends StatelessWidget {
       children: [
         Text(
           label,
-          style: GoogleFonts.dmSans(
+          style: GoogleFonts.reemKufi(
             fontSize: 10,
             fontWeight: FontWeight.w700,
             color: ObsidianTheme.text3,
@@ -216,7 +216,7 @@ class RealEstateItemTile extends StatelessWidget {
         const SizedBox(height: 2),
         Text(
           value,
-          style: GoogleFonts.dmMono(
+          style: GoogleFonts.jetBrainsMono(
             fontSize: 13,
             fontWeight: FontWeight.w500,
             color: ObsidianTheme.text2,

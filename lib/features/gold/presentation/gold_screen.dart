@@ -52,10 +52,10 @@ class _GoldScreenState extends State<GoldScreen> {
           child: Row(
             children: [
               Text(
-                'Gold',
-                style: GoogleFonts.spaceGrotesk(
-                  fontSize: 18,
-                  fontWeight: FontWeight.w700,
+                'الذهب',
+                style: GoogleFonts.reemKufi(
+                  fontSize: 22,
+                  fontWeight: FontWeight.w600,
                   color: ObsidianTheme.text1,
                 ),
               ),
@@ -80,7 +80,7 @@ class _GoldScreenState extends State<GoldScreen> {
               return Center(
                 child: Text(
                   'Error: ${goldErrorSignal.value}',
-                  style: GoogleFonts.dmSans(
+                  style: GoogleFonts.reemKufi(
                     fontSize: 13,
                     color: ObsidianTheme.lossRed,
                   ),
@@ -117,10 +117,10 @@ class _GoldScreenState extends State<GoldScreen> {
                           child: Padding(
                             padding: const EdgeInsets.only(top: 8, bottom: 12),
                             child: SectionTitle(
-                              title: 'Holdings',
+                              title: 'الممتلكات · Holdings',
                               right: Text(
                                 CurrencyFormatter.formatEgp(totalEgp),
-                                style: GoogleFonts.dmMono(
+                                style: GoogleFonts.jetBrainsMono(
                                   fontSize: 13,
                                   fontWeight: FontWeight.w700,
                                   color: ObsidianTheme.gold,
@@ -135,9 +135,9 @@ class _GoldScreenState extends State<GoldScreen> {
                             hasScrollBody: false,
                             child: Center(
                               child: Text(
-                                'No gold items yet.\nTap + to add one.',
+                                'لا توجد عناصر ذهبية بعد.\nاضغط + لإضافة واحد.',
                                 textAlign: TextAlign.center,
-                                style: GoogleFonts.dmSans(
+                                style: GoogleFonts.reemKufi(
                                   fontSize: 13,
                                   color: ObsidianTheme.text3,
                                 ),
@@ -231,8 +231,8 @@ class _GoldScreenState extends State<GoldScreen> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            'Current Gold Prices (EGP/gram)',
-            style: GoogleFonts.dmSans(
+            'أسعار اليوم · per gram',
+            style: GoogleFonts.jetBrainsMono(
               fontSize: 12,
               fontWeight: FontWeight.w600,
               color: ObsidianTheme.text2,
@@ -256,7 +256,7 @@ class _GoldScreenState extends State<GoldScreen> {
                 const SizedBox(width: 4),
                 Text(
                   'Prices may be outdated',
-                  style: GoogleFonts.dmSans(
+                  style: GoogleFonts.reemKufi(
                     fontSize: 11,
                     color: ObsidianTheme.lossRed,
                   ),
@@ -274,7 +274,7 @@ class _GoldScreenState extends State<GoldScreen> {
       children: [
         Text(
           karat,
-          style: GoogleFonts.dmSans(
+          style: GoogleFonts.reemKufi(
             fontSize: 11,
             fontWeight: FontWeight.w700,
             color: ObsidianTheme.gold,
@@ -283,7 +283,7 @@ class _GoldScreenState extends State<GoldScreen> {
         const SizedBox(height: 2),
         Text(
           CurrencyFormatter.formatEgp(price),
-          style: GoogleFonts.dmMono(
+          style: GoogleFonts.jetBrainsMono(
             fontSize: 12,
             fontWeight: FontWeight.w500,
             color: ObsidianTheme.text1,
@@ -307,8 +307,8 @@ class _GoldScreenState extends State<GoldScreen> {
           side: BorderSide(color: ObsidianTheme.border),
         ),
         title: Text(
-          'Delete Gold Item',
-          style: GoogleFonts.spaceGrotesk(
+          'إزالة العنصر',
+          style: GoogleFonts.amiri(
             fontSize: 18,
             fontWeight: FontWeight.w700,
             color: ObsidianTheme.text1,
@@ -316,7 +316,7 @@ class _GoldScreenState extends State<GoldScreen> {
         ),
         content: Text(
           'Remove "${item.label}"?',
-          style: GoogleFonts.dmSans(
+          style: GoogleFonts.reemKufi(
             fontSize: 14,
             color: ObsidianTheme.text2,
           ),
@@ -326,7 +326,7 @@ class _GoldScreenState extends State<GoldScreen> {
             onPressed: () => Navigator.pop(context),
             child: Text(
               'Cancel',
-              style: GoogleFonts.dmSans(
+              style: GoogleFonts.reemKufi(
                 fontSize: 14,
                 fontWeight: FontWeight.w500,
                 color: ObsidianTheme.text2,
@@ -340,7 +340,7 @@ class _GoldScreenState extends State<GoldScreen> {
             },
             child: Text(
               'Delete',
-              style: GoogleFonts.dmSans(
+              style: GoogleFonts.reemKufi(
                 fontSize: 14,
                 fontWeight: FontWeight.w600,
                 color: ObsidianTheme.lossRed,

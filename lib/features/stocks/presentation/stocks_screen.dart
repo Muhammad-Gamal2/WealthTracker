@@ -66,10 +66,10 @@ class _StocksScreenState extends State<StocksScreen> {
           child: Row(
             children: [
               Text(
-                'Stocks',
-                style: GoogleFonts.spaceGrotesk(
-                  fontSize: 18,
-                  fontWeight: FontWeight.w700,
+                'الأسهم',
+                style: GoogleFonts.reemKufi(
+                  fontSize: 22,
+                  fontWeight: FontWeight.w600,
                   color: ObsidianTheme.text1,
                 ),
               ),
@@ -95,7 +95,7 @@ class _StocksScreenState extends State<StocksScreen> {
               return Center(
                 child: Text(
                   'Error: ${stocksErrorSignal.value}',
-                  style: GoogleFonts.dmSans(
+                  style: GoogleFonts.reemKufi(
                     fontSize: 13,
                     color: ObsidianTheme.lossRed,
                   ),
@@ -130,10 +130,10 @@ class _StocksScreenState extends State<StocksScreen> {
                             padding:
                                 const EdgeInsets.only(top: 8, bottom: 12),
                             child: SectionTitle(
-                              title: 'Holdings',
+                              title: 'الممتلكات · Holdings',
                               right: Text(
                                 '${items.length} stock${items.length == 1 ? '' : 's'}',
-                                style: GoogleFonts.dmSans(
+                                style: GoogleFonts.reemKufi(
                                   fontSize: 12,
                                   fontWeight: FontWeight.w600,
                                   color: ObsidianTheme.text3,
@@ -147,9 +147,9 @@ class _StocksScreenState extends State<StocksScreen> {
                             hasScrollBody: false,
                             child: Center(
                               child: Text(
-                                'No stocks yet.\nTap + to add one.',
+                                'لا توجد أسهم بعد.\nاضغط + لإضافة واحد.',
                                 textAlign: TextAlign.center,
-                                style: GoogleFonts.dmSans(
+                                style: GoogleFonts.reemKufi(
                                   fontSize: 13,
                                   color: ObsidianTheme.text3,
                                 ),
@@ -254,7 +254,7 @@ class _StocksScreenState extends State<StocksScreen> {
               children: [
                 Text(
                   'Exchange Rate',
-                  style: GoogleFonts.dmSans(
+                  style: GoogleFonts.reemKufi(
                     fontSize: 12,
                     fontWeight: FontWeight.w600,
                     color: ObsidianTheme.text2,
@@ -266,7 +266,7 @@ class _StocksScreenState extends State<StocksScreen> {
                     children: [
                       TextSpan(
                         text: '1 USD = EGP ',
-                        style: GoogleFonts.dmSans(
+                        style: GoogleFonts.reemKufi(
                           fontSize: 13,
                           color: ObsidianTheme.text2,
                         ),
@@ -275,7 +275,7 @@ class _StocksScreenState extends State<StocksScreen> {
                         text: rate > 0
                             ? rate.toStringAsFixed(2)
                             : '--',
-                        style: GoogleFonts.dmMono(
+                        style: GoogleFonts.jetBrainsMono(
                           fontSize: 15,
                           fontWeight: FontWeight.w700,
                           color: ObsidianTheme.green,
@@ -293,7 +293,7 @@ class _StocksScreenState extends State<StocksScreen> {
                       const SizedBox(width: 4),
                       Text(
                         'Prices may be outdated',
-                        style: GoogleFonts.dmSans(
+                        style: GoogleFonts.reemKufi(
                           fontSize: 11,
                           color: ObsidianTheme.lossRed,
                         ),
@@ -309,7 +309,7 @@ class _StocksScreenState extends State<StocksScreen> {
             children: [
               Text(
                 'Portfolio Total',
-                style: GoogleFonts.dmSans(
+                style: GoogleFonts.reemKufi(
                   fontSize: 12,
                   fontWeight: FontWeight.w600,
                   color: ObsidianTheme.text2,
@@ -318,7 +318,7 @@ class _StocksScreenState extends State<StocksScreen> {
               const SizedBox(height: 4),
               Text(
                 CurrencyFormatter.formatEgp(totalEgp),
-                style: GoogleFonts.dmMono(
+                style: GoogleFonts.jetBrainsMono(
                   fontSize: 15,
                   fontWeight: FontWeight.w700,
                   color: ObsidianTheme.text1,
@@ -327,7 +327,7 @@ class _StocksScreenState extends State<StocksScreen> {
               const SizedBox(height: 2),
               Text(
                 CurrencyFormatter.formatUsd(totalUsd),
-                style: GoogleFonts.dmMono(
+                style: GoogleFonts.jetBrainsMono(
                   fontSize: 12,
                   color: ObsidianTheme.text3,
                 ),
@@ -353,8 +353,8 @@ class _StocksScreenState extends State<StocksScreen> {
           side: BorderSide(color: ObsidianTheme.border),
         ),
         title: Text(
-          'Delete Stock',
-          style: GoogleFonts.spaceGrotesk(
+          'إزالة السهم',
+          style: GoogleFonts.amiri(
             fontSize: 18,
             fontWeight: FontWeight.w700,
             color: ObsidianTheme.text1,
@@ -362,7 +362,7 @@ class _StocksScreenState extends State<StocksScreen> {
         ),
         content: Text(
           'Remove "${item.symbol}"?',
-          style: GoogleFonts.dmSans(
+          style: GoogleFonts.reemKufi(
             fontSize: 14,
             color: ObsidianTheme.text2,
           ),
@@ -372,7 +372,7 @@ class _StocksScreenState extends State<StocksScreen> {
             onPressed: () => Navigator.pop(context),
             child: Text(
               'Cancel',
-              style: GoogleFonts.dmSans(
+              style: GoogleFonts.reemKufi(
                 fontSize: 14,
                 fontWeight: FontWeight.w500,
                 color: ObsidianTheme.text2,
@@ -386,7 +386,7 @@ class _StocksScreenState extends State<StocksScreen> {
             },
             child: Text(
               'Delete',
-              style: GoogleFonts.dmSans(
+              style: GoogleFonts.reemKufi(
                 fontSize: 14,
                 fontWeight: FontWeight.w600,
                 color: ObsidianTheme.lossRed,

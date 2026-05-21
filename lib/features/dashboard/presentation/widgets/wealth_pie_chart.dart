@@ -28,7 +28,8 @@ class _WealthPieChartState extends State<WealthPieChart> {
     ObsidianTheme.orange,
   ];
 
-  static const _labels = ['Gold', 'Stocks', 'Liquidity', 'Real Estate'];
+  static const _labelsAr = ['ذهب', 'أسهم', 'سيولة', 'عقارات'];
+  static const _labelsEn = ['Gold', 'Stocks', 'Liquidity', 'Real Estate'];
 
   @override
   Widget build(BuildContext context) {
@@ -40,7 +41,7 @@ class _WealthPieChartState extends State<WealthPieChart> {
           child: Text(
             'Add items to see your wealth breakdown',
             textAlign: TextAlign.center,
-            style: GoogleFonts.dmSans(
+            style: GoogleFonts.reemKufi(
               fontSize: 14,
               color: ObsidianTheme.text3,
             ),
@@ -101,7 +102,7 @@ class _WealthPieChartState extends State<WealthPieChart> {
             final isActive = _touchedIndex == null || _touchedIndex == i;
             return _LegendItem(
               color: _colors[i],
-              label: _labels[i],
+              labelAr: _labelsAr[i],
               percent: (values[i] / summary.totalEgp * 100),
               isActive: isActive,
             );
@@ -125,7 +126,7 @@ class _WealthPieChartState extends State<WealthPieChart> {
           color: _colors[i],
           radius: isTouched ? 54 : 48,
           title: pct < 5 ? '' : '${pct.toStringAsFixed(1)}%',
-          titleStyle: GoogleFonts.dmMono(
+          titleStyle: GoogleFonts.jetBrainsMono(
             fontSize: 12,
             fontWeight: FontWeight.w700,
             color: ObsidianTheme.text1,
@@ -148,16 +149,16 @@ class _WealthPieChartState extends State<WealthPieChart> {
         children: [
           Text(
             '${pct.toStringAsFixed(1)}%',
-            style: GoogleFonts.dmMono(
-              fontSize: 18,
+            style: GoogleFonts.spaceGrotesk(
+              fontSize: 13,
               fontWeight: FontWeight.w700,
               color: ObsidianTheme.text1,
             ),
           ),
           const SizedBox(height: 2),
           Text(
-            _labels[_touchedIndex!],
-            style: GoogleFonts.dmSans(
+            _labelsAr[_touchedIndex!],
+            style: GoogleFonts.reemKufi(
               fontSize: 12,
               fontWeight: FontWeight.w500,
               color: ObsidianTheme.text3,
@@ -171,18 +172,18 @@ class _WealthPieChartState extends State<WealthPieChart> {
       mainAxisSize: MainAxisSize.min,
       children: [
         Text(
-          'Total',
-          style: GoogleFonts.dmSans(
-            fontSize: 14,
+          '100%',
+          style: GoogleFonts.spaceGrotesk(
+            fontSize: 13,
             fontWeight: FontWeight.w600,
             color: ObsidianTheme.text1,
           ),
         ),
         const SizedBox(height: 2),
         Text(
-          'Portfolio',
-          style: GoogleFonts.dmSans(
-            fontSize: 12,
+          'TOTAL',
+          style: GoogleFonts.jetBrainsMono(
+            fontSize: 6,
             fontWeight: FontWeight.w500,
             color: ObsidianTheme.text3,
           ),
@@ -194,13 +195,13 @@ class _WealthPieChartState extends State<WealthPieChart> {
 
 class _LegendItem extends StatelessWidget {
   final Color color;
-  final String label;
+  final String labelAr;
   final double percent;
   final bool isActive;
 
   const _LegendItem({
     required this.color,
-    required this.label,
+    required this.labelAr,
     required this.percent,
     required this.isActive,
   });
@@ -229,8 +230,8 @@ class _LegendItem extends StatelessWidget {
           ),
           const SizedBox(width: 6),
           Text(
-            label,
-            style: GoogleFonts.dmSans(
+            labelAr,
+            style: GoogleFonts.reemKufi(
               fontSize: 12,
               fontWeight: FontWeight.w500,
               color: isActive ? ObsidianTheme.text1 : ObsidianTheme.text2,
@@ -239,7 +240,7 @@ class _LegendItem extends StatelessWidget {
           const SizedBox(width: 4),
           Text(
             '${percent.toStringAsFixed(1)}%',
-            style: GoogleFonts.dmMono(
+            style: GoogleFonts.jetBrainsMono(
               fontSize: 11,
               fontWeight: FontWeight.w600,
               color: color,

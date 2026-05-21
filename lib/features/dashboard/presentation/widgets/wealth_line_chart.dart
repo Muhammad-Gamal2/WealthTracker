@@ -20,7 +20,7 @@ class WealthLineChart extends StatelessWidget {
           child: Text(
             'Chart will appear after 2+ days of data',
             textAlign: TextAlign.center,
-            style: GoogleFonts.dmSans(
+            style: GoogleFonts.reemKufi(
               fontSize: 14,
               color: ObsidianTheme.text3,
             ),
@@ -55,7 +55,7 @@ class WealthLineChart extends StatelessWidget {
                 final snap = snapshots[idx];
                 return LineTooltipItem(
                   '${snap.date}\n${CurrencyFormatter.formatEgp(snap.totalValueEgp)}',
-                  GoogleFonts.dmMono(
+                  GoogleFonts.jetBrainsMono(
                     fontSize: 12,
                     fontWeight: FontWeight.w500,
                     color: ObsidianTheme.text1,
@@ -69,7 +69,7 @@ class WealthLineChart extends StatelessWidget {
             drawVerticalLine: false,
             horizontalInterval: padding > 0 ? (maxY - minY) / 4 : null,
             getDrawingHorizontalLine: (value) => FlLine(
-              color: ObsidianTheme.inputFill, // rgba(255,255,255,0.05)
+              color: ObsidianTheme.border,
               strokeWidth: 1,
             ),
           ),
@@ -82,7 +82,7 @@ class WealthLineChart extends StatelessWidget {
                   padding: const EdgeInsets.only(right: 4),
                   child: Text(
                     _shortAmount(value),
-                    style: GoogleFonts.dmMono(
+                    style: GoogleFonts.jetBrainsMono(
                       fontSize: 9,
                       fontWeight: FontWeight.w400,
                       color: ObsidianTheme.text3,
@@ -108,7 +108,7 @@ class WealthLineChart extends StatelessWidget {
                     child: Text(
                       DateFormatter.toShort(
                           _parseDate(snapshots[idx].date)),
-                      style: GoogleFonts.dmMono(
+                      style: GoogleFonts.jetBrainsMono(
                         fontSize: 9,
                         fontWeight: FontWeight.w400,
                         color: ObsidianTheme.text3,

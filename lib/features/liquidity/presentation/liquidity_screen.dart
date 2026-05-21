@@ -52,10 +52,10 @@ class _LiquidityScreenState extends State<LiquidityScreen> {
           child: Row(
             children: [
               Text(
-                'Liquidity',
-                style: GoogleFonts.spaceGrotesk(
-                  fontSize: 18,
-                  fontWeight: FontWeight.w700,
+                'السيولة',
+                style: GoogleFonts.reemKufi(
+                  fontSize: 22,
+                  fontWeight: FontWeight.w600,
                   color: ObsidianTheme.text1,
                 ),
               ),
@@ -80,7 +80,7 @@ class _LiquidityScreenState extends State<LiquidityScreen> {
               return Center(
                 child: Text(
                   'Error: ${liquidityErrorSignal.value}',
-                  style: GoogleFonts.dmSans(
+                  style: GoogleFonts.reemKufi(
                     fontSize: 13,
                     color: ObsidianTheme.lossRed,
                   ),
@@ -117,10 +117,10 @@ class _LiquidityScreenState extends State<LiquidityScreen> {
                           child: Padding(
                             padding: const EdgeInsets.only(top: 8, bottom: 12),
                             child: SectionTitle(
-                              title: 'Cash Accounts',
+                              title: 'الحسابات النقدية · Cash Accounts',
                               right: Text(
                                 CurrencyFormatter.formatEgp(totalEgp),
-                                style: GoogleFonts.dmMono(
+                                style: GoogleFonts.jetBrainsMono(
                                   fontSize: 13,
                                   fontWeight: FontWeight.w700,
                                   color: ObsidianTheme.cyan,
@@ -134,9 +134,9 @@ class _LiquidityScreenState extends State<LiquidityScreen> {
                             hasScrollBody: false,
                             child: Center(
                               child: Text(
-                                'No cash accounts yet.\nTap + to add one.',
+                                'لا توجد حسابات نقدية بعد.\nاضغط + لإضافة واحد.',
                                 textAlign: TextAlign.center,
-                                style: GoogleFonts.dmSans(
+                                style: GoogleFonts.reemKufi(
                                   fontSize: 13,
                                   color: ObsidianTheme.text3,
                                 ),
@@ -235,7 +235,7 @@ class _LiquidityScreenState extends State<LiquidityScreen> {
               children: [
                 Text(
                   'Exchange Rate',
-                  style: GoogleFonts.dmSans(
+                  style: GoogleFonts.reemKufi(
                     fontSize: 12,
                     fontWeight: FontWeight.w600,
                     color: ObsidianTheme.text2,
@@ -247,7 +247,7 @@ class _LiquidityScreenState extends State<LiquidityScreen> {
                     children: [
                       TextSpan(
                         text: '1 USD = EGP ',
-                        style: GoogleFonts.dmSans(
+                        style: GoogleFonts.reemKufi(
                           fontSize: 14,
                           fontWeight: FontWeight.w500,
                           color: ObsidianTheme.text1,
@@ -255,7 +255,7 @@ class _LiquidityScreenState extends State<LiquidityScreen> {
                       ),
                       TextSpan(
                         text: CurrencyFormatter.formatNumber(p.usdToEgpRate),
-                        style: GoogleFonts.dmMono(
+                        style: GoogleFonts.jetBrainsMono(
                           fontSize: 14,
                           fontWeight: FontWeight.w700,
                           color: ObsidianTheme.cyan,
@@ -273,7 +273,7 @@ class _LiquidityScreenState extends State<LiquidityScreen> {
                       const SizedBox(width: 4),
                       Text(
                         'Rate may be outdated',
-                        style: GoogleFonts.dmSans(
+                        style: GoogleFonts.reemKufi(
                           fontSize: 11,
                           color: ObsidianTheme.lossRed,
                         ),
@@ -289,7 +289,7 @@ class _LiquidityScreenState extends State<LiquidityScreen> {
             children: [
               Text(
                 'Total',
-                style: GoogleFonts.dmSans(
+                style: GoogleFonts.reemKufi(
                   fontSize: 11,
                   fontWeight: FontWeight.w600,
                   color: ObsidianTheme.text3,
@@ -298,7 +298,7 @@ class _LiquidityScreenState extends State<LiquidityScreen> {
               const SizedBox(height: 4),
               Text(
                 CurrencyFormatter.formatUsd(totalUsd),
-                style: GoogleFonts.dmMono(
+                style: GoogleFonts.jetBrainsMono(
                   fontSize: 14,
                   fontWeight: FontWeight.w700,
                   color: ObsidianTheme.text1,
@@ -307,7 +307,7 @@ class _LiquidityScreenState extends State<LiquidityScreen> {
               const SizedBox(height: 2),
               Text(
                 CurrencyFormatter.formatEgp(totalEgp),
-                style: GoogleFonts.dmMono(
+                style: GoogleFonts.jetBrainsMono(
                   fontSize: 12,
                   fontWeight: FontWeight.w500,
                   color: ObsidianTheme.text2,
@@ -334,8 +334,8 @@ class _LiquidityScreenState extends State<LiquidityScreen> {
           side: BorderSide(color: ObsidianTheme.border),
         ),
         title: Text(
-          'Delete Item',
-          style: GoogleFonts.spaceGrotesk(
+          'إزالة العنصر',
+          style: GoogleFonts.amiri(
             fontSize: 18,
             fontWeight: FontWeight.w700,
             color: ObsidianTheme.text1,
@@ -343,7 +343,7 @@ class _LiquidityScreenState extends State<LiquidityScreen> {
         ),
         content: Text(
           'Remove "${item.label}"?',
-          style: GoogleFonts.dmSans(
+          style: GoogleFonts.reemKufi(
             fontSize: 14,
             color: ObsidianTheme.text2,
           ),
@@ -353,7 +353,7 @@ class _LiquidityScreenState extends State<LiquidityScreen> {
             onPressed: () => Navigator.pop(context),
             child: Text(
               'Cancel',
-              style: GoogleFonts.dmSans(
+              style: GoogleFonts.reemKufi(
                 fontSize: 14,
                 fontWeight: FontWeight.w500,
                 color: ObsidianTheme.text2,
@@ -367,7 +367,7 @@ class _LiquidityScreenState extends State<LiquidityScreen> {
             },
             child: Text(
               'Delete',
-              style: GoogleFonts.dmSans(
+              style: GoogleFonts.reemKufi(
                 fontSize: 14,
                 fontWeight: FontWeight.w600,
                 color: ObsidianTheme.lossRed,

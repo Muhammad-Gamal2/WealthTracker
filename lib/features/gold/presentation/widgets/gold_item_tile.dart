@@ -56,7 +56,7 @@ class GoldItemTile extends StatelessWidget {
                 children: [
                   Text(
                     item.label.isEmpty ? '${item.karat}K Gold' : item.label,
-                    style: GoogleFonts.dmSans(
+                    style: GoogleFonts.reemKufi(
                       fontSize: 14,
                       fontWeight: FontWeight.w600,
                       color: ObsidianTheme.text1,
@@ -65,7 +65,7 @@ class GoldItemTile extends StatelessWidget {
                   const SizedBox(height: 2),
                   Text(
                     '${item.karat}K · ${CurrencyFormatter.formatGrams(item.weightGrams)}',
-                    style: GoogleFonts.dmSans(
+                    style: GoogleFonts.reemKufi(
                       fontSize: 12,
                       color: ObsidianTheme.text3,
                     ),
@@ -74,7 +74,7 @@ class GoldItemTile extends StatelessWidget {
                     const SizedBox(height: 2),
                     Text(
                       'Cost: ${CurrencyFormatter.formatEgp(purchaseCost)}',
-                      style: GoogleFonts.dmSans(
+                      style: GoogleFonts.reemKufi(
                         fontSize: 11,
                         color: ObsidianTheme.text3,
                       ),
@@ -88,7 +88,7 @@ class GoldItemTile extends StatelessWidget {
               children: [
                 Text(
                   CurrencyFormatter.formatEgp(valueEgp),
-                  style: GoogleFonts.dmMono(
+                  style: GoogleFonts.jetBrainsMono(
                     fontSize: 14,
                     fontWeight: FontWeight.w700,
                     color: ObsidianTheme.text1,
@@ -98,7 +98,7 @@ class GoldItemTile extends StatelessWidget {
                   const SizedBox(height: 2),
                   Text(
                     CurrencyFormatter.formatPercent(gainPercent),
-                    style: GoogleFonts.dmMono(
+                    style: GoogleFonts.jetBrainsMono(
                       fontSize: 11,
                       fontWeight: FontWeight.w600,
                       color: gainLoss! >= 0
@@ -123,7 +123,7 @@ class GoldItemTile extends StatelessWidget {
                   value: 'edit',
                   child: Text(
                     'Edit',
-                    style: GoogleFonts.dmSans(
+                    style: GoogleFonts.reemKufi(
                       fontSize: 14,
                       color: ObsidianTheme.text1,
                     ),
@@ -133,7 +133,7 @@ class GoldItemTile extends StatelessWidget {
                   value: 'delete',
                   child: Text(
                     'Delete',
-                    style: GoogleFonts.dmSans(
+                    style: GoogleFonts.reemKufi(
                       fontSize: 14,
                       color: ObsidianTheme.lossRed,
                     ),

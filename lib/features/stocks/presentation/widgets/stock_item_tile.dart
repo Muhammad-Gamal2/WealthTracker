@@ -51,7 +51,7 @@ class StockItemTile extends StatelessWidget {
               alignment: Alignment.center,
               child: Text(
                 item.market,
-                style: GoogleFonts.dmSans(
+                style: GoogleFonts.reemKufi(
                   fontSize: 10,
                   fontWeight: FontWeight.w800,
                   color: accentColor,
@@ -68,7 +68,7 @@ class StockItemTile extends StatelessWidget {
                     children: [
                       Text(
                         item.symbol,
-                        style: GoogleFonts.dmSans(
+                        style: GoogleFonts.reemKufi(
                           fontSize: 14,
                           fontWeight: FontWeight.w700,
                           color: ObsidianTheme.text1,
@@ -79,7 +79,7 @@ class StockItemTile extends StatelessWidget {
                         Flexible(
                           child: Text(
                             item.name,
-                            style: GoogleFonts.dmSans(
+                            style: GoogleFonts.reemKufi(
                               fontSize: 11,
                               color: ObsidianTheme.text3,
                             ),
@@ -92,7 +92,7 @@ class StockItemTile extends StatelessWidget {
                   const SizedBox(height: 3),
                   Text(
                     '${CurrencyFormatter.formatNumber(item.quantity)} shares \u00b7 $currencyLabel ${currentPrice.toStringAsFixed(2)}',
-                    style: GoogleFonts.dmSans(
+                    style: GoogleFonts.reemKufi(
                       fontSize: 11,
                       color: ObsidianTheme.text3,
                     ),
@@ -107,7 +107,7 @@ class StockItemTile extends StatelessWidget {
               children: [
                 Text(
                   CurrencyFormatter.formatEgp(totalEgp),
-                  style: GoogleFonts.dmMono(
+                  style: GoogleFonts.jetBrainsMono(
                     fontSize: 14,
                     fontWeight: FontWeight.w700,
                     color: ObsidianTheme.text1,
@@ -131,7 +131,7 @@ class StockItemTile extends StatelessWidget {
                   value: 'edit',
                   child: Text(
                     'Edit',
-                    style: GoogleFonts.dmSans(
+                    style: GoogleFonts.reemKufi(
                       fontSize: 14,
                       color: ObsidianTheme.text1,
                     ),
@@ -141,7 +141,7 @@ class StockItemTile extends StatelessWidget {
                   value: 'delete',
                   child: Text(
                     'Delete',
-                    style: GoogleFonts.dmSans(
+                    style: GoogleFonts.reemKufi(
                       fontSize: 14,
                       color: ObsidianTheme.lossRed,
                     ),

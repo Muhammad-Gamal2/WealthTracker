@@ -13,23 +13,27 @@ class GainBadge extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final isPositive = percent >= 0;
-    final bgColor = isPositive ? ObsidianTheme.gainGreenBg : ObsidianTheme.lossRedBg;
-    final textColor = isPositive ? ObsidianTheme.gainGreen : ObsidianTheme.lossRed;
+    final color = isPositive ? ObsidianTheme.accent : ObsidianTheme.lossRed;
+    final arrow = isPositive ? '▲' : '▼';
     final sign = isPositive ? '+' : '';
-    final label = '$sign${percent.toStringAsFixed(1)}%';
+    final label = '$arrow $sign${percent.toStringAsFixed(1)}%';
 
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 9, vertical: 3),
+      padding: const EdgeInsets.symmetric(horizontal: 7, vertical: 2),
       decoration: BoxDecoration(
-        color: bgColor,
-        borderRadius: BorderRadius.circular(8),
+        color: Colors.transparent,
+        borderRadius: BorderRadius.circular(999),
+        border: Border.all(
+          color: color.withValues(alpha: 0.4),
+          width: 1,
+        ),
       ),
       child: Text(
         label,
-        style: GoogleFonts.dmMono(
-          fontSize: 12,
-          fontWeight: FontWeight.w700,
-          color: textColor,
+        style: GoogleFonts.jetBrainsMono(
+          fontSize: 10,
+          color: color,
+          letterSpacing: 0.04 * 10, // 0.04em
         ),
       ),
     );

@@ -107,8 +107,8 @@ class _AddLiquidityDialogState extends State<AddLiquidityDialog> {
                   Row(
                     children: [
                       Text(
-                        isEditing ? 'Edit Cash Account' : 'Add Cash',
-                        style: GoogleFonts.spaceGrotesk(
+                        isEditing ? 'تعديل الحساب' : 'إضافة سيولة',
+                        style: GoogleFonts.reemKufi(
                           fontSize: 18,
                           fontWeight: FontWeight.w700,
                           color: ObsidianTheme.text1,
@@ -132,11 +132,11 @@ class _AddLiquidityDialogState extends State<AddLiquidityDialog> {
                   ),
                   const SizedBox(height: 20),
                   // Label field
-                  _buildFieldLabel('LABEL'),
+                  _buildFieldLabel('LABEL · الوصف'),
                   const SizedBox(height: 6),
                   TextFormField(
                     controller: _labelController,
-                    style: GoogleFonts.dmMono(
+                    style: GoogleFonts.jetBrainsMono(
                         fontSize: 14, color: ObsidianTheme.text1),
                     decoration: _inputDecoration(
                         hintText: 'e.g. Savings, Emergency Fund'),
@@ -145,11 +145,11 @@ class _AddLiquidityDialogState extends State<AddLiquidityDialog> {
                   ),
                   const SizedBox(height: 14),
                   // Amount field
-                  _buildFieldLabel('AMOUNT (USD)'),
+                  _buildFieldLabel('AMOUNT · المبلغ'),
                   const SizedBox(height: 6),
                   TextFormField(
                     controller: _amountController,
-                    style: GoogleFonts.dmMono(
+                    style: GoogleFonts.jetBrainsMono(
                         fontSize: 14, color: ObsidianTheme.text1),
                     decoration:
                         _inputDecoration(hintText: '0.00', suffixText: 'USD'),
@@ -179,7 +179,7 @@ class _AddLiquidityDialogState extends State<AddLiquidityDialog> {
                         children: [
                           Text(
                             'EGP Equivalent',
-                            style: GoogleFonts.dmSans(
+                            style: GoogleFonts.reemKufi(
                               fontSize: 12,
                               fontWeight: FontWeight.w600,
                               color: ObsidianTheme.cyan,
@@ -188,7 +188,7 @@ class _AddLiquidityDialogState extends State<AddLiquidityDialog> {
                           const Spacer(),
                           Text(
                             CurrencyFormatter.formatEgp(egpPreview),
-                            style: GoogleFonts.dmMono(
+                            style: GoogleFonts.jetBrainsMono(
                               fontSize: 14,
                               fontWeight: FontWeight.w700,
                               color: ObsidianTheme.cyan,
@@ -220,7 +220,7 @@ class _AddLiquidityDialogState extends State<AddLiquidityDialog> {
                             ),
                             child: Text(
                               'Cancel',
-                              style: GoogleFonts.dmSans(
+                              style: GoogleFonts.reemKufi(
                                 fontSize: 14,
                                 fontWeight: FontWeight.w600,
                                 color: ObsidianTheme.text2,
@@ -258,8 +258,8 @@ class _AddLiquidityDialogState extends State<AddLiquidityDialog> {
                                 ),
                               ),
                               child: Text(
-                                isEditing ? 'Save' : 'Add',
-                                style: GoogleFonts.dmSans(
+                                isEditing ? 'حفظ' : 'إضافة',
+                                style: GoogleFonts.reemKufi(
                                   fontSize: 14,
                                   fontWeight: FontWeight.w700,
                                   color: Colors.white,
@@ -283,11 +283,11 @@ class _AddLiquidityDialogState extends State<AddLiquidityDialog> {
   Widget _buildFieldLabel(String label) {
     return Text(
       label,
-      style: GoogleFonts.dmSans(
-        fontSize: 11,
+      style: GoogleFonts.jetBrainsMono(
+        fontSize: 9,
         fontWeight: FontWeight.w700,
         color: ObsidianTheme.text3,
-        letterSpacing: 0.07 * 11,
+        letterSpacing: 0.18 * 9,
       ),
     );
   }
@@ -296,9 +296,9 @@ class _AddLiquidityDialogState extends State<AddLiquidityDialog> {
     return InputDecoration(
       hintText: hintText,
       suffixText: suffixText,
-      hintStyle: GoogleFonts.dmMono(fontSize: 14, color: ObsidianTheme.text3),
+      hintStyle: GoogleFonts.jetBrainsMono(fontSize: 14, color: ObsidianTheme.text3),
       suffixStyle:
-          GoogleFonts.dmMono(fontSize: 14, color: ObsidianTheme.text3),
+          GoogleFonts.jetBrainsMono(fontSize: 14, color: ObsidianTheme.text3),
       filled: true,
       fillColor: ObsidianTheme.inputFill,
       contentPadding:

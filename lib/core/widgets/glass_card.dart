@@ -17,7 +17,14 @@ class GlassCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final decoration = ObsidianTheme.cardDecoration(accent: accent);
+    final decoration = BoxDecoration(
+      color: ObsidianTheme.surface2,
+      borderRadius: BorderRadius.circular(ObsidianTheme.radius),
+      border: Border.all(
+        color: ObsidianTheme.border,
+        width: 1,
+      ),
+    );
 
     Widget content = Container(
       decoration: decoration,
@@ -34,8 +41,8 @@ class GlassCard extends StatelessWidget {
         child: InkWell(
           onTap: onTap,
           borderRadius: BorderRadius.circular(ObsidianTheme.radius),
-          splashColor: ObsidianTheme.accent.withValues(alpha: 0.08),
-          highlightColor: ObsidianTheme.accent.withValues(alpha: 0.04),
+          splashColor: (accent ?? ObsidianTheme.accent).withValues(alpha: 0.08),
+          highlightColor: (accent ?? ObsidianTheme.accent).withValues(alpha: 0.04),
           child: content,
         ),
       );

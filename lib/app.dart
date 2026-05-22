@@ -18,12 +18,6 @@ class WealthTrackerApp extends StatelessWidget {
         themeMode: isDark ? ThemeMode.dark : ThemeMode.light,
         darkTheme: ObsidianTheme.darkTheme(),
         theme: ObsidianTheme.lightTheme(),
-        locale: const Locale('ar'),
-        supportedLocales: const [Locale('ar'), Locale('en')],
-        builder: (context, child) => Directionality(
-          textDirection: TextDirection.rtl,
-          child: child!,
-        ),
         initialRoute: hasPinSignal.value ? AppRouter.lock : AppRouter.dashboard,
         routes: AppRouter.routes,
       );
